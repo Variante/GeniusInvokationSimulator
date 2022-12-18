@@ -9,7 +9,7 @@ class Dices:
         return {t: c for t, c in zip(self.options, count)}
         
     def _dict_to_count(self, d):
-        return np.array([d.get(i, default=0) for i in self.options], dtype=np.uint8)
+        return np.array([d.get(i, 0) for i in self.options], dtype=np.uint8)
         
     def roll(self, total_num=8, keep=None):
         if keep is None:

@@ -1,0 +1,629 @@
+[
+    {
+        "img": "Ganyu_Genius_Invokation_Card_2.png",
+        "name": "Ganyu",
+        "skill": [
+            {
+                "name": "Liutian Archery",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Die and 2 Unaligned Dices"
+            },
+            {
+                "name": "Trail of Qilin",
+                "type": "Elemental Skill",
+                "des": "Deals 1 Cryo DMG, creates 1 Ice Lotus. Costs 3 Cryo Dices."
+            },
+            {
+                "name": "Frostflake Arrow",
+                "type": "Normal Attack",
+                "des": "Deals 2 Cryo DMG, deals 2 Piercing DMG to all opposing characters on standby. Costs 5 Cryo Dices"
+            },
+            {
+                "name": "Celestial Shower",
+                "type": "Elemental Burst",
+                "des": "Deals 1 Cryo DMG, deals 1 Piercing DMG to all opposing characters on standby, summons 1 Sacred Cryo Pearl. Costs 3 Cryo dices and 2 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Kaeya_Genius_Invokation_Card.png",
+        "name": "Kaeya",
+        "skill": [
+            {
+                "name": "Ceremonial Bladework",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Die and 2 Unaligned Dices."
+            },
+            {
+                "name": "Frostgnaw",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Cryo DMG. Costs 3 Cryo Dices"
+            },
+            {
+                "name": "Glacial Waltz",
+                "type": "Elemental Burst",
+                "des": "Deals 1 Cryo DMG, creates 1 Icicle. Costs 4 Cryo Dices and 2 Energy"
+            }
+        ]
+    },
+    {
+        "img": "Diona_Genius_Invokatio_Card.png",
+        "name": "Diona",
+        "skill": [
+            {
+                "name": "Katzlein Style",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Dice and 2 Unaligned Dices"
+            },
+            {
+                "name": "Icy Paws",
+                "type": "Elemental Skill",
+                "des": "Deals 2 Cryo DMG, creates 1 Cat"
+            },
+            {
+                "name": "Signature Mix",
+                "type": "Elemental Burst",
+                "des": "Deals 1 Cryo DMG, heals this character for 2 HP, summons 1 Drunken Mist. Costs 3 Cryo Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Chongyun_Genius_Invokation_Card_2.png",
+        "name": "Chongyun",
+        "skill": [
+            {
+                "name": "Demonbane",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Chonghua's Layered Frost",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Cryo DMG, creates 1 Chonghua Frost Field. Costs 3 Cryo Dices."
+            },
+            {
+                "name": "Cloud-Parting Star",
+                "type": "Elemental Burst",
+                "des": "Deals 7 Cryo DMG. Costs 3 Cryo Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Ayaka_Genius_Invokation_Card_2.png",
+        "name": "Ayaka",
+        "skill": [
+            {
+                "name": "Kamisato Art: Kabuki",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Kamisato Art: Hyouka",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Cryo DMG. Costs 3 Cryo Dices."
+            },
+            {
+                "name": "Kamisato Art: Soumetsu",
+                "type": "Elemental Burst",
+                "des": "Deals 4 Cryo DMG, summons 1 Frostflake Seki no To. Costs 3 Cryo Dices and 3 Energy."
+            },
+            {
+                "name": "Kamisato Art: Senho",
+                "type": "Passive Skill",
+                "des": "When switched to be the active character, this character gains Cryo Elemental Infusion."
+            }
+        ]
+    },
+    {
+        "img": "Barbara_Genius_Invokation_Card_2.png",
+        "name": "Barbara",
+        "skill": [
+            {
+                "name": "Whisper of Water",
+                "type": "Normal Attack",
+                "des": "Deals 1 Hydro DMG. Costs 1 Hydro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Let the Show Begin",
+                "type": "Elemental Skill",
+                "des": "Deals 1 Hydro DMG, summons 1 Melody Loop. Costs 3 Hydro Dices."
+            },
+            {
+                "name": "Shining Miracle",
+                "type": "Elemental Burst",
+                "des": "Heals all of your characters for 4 HP. Costs 3 Hydro Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Xingqiu_Genius_Invokation_Card_2.png",
+        "name": "Xingqiu",
+        "skill": [
+            {
+                "name": "Guhua Style",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Hydro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Fatal Rainscreen",
+                "type": "Elemental Skill",
+                "des": "Deals 2 Hydro DMG, grants this character Hydro Application, creates 1 Rain Sword. Costs 3 Hydro Dices"
+            },
+            {
+                "name": "Raincutter",
+                "type": "Elemental Burst",
+                "des": "Deals 1 Hydro DMG, grants this character Hydro Application, creates 1 Rainbow Bladework. Costs 3 Hydro Dices and 2 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Mona_Genius_Invokation_Card_2.png",
+        "name": "Mona",
+        "skill": [
+            {
+                "name": "Ripple of Fate",
+                "type": "Normal Attack",
+                "des": "Deals 1 Hydro DMG. Costs 1 Hydro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Mirror Reflection of Doom",
+                "type": "Elemental Skill",
+                "des": "Deals 1 Hydro DMG, summons 1 Reflection. Costs 3 Hydro Dices."
+            },
+            {
+                "name": "Stellaris Phatasm",
+                "type": "Elemental Burst",
+                "des": "Deals 4 Hydro DMG, creates 1 Illusory Bubble. Costs 3 Hydro Dices and 3 Energy."
+            },
+            {
+                "name": "Illusory Torrent",
+                "type": "Passive Skill",
+                "des": "When you perform \"Switch Character\" while Mona is your active character: This switch is considered a Fast Action instead of a Combat Action. (Once per round)."
+            }
+        ]
+    },
+    {
+        "img": "Diluc_Genius_Invokation_Card_2.png",
+        "name": "Diluc",
+        "skill": [
+            {
+                "name": "Tempered Sword",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices.",
+				"cost": {
+					"d_type": ["Pyro", "Unaligned"],
+					"d_num": [1, 2],
+					"p_num": 0
+				}
+            },
+            {
+                "name": "Searing Onslaught",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Pyro DMG. For the third use of this Skill each round, deals +2 DMG. Costs 3 Pyro Dices.",
+				"cost": {
+					"d_type": ["Pyro"],
+					"d_num": [3],
+					"p_num": 0
+				}
+            },
+            {
+                "name": "Dawn",
+                "type": "Elemental Burst",
+                "des": "Deals 8 Pyro DMG. This character gains Pyro Infusion. Costs 4 Pyro Dices and 3 Energy.",
+				"cost": {
+					"d_type": ["Pyro"],
+					"d_num": [4],
+					"p_num": 3
+				}
+            }
+        ]
+    },
+    {
+        "img": "Xiangling_Genius_Invokation_Card_2.png",
+        "name": "Xiangling",
+        "skill": [
+            {
+                "name": "Dough-Fu",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Guoba Attack",
+                "type": "Elemental Skill",
+                "des": "Summons 1 Guoba. Costs 3 Pyro Dices."
+            },
+            {
+                "name": "Pyronado",
+                "type": "Elemental Burst",
+                "des": "Deals 2 Pyro DMG, creates 1 Pyronado. Costs 4 Pyro Dices and 2 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Bennet_Genius_Invokation_Card.png",
+        "name": "Bennet",
+        "skill": [
+            {
+                "name": "Strike of Fortune",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Passion Overload",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Pyro DMG. Costs 3 Pyro Dices."
+            },
+            {
+                "name": "Fantastic Voyage",
+                "type": "Elemental Burst",
+                "des": "Deals 2 Pyro DMG, creates 1 Inspirational Field. Costs 4 Pyro Dices and 2 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Yoimiya_Genius_Invokation_Card.png",
+        "name": "Yoimiya",
+        "skill": [
+            {
+                "name": "Firework Flare-Up",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Niwabi Fire-Dance",
+                "type": "Elemental Skill",
+                "des": "This character gains Niwabi Enshou. Costs 1 Pryo Dice.,"
+            },
+            {
+                "name": "Ryuukin Saxifrage",
+                "type": "Elemental Burst",
+                "des": "Deals 3 Pyro DMG, creates 1 Aurous Blaze."
+            }
+        ]
+    },
+    {
+        "img": "Fischl_Genius_Invokation_Card.png",
+        "name": "Fischl",
+        "skill": [
+            {
+                "name": "Bolts of Downfall",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Nightrider",
+                "type": "Elemental Skill",
+                "des": "Deals 1 Electro DMG, summons 1 Oz. Costs 3 Electro Dices."
+            },
+            {
+                "name": "Midnight Phantasmagoria",
+                "type": "Elemental Burst",
+                "des": "Deals 4 Electro DMG, deals 2 piercing DMG to all opposing characters on standby. Costs 3 Electro Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Razor_Genius_Invokation_Card.png",
+        "name": "Razor",
+        "skill": [
+            {
+                "name": "Steel Fang",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Claw and Thunder",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Electro DMG. Costs 3 Electro Dices."
+            },
+            {
+                "name": "Lightning Fang",
+                "type": "Elemental Burst",
+                "des": "Deals 5 Electro DMG. This character gains The Wolf Within. Costs 3 Electro Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Keqing_Genius_Invokation_Card.png",
+        "name": "Keqing",
+        "skill": [
+            {
+                "name": "Yunlai Swordsmanship",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Stellar Restoration",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Electro DMG, creates 1 Lightning Stiletto. Costs 3 Electro Dices."
+            },
+            {
+                "name": "Starward Sword",
+                "type": "Elemental Burst",
+                "des": "Deals 4 Electro DMG, deals 3 piercing DMG to all opposing characters on standby. Costs 4 Electro Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Cyno_Genius_Invokation_Card.png",
+        "name": "Cyno",
+        "skill": [
+            {
+                "name": "Invoker's Spear",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Secret Rite: Chasmic Soulfarer",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Electro DMG. Costs 3 Electro Dices."
+            },
+            {
+                "name": "Sacred Rite: Wolf's Swiftness",
+                "type": "Elemental Burst",
+                "des": "Deals 4 Electro DMG. Pactsworn Pathclearer's Indwelling Level +2. Costs 4 Electro Dices and 2 Energy."
+            },
+            {
+                "name": "Lawful Enforcer",
+                "type": "Passive Skill",
+                "des": "When the battle begins, this character gains Pactsworn Pathclearer."
+            }
+        ]
+    },
+    {
+        "img": "Sucrose_Genius_Invokation_Card.png",
+        "name": "Sucrose",
+        "skill": [
+            {
+                "name": "Wind Spirit Creation",
+                "type": "Normal Attack",
+                "des": "Deals 1 Anemo DMG. Costs 1 Anemo Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Astable Anemohypostasis Creation - 6308",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Anemo DMG, the target is forcibly switched to the previous character. Costs 3 Anemo Dices."
+            },
+            {
+                "name": "Forbidden Creation - Isomer 74 / Type II",
+                "type": "Elemental Burst",
+                "des": "Deals 1 Anemo DMG, summons 1 Large Wind Spirit. Costs 3 Anemo Dices and 2 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Jean_Genius_Invokation_Card.png",
+        "name": "Jean",
+        "skill": [
+            {
+                "name": "Favonius Bladework",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Anemo Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Gale Blade",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Anemo DMG, the target is forcibly switched to the next character. Costs 3 Anemo Dices."
+            },
+            {
+                "name": "Dandelion Breeze",
+                "type": "Elemental Burst",
+                "des": "Heals all your characters for 2 HP, summons 1 Dandelion Field. Costs 4 Anemo Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Ningguang_Genius_Invokation_Card.png",
+        "name": "Ningguang",
+        "skill": [
+            {
+                "name": "Sparkling Scatter",
+                "type": "Normal Attack",
+                "des": "Deals 1 Geo DMG. Costs 1 Geo Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Jade Screen",
+                "type": "Elemental Skill",
+                "des": "Deals 2 Geo DMG, creates 1 Jade Screen. Costs 3 Geo Dices."
+            },
+            {
+                "name": "Starshatter",
+                "type": "Elemental Burst",
+                "des": "Deals 6 Geo DMG. If Jade Screen is on the field, deals +2 DMG. Costs 3 Geo Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Noelle_Genius_Invokation_Card.png",
+        "name": "Noelle",
+        "skill": [
+            {
+                "name": "Favonius Bladework - Maid",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Geo Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Breastplate",
+                "type": "Elemental Skill",
+                "des": "Deals 1 Geo DMG, creates 1 Full Plate. Costs 3 Geo Dices."
+            },
+            {
+                "name": "Sweeping Time",
+                "type": "Elemental Burst",
+                "des": "Deals 4 Geo DMG. This character gains Sweeping Time. Costs 4 Geo Dices and 2 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Collei_Genius_Invokation_Card.png",
+        "name": "Collei",
+        "skill": [
+            {
+                "name": "Supplicant's Bowmanship",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Dendro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Floral Brush",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Dendro DMG. Costs 3 Dendro Dices."
+            },
+            {
+                "name": "Trump-Card Kitty",
+                "type": "Elemental Burst",
+                "des": "Deals 2 Dendro DMG, summons 1 Cuilein"
+            }
+        ]
+    },
+    {
+        "img": "Rhodeia_Genius_Invokation_Card.png",
+        "name": "Rhodeia of Loch",
+        "skill": [
+            {
+                "name": "Surge",
+                "type": "Normal Attack",
+                "des": "Deals 1 Hydro DMG. Costs 1 Hydro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Oceanid Mimic Summoning",
+                "type": "Elemental Skill",
+                "des": "Randomly summons 1 Oceanid Mimic. Prioritizes summoning a different type from pre"
+            },
+            {
+                "name": "The Myriad Wilds",
+                "type": "Elemental Skill",
+                "des": "Randomly summons 2 Oceanid Mimics. Prioritizes summoning a different type from pre"
+            },
+            {
+                "name": "Tide and Torrent",
+                "type": "Elemental Burst",
+                "des": "Deals 2 Hydro DMG. For each friendly summon on the field, deals + 2 additional DMG. Costs 3 Hydro Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Mirror_Maiden_Genius_Invokation_Card.png",
+        "name": "Mirror Maiden",
+        "skill": [
+            {
+                "name": "Water Ball",
+                "type": "Normal Attack",
+                "des": "Deals 1 Hydro DMG. Costs 1 Hydro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Influx Blast",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Hydro DMG. The target character receives Refraction. Costs 3 Hydro Dices."
+            },
+            {
+                "name": "Rippled Reflection",
+                "type": "Elemental Burst",
+                "des": "Deals 5 Hydro DMG. Costs 3 Hydro Dices and 2 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Fatui_Pyro_Agent_Genius_Invokation_Card.png",
+        "name": "Fatui Pyro Agent",
+        "skill": [
+            {
+                "name": "Thrust",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Prowl",
+                "type": "Elemental Skill",
+                "des": "Deals 1 Pyro DMG. This character gains Stealth. Costs 3 Pyro Dices."
+            },
+            {
+                "name": "Blade Ablaze",
+                "type": "Elemental Burst",
+                "des": "Deals 5 Pyro DMG. Costs 3 Pyro Dices and 2 Energy."
+            },
+            {
+                "name": "Stealth Master",
+                "type": "Passive Skill",
+                "des": "When the battle begins, this character gains Stealth."
+            }
+        ]
+    },
+    {
+        "img": "Maguu_Kenki_Genius_Invokation_Card.png",
+        "name": "Maguu Kenki",
+        "skill": [
+            {
+                "name": "Ichimonji",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Anemo Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Blustering Blade",
+                "type": "Elemental Skill",
+                "des": "Deals 1 Anemo DMG, summons 1 Shadowsword: Lone Gale. Costs 3 Anemo Dices."
+            },
+            {
+                "name": "Frosty Assault",
+                "type": "Elemental Skill",
+                "des": "Deals 1 Cryo DMG, summons 1 Shadwosword: Galloping Frost."
+            },
+            {
+                "name": "Pseudo Tengu Sweeper",
+                "type": "Elemental Burst",
+                "des": "Deals 4 Anemo DMG, triggers the effect(s) of all your Shadowsword Summon(s). Does not consume their usages. Costs 3 Anemo Dices and 3 Energy."
+            }
+        ]
+    },
+    {
+        "img": "Stonehide_Lawachurl_Genius_Invokation_Card.png",
+        "name": "Stonehide Lawachurl",
+        "skill": [
+            {
+                "name": "Plasma Lawa",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Geo Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Movo Lawa",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Physical DMG. Costs 3 Geo Dices."
+            },
+            {
+                "name": "Upa Shato",
+                "type": "Elemental Burst",
+                "des": "Deals 5 Physical DMG. Costs 3 Geo Dices and 2 Energy."
+            },
+            {
+                "name": "Infused Stonehide",
+                "type": "Passive Skill",
+                "des": "When the battle begins, this character gains Stonehide and Stone Force."
+            }
+        ]
+    },
+    {
+        "img": "Jadeplume_Terrorshroom_Genius_Invokation_Card.png",
+        "name": "Jadeplume Terrorshroom",
+        "skill": [
+            {
+                "name": "Majestic Dance",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Dendro Dice and 2 Unaligned Dices."
+            },
+            {
+                "name": "Volatile Spore Cloud",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Dendro DMG. Costs 3 Dendro Dices."
+            },
+            {
+                "name": "Feather Spreading",
+                "type": "Elemental Burst",
+                "des": "Deals 4 Dendro DMG, then consumes all Radical Vitality stacks. For each stack consumed, this instance deals + 1 DMG. Costs 3 Dendro Dices and 2 Energy."
+            },
+            {
+                "name": "Radical Vitality",
+                "type": "Passive Skill",
+                "des": "When the battle begins, this character gains Radical Vitality."
+            }
+        ]
+    }
+]

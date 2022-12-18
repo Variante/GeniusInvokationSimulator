@@ -66,22 +66,59 @@ class Deck:
         for i in self.characters:
             if i.active:
                 return i
+                
+    def get_character(self, code_name):
+        for i in self.characters:
+            if i.code_name == code_name:
+                return i
     
     def get_action_space(self):
         res = []
+        visited_action = set()
         for i in self.available_actions:
-            res.extend(i.get_action_space(self))
+            if i.code_name not in visited_action:
+                res.extend(i.get_action_space(self))
+            visited_action.add(i.code_name)
         res.extend(self.get_current_character().get_action_space(self))
-        res.append('finish turn')
+        res.append('finish')
         return res
+        
+    def execute_action(self, code_name):
+        for idx, i in enumerate(self.available_actions):
+            if i.code_name == code_name:
+                break
+        action = self.available_actions.pop(idx)
+        self.used_actions.append(action)
+        return action
+        
+    def on_round_finished(self):
+        for cha in self.characters:
+            cha.on_round_finished()
     
     def __repr__(self):
         return json.dumps(self.state())
         
+    def print_deck(self):
+        print_dice(self.current_dice)
+        print('-' * 6)
+        for c in self.characters:
+            print(c)
+        print('-' * 6)
+        for a in self.available_actions:
+            print(a)
+            
+    def print_actions(self):
+        print(*self.get_action_space(), sep='\n')
+        
+        
+        
+        
 
 if __name__ == '__main__':
     d = Deck('p1')
-    d.reroll(keep=[0, 0, 0, 0, 0, 3, 1, 1], total_num=5)
-    print('Current dices: ', d.current_dice)
-    print(d.get_action_space())
+    d.reroll(keep=[0, 0, 0, 0, 0, 4, 0, 0], total_num=4)
+    d.pull()
+    print('Current dices: ', d.current_dice, sep = "\n")
+    print('Action space: ')
+    print(*d.get_action_space(), sep = "\n")
     print('-' * 8)

@@ -11,6 +11,8 @@ class Action:
             exit(0)
             
         self.name = name   
+        self.code_name = data['code_name']
+        self.code = data['code']
         self.cost = data['cost']
         """
         "cost": {
@@ -21,29 +23,47 @@ class Action:
         """
         self.des = data['des']
         self.tags = data['tags']
+        
+        if 'food' in self.tags:
+            self.code += ';feed'
+        
+        
         self.active_character = data.get('active_character', None)
     """
     def is_affordable(self, dice, character):
         return is_affordable(self.cost, dice, character)
     """
     
+    def _get_action_prefix(self, deck):
+        if 'food' in self.tags:
+            # if someone has full health, he/she still can be healed, which is different from the original game
+            return [f'action {self.code_name} {cha.code_name}' for cha in deck.characters if cha.hungry]
+        return f'action {self.code_name}'
+    
     def get_action_space(self, deck):
-        res = generate_action_space(self.cost, deck.current_dice, deck.get_current_character(), prefix=f'action {self.name};')
+        res = generate_action_space(self.cost, deck.current_dice, deck.get_current_character(), prefix=self._get_action_prefix(deck))
         if count_total_dice(deck.current_dice) > 0:
             for i in deck.current_dice:
                 if deck.current_dice[i] > 0:
-                    res.append(f'convert {self.name};cost 1 {i};gen 1 {deck.get_current_element()}')
+                    res.append(f'convert {self.code_name};cost 1 {i};gen 1 {deck.get_current_element()}')
         return res
     
     def state(self):
         return vars(self)
     
     def __repr__(self):
-        return json.dumps(self.state())
+        return f"{self.name}: {self.des}"
 
 def init_actions(names):
     # assert len(names) == 30
     pool = load_js('Actions')
+    
+    """
+    for i in pool:
+        i['code_name'] = to_code_name(i['name'])
+    dump_js('Actions.json', pool)
+    """
+    
     return [Action(name, pool) for name in names]
     
         
