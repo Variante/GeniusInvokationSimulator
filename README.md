@@ -1,11 +1,17 @@
 # Genius Invokation Simulator
 
----
-## Under construction. 
+This is a simulator of Genius Invokation, which is a built-in game of Genshin Impact. 
 
-## Acknowlegement
+Please note that this simulator is designed for (RL) research, I don't have any copyrights of the game.
 Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/Genius_Invokation:_All_Genshin_TCG_Cards).
-This simulator is designed for (RL) research, I don't have any copyrights of the game.
+
+---
+## This project is still under construction. 
+
+## Dependence
+```
+pip install numpy
+```
 
 ## Update log
-12/18/22 - Build up basic concepts including characters, actions, dice, deck and game framework.
+12/18/22 - Build basic concepts including characters, actions, dice, deck and game framework.
