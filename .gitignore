@@ -1,0 +1,4 @@
+*.pyc
+img/*
+parse.py
+web.html
