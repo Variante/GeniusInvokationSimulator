@@ -58,11 +58,11 @@ def init_actions(names):
     # assert len(names) == 30
     pool = load_js('Actions')
     
-    """
+
     for i in pool:
         i['code_name'] = to_code_name(i['name'])
     dump_js('Actions.json', pool)
-    """
+
     
     return [Action(name, pool) for name in names]
     

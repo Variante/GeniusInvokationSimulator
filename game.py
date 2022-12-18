@@ -97,10 +97,15 @@ class Game:
             elif cmdw[0] == 'convert':
                 action = self.get_current_deck().execute_action(cmdw[1])
             elif cmdw[0] == 'cost':
-                pass
+                d_num = int(cmdw[1])
+                self.get_current_deck().cost(cmdw[2], d_num)
             elif cmdw[0] == 'gen':
-                pass
-               
+                d_num = int(cmdw[1])
+                d_type = cmdw[2]
+                if d_type == 'Rand':
+                    d_type = self.get_current_deck().d.random_type()
+                self.get_current_deck().cost(d_type, -d_num)
+                
             else:
                 print(f'Not implemented cmd {cmd}')
                 
@@ -114,21 +119,21 @@ class Game:
         self.agent_moves_first = None
             
     def print_desk(self, event=''):
-        print('\n' * 3 + '=' * 20)
+        print('\n' * 3 + '=' * 50)
         print(f"[Round {self.round_num:02d}] {event}")
+        print('-' * 50)
         for i, d in enumerate(self.decks):
-            print('-' * 20)
             print(f'Player {i + 1} ' + ('<*>' if self.current_agent == i else ''))
             d.print_deck()
             if self.current_agent == i:
-                print('-' * 16)
                 print('Available actions:')
                 d.print_actions()
+            print('-' * 50)
             
         
     def game_loop(self, show=False):
         # round start
-        while self.check_win() < 0 and self.round_num < 15:
+        while self.check_win() < 0 and self.round_num < 3:
             # start a new round
             self.round_num += 1
             # pull cards

@@ -21,7 +21,7 @@ class Character:
         self.name = name
         self.code_name = data['code_name']
         self.skills = [Skill(i) for i in data['skills']]
-        self.health = data.get('health', 8)
+        self.health = data.get('health', 5)
         self.health_limit = data.get('health_limit', 10)
         self.power = 3
         self.power_limit = data.get('power_limit', 3)
@@ -86,7 +86,7 @@ class Character:
         return f"{self.name}{'<*>'if self.active else ''} - H: {self.health}\n" + \
                f"Debuffs: {'[Full]' if not self.hungry else ''}{'[Frozen]' if self.frozen else ''}\n" + \
                f"W: {'[W]' if self.weapon else ''} A: {'[A]' if self.artifact else ''} E: {'[E]' if self.equip else ''}\n" + \
-               f"Main element: {self.main_element} Attached element: {' '.join(self.attached_element) if self.attached_element else ''}"
+               f"Main element: {self.main_element:<5} | Attached element: {' '.join(self.attached_element) if self.attached_element else ''}"
         
 
 def init_characters(names):

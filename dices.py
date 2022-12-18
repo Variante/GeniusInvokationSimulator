@@ -11,6 +11,10 @@ class Dices:
     def _dict_to_count(self, d):
         return np.array([d.get(i, 0) for i in self.options], dtype=np.uint8)
         
+    def random_type(self):
+        # don't roll Omni
+        return np.random.randint(0, self.l - 1)
+        
     def roll(self, total_num=8, keep=None):
         if keep is None:
             keep = np.zeros(self.l, dtype=np.uint8)

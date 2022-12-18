@@ -3,7 +3,7 @@
         "img": "Sweet_Madame.png",
         "name": "Sweet Madame",
         "code_name": "sweet_madame",
-		"code": "heal 1",
+        "code": "heal 1",
         "cost_raw": "No Cost",
         "cost": {
             "d_type": [
@@ -19,5 +19,28 @@
             "food"
         ],
         "type": "Event"
+    },
+    {
+        "img": "Mondstadt_Hash_Brown.png",
+        "name": "Mondstadt Hash Brown",
+        "cost_raw": "1 Elemental Dice",
+        "code": "heal 2",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Heal the target character for 2 HP.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "types": [
+            "event"
+        ],
+        "code_name": "mondstadt_hash_brown"
     }
 ]

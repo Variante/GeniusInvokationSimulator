@@ -151,7 +151,7 @@ def generate_action_space(cost, dice, character, prefix=None):
     return [';'.join([i, j]) for i in res for j in prefix]
 
 def print_dice(dice):
-    res =', '.join([f"{i}: {dice[i]}" for i in dice if dice[i] > 0])
+    res ='| '.join([f"{i}: {dice[i]}" for i in dice if dice[i] > 0])
     print(res)
     return res
  

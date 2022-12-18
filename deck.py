@@ -44,6 +44,9 @@ class Deck:
             else:
                 self.available_actions.append(action)
    
+    def cost(self, d_type, d_num):
+        self.current_dice[d_type] -= d_num
+   
     def pull(self):
         return self._pull(self.pre_pull_num)
         
@@ -100,13 +103,14 @@ class Deck:
         
     def print_deck(self):
         print_dice(self.current_dice)
-        print('-' * 6)
+        print('-' * 40)
         for c in self.characters:
             print(c)
-        print('-' * 6)
+        print('-' * 40)
         for a in self.available_actions:
             print(a)
-            
+        print('-' * 40)
+         
     def print_actions(self):
         print(*self.get_action_space(), sep='\n')
         

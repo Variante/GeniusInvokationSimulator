@@ -7,5 +7,5 @@ class Agent:
         
     def get_action(self, state):
         self.test_count += 1
-        return state['action_space'][0 if self.test_count < 2 else -1]
+        return state['action_space'][-2 if self.test_count < 2 else -1]
         
