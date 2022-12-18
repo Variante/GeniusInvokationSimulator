@@ -189,17 +189,32 @@
             {
                 "name": "Tempered Sword",
                 "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices."
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices.",
+				"cost": {
+					"d_type": ["Pyro", "Unaligned"],
+					"d_num": [1, 2],
+					"p_num": 0
+				}
             },
             {
                 "name": "Searing Onslaught",
                 "type": "Elemental Skill",
-                "des": "Deals 3 Pyro DMG. For the third use of this Skill each round, deals +2 DMG. Costs 3 Pyro Dices."
+                "des": "Deals 3 Pyro DMG. For the third use of this Skill each round, deals +2 DMG. Costs 3 Pyro Dices.",
+				"cost": {
+					"d_type": ["Pyro"],
+					"d_num": [3],
+					"p_num": 0
+				}
             },
             {
                 "name": "Dawn",
                 "type": "Elemental Burst",
-                "des": "Deals 8 Pyro DMG. This character gains Pyro Infusion. Costs 4 Pyro Dices and 3 Energy."
+                "des": "Deals 8 Pyro DMG. This character gains Pyro Infusion. Costs 4 Pyro Dices and 3 Energy.",
+				"cost": {
+					"d_type": ["Pyro"],
+					"d_num": [4],
+					"p_num": 3
+				}
             }
         ]
     },
