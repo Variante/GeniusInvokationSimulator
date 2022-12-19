@@ -9,6 +9,10 @@ class Deck:
         self.d = Dices()
         deck = load_js(deck_name)
         self.characters = init_characters(deck['characters'])
+        for c in self.characters:
+            c.deck_ptr = self
+        self.transfer_buff = []
+            
         self.to_pull_actions = init_actions(deck['actions'])
         self.used_actions = []
         self.available_actions = []
@@ -19,6 +23,8 @@ class Deck:
         self.agent = agent
         
         self.last_alive = [True] * len(self.characters)
+        
+        self.enemy_ptr = None
     
     def has_alive_changed(self):
         changed = False
@@ -78,11 +84,9 @@ class Deck:
     def activate(self, code_name):
         # transfer buffs if necessary
         current_char = self.get_current_character()
-        if current_char is None:
-            buffs = []
-        else:
+        if current_char is not None:
             buffs = current_char.deactivate()
-        self.get_character(code_name).activate(buffs=buffs)
+        self.get_character(code_name).activate()
     
     def get_current_element(self):
         for i in self.characters:
@@ -93,7 +97,12 @@ class Deck:
         for i in self.characters:
             if i.active:
                 return i
-                
+    
+    def get_enemy_current_character(self):
+        for i in self.enemy_ptr.characters:
+            if i.active:
+                return i
+    
     def get_character(self, code_name):
         for i in self.characters:
             if i.code_name == code_name:
@@ -124,7 +133,13 @@ class Deck:
                 prefix=f'activate {char.code_name}'))
         res.append('finish')
         return res
-        
+    
+    def keep_action(self, keep_card):
+        assert len(self.available_actions) == len(keep_card)
+        for i in range(len(keep_card) - 1, -1, -1):
+            if keep_card[i] == 0:
+                self.to_pull_actions.append(self.available_actions.pop(i))
+    
     def execute_action(self, code_name):
         for idx, i in enumerate(self.available_actions):
             if i.code_name == code_name:

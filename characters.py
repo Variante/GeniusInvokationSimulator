@@ -12,9 +12,11 @@ class Skill:
         
     def exec(self, deck, my_char, enemy_char):
         self.round_usage += 1
-        energy_gain = 1
+        energy_gain = 1 if self.stype != 'elemental_burst' else 0
+        
         dmg=0
         dmg_type = 'Physical'
+        do_dmg = False
         
         for code in self.code:
             cmds = code.split()
@@ -27,6 +29,7 @@ class Skill:
                 cmds = code.split()
                 
             if cmds[0] == 'dmg':
+                do_dmg = True
                 dmg_type = cmds[1]
                 dmg += int(cmds[2])
                 
@@ -49,11 +52,12 @@ class Skill:
             elif cmds[0] == 'infusion':
                 my_char.infusion(cmds[1])
             elif cmds[0] == 'buff':
-                my_char.infusion(cmds[1])
+                my_char.add_buff(f'skill {self.code_name}', code)
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
         
-        enemy_char.take_dmg(dmg, dmg_type)
+        if do_dmg:
+            enemy_char.take_dmg(dmg_type, dmg)
 
     def on_round_finished(self):
         self.round_usage = 0
@@ -67,12 +71,13 @@ class Buff:
         self.init_life = self.life 
         self.rf_by_round = 1 # life reduced per round
         self.rf_by_activated = 1 # life reduced by activated
-        self.transfer = False
         self.attribs = {}
-        self.parse_code(code)
+        self._parse_code(code)
 
-    def parse_code(self, code):
-        cmds = code.split(',')
+    # buff parse engine
+    def _parse_code(self, code):
+        assert code.startswith('buff ')
+        cmds = code[5:].split(',')
         for cmd in cmds:
             cmdw = cmd.split()
             if cmdw[0] == 'life':
@@ -80,21 +85,20 @@ class Buff:
                 self.rf_by_round = int(cmdw[2])
                 self.rf_by_activated = int(cmdw[3])
                 self.init_life = self.life 
-            elif cmdw[0] == 'transfer':
-                self.transfer = True
-            elif cmdw[0] == 'buff':
-                try:
-                    self.attribs[cmdw[1]] = int(cmdw[2])
-                except IndexError:
-                    self.attribs[cmdw[1]] = 1
+            elif len(cmdw) > 2:
+                self.attribs[cmdw[0]] = tuple(cmdw[1:-1] + [int(cmdw[-1])])
+            elif len(cmdw) == 2:
+                self.attribs[cmdw[0]] = int(cmdw[1])
+            else:
+                self.attribs[cmdw[0]] = 1
                 
-    def get_attribs(self):
-        return self.attribs
-        
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
-        if keyword.startswith('next') and self.life == self.init_life:
-            value = 0
+        if 'starts_since_next_round' in self.attribs and self.life == self.init_life:
+            if isinstance(value, int):
+                value = 0
+            elif isinstance(value, tuple):
+                value = (value[0], 0)
         return value
 
     def on_activated(self):
@@ -106,6 +110,7 @@ class Buff:
     def __repr__(self):
         attribs = ','.join([f'{i}({self.attribs[i]})' for i in self.attribs])
         return f"[{attribs} from {self.source} ({self.life})]"
+
 
 class Character:
     def __init__(self, name, pool):
@@ -136,6 +141,26 @@ class Character:
         self.active = False
         self.activate_cost = 1    
         self.alive = True
+        
+        self.deck_ptr = None
+
+    def engine_buff(self, buff):
+        activated = False
+        
+        res = buff.query('dmg')
+        if isinstance(res, tuple) and res[1] > 0:
+            activated = True
+            self.deck_ptr.get_enemy_current_character().take_dmg(*res)
+
+            
+        res = buff.query('heal')
+        if res > 0:
+            activated = True
+            self.heal(res)
+            
+        if activated:
+            buff.on_activated()
+
 
     def affordable_skills(self, dice):
         res = []
@@ -153,6 +178,9 @@ class Character:
             return []
         return self.affordable_skills(deck.current_dice)
     
+    def get_buff(self, keyword):
+        return [i for i in self.buffs if i.query(keyword)]
+        
     def query_buff(self, keyword):
         value = 0
         for i in self.buffs:
@@ -175,7 +203,7 @@ class Character:
                 value += i.query(keyword)
         self.refresh_buffs()
         return value
-        
+
     def take_pattern_buff(self, buff_head):
         res = {}
         for i in self.buffs:
@@ -192,19 +220,25 @@ class Character:
     def refresh_buffs(self):
         self.buffs = [buff for buff in self.buffs if buff.life > 0]
     
-    def activate(self, buffs=[]):
-        self.buffs.extend(buffs)
+    def activate(self):
+        # self.buffs.extend(buffs)
         self.active = True
+        self.buffs.extend(self.deck_ptr.transfer_buff)
+        self.deck_ptr.transfer_buff = []
+        
+        for buff in self.get_buff('on_character_activated'):
+            self.engine_buff(buff)
+        
         
     def deactivate(self):
-        self.active = False
         transfer_buff = []
         for i in range(len(self.buffs) - 1, -1, -1):
-            if self.buffs[i].transfer:
+            if self.buffs[i].query('transfer'):
                 transfer_buff.append(self.buffs.pop(i))
-        return transfer_buff
-        
-    
+        self.active = False
+        # return transfer_buff
+        self.deck_ptr.transfer_buff.extend(transfer_buff)
+
     def on_dead(self):
         self.weapon = None
         self.artifact = None
@@ -217,8 +251,8 @@ class Character:
         self.alive = False
         
     def on_round_finished(self):
-        self.heal(self.take_buff('regain'))
-        self.heal(self.take_buff('next_regain'))
+        for buff in self.get_buff('on_round_finished'):
+            self.engine_buff(buff)
         
         for i in self.skills:
             i.on_round_finished()
@@ -239,10 +273,10 @@ class Character:
     def heal(self, num):
         self.health = min(num + self.health, self.health_limit)
         
-    def take_dmg(self, dmg, dmg_type):
+    def take_dmg(self, dmg_type, dmg_num):
         if dmg_type != 'Physical':
             self.infusion(dmg_type)
-        self.dmg(dmg)
+        self.dmg(dmg_num)
         
     def dmg(self, num):
         d = self.take_buff('shield')
@@ -251,6 +285,7 @@ class Character:
         self.health = max(self.health - num, 0)
         # dead
         if self.health == 0:
+            self.deactivate()
             self.on_dead()
 
     def infusion(self, element):

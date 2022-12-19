@@ -8,6 +8,9 @@ class Game:
         assert len(decks) == 2
         self.decks = decks
         self.agents = [i.agent for i in decks]
+        for i in range(2):
+            self.agents[i].enemy_ptr = self.agents[1 - i]
+        
         self.agent_num = len(decks)
         self.round_num = 0
         self.agent_moves_first = None
@@ -125,7 +128,7 @@ class Game:
         print(f"[Round {self.round_num:02d}] {event}")
         print('-' * 50)
         for i, d in enumerate(self.decks):
-            print(f'Player {i + 1} ' + ('<*>' if self.current_agent == i else ''))
+            print(f'Player {i + 1} ' + ('[√]' if self.finish_round[i] else '[ ]') + (' <*>' if self.current_agent == i else ''))
             d.print_deck()
             if self.current_agent == i:
                 print('Available actions:')
@@ -152,6 +155,15 @@ class Game:
     def game_loop(self, show=False):
         for i in self.decks:
             i.shuffle()
+            i._pull(5)
+            # swap init cards
+            if show:
+                self.print_desk(f'Player {self.current_agent + 1} init cards')
+            keep_card = i.agent.get_keep_card(self.state())
+            i.keep_action(keep_card)
+            if show:
+                self.print_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
+            
         # round start
         while self.check_win() < 0 and self.round_num < 5:
             # start a new round
@@ -165,9 +177,9 @@ class Game:
             if show:
                 self.print_desk('Pull cards')
             # throw dices
-            for a, d in zip(self.agents, self.decks):
+            for d in self.decks:
                 d.roll()
-                keep_dice = a.get_keep_dice(self.state())
+                keep_dice = d.agent.get_keep_dice(self.state())
                 d.reroll(keep=keep_dice)
                 
             while True:

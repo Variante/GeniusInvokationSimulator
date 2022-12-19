@@ -52,7 +52,7 @@
                     ],
                     "p_num": 3
                 },
-                "code": "dmg Pyro 8;infusion Pyro;energy 0",
+                "code": "dmg Pyro 8;infusion Pyro",
                 "code_name": "dawn"
             }
         ],
@@ -111,7 +111,7 @@
                     ],
                     "p_num": 2
                 },
-                "code": "dmg Cryo 1;buff when_activate Cryo 2,life 3 1 0,transfer",
+                "code": "dmg Cryo 1;buff on_character_activated,dmg Cryo 2,life 3 0 1,transfer",
                 "code_name": "glacial_waltz"
             }
         ],

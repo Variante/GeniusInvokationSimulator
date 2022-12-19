@@ -28,6 +28,7 @@ python game.py
 1. Finish basic skill pipeline
 2. Better character switch pipeline when one character is dead
 3. Buff from foods is done
+4. Add swap card phase at the beginning of the game
 
 
 12/18/22:
