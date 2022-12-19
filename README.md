@@ -8,6 +8,12 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 ---
 ## This project is still under construction. 
 
+```
+Progress
+[Characters] 2 / 27
+[Actions] 8 / 117
+```
+
 ## Dependence
 ```
 pip install numpy
@@ -21,9 +27,11 @@ python game.py
 ```
 
 ## TODO
-1. The effect of buffs and debuffs
-2. Elemental reactions
-3. More characters and action cards
+1. Elemental reactions
+2. Support card
+3. Summons
+4. More characters and action cards
+5. Debug
 
 ## Update log
 12/19/22:
