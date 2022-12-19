@@ -104,7 +104,7 @@ class Character:
         self.health_limit = data.get('health_limit', 10)
         self.energy = 3
         self.energy_limit = data.get('energy_limit', 3)
-        self.main_element = data.get('element', 'Pyro')
+        self.element = data.get('element', 'Pyro')
         
         self.weapon = None
         self.artifact = None
@@ -167,21 +167,6 @@ class Character:
         self.activate_cost = 1e9
         self.alive = False
         
-        """
-        # request a character switch
-        agent = self.deck.agent
-        game = self.deck.game
-        print("REQUEST change current agent: Player", game.current_agent + 1)
-        # request current agent
-        game.current_agent = game.agents.index(agent)
-        print("REQUEST after change current agent: Player ", game.current_agent + 1)
-        print(game.state())
-        action = agent.get_action(game.state())
-        game.parse_space_action(action)
-        game.switch_agent = True
-        """
-
-        
     def on_round_finished(self):
         self.heal(self.take_buff('regain'))
         self.heal(self.take_buff('next_regain'))
@@ -239,7 +224,7 @@ class Character:
         return f"{self.name} ({self.health}) {'<*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
                f"W: {'[W]' if self.weapon else ''} |A: {'[A]' if self.artifact else ''} |E: {'[E]' if self.equip else ''}\n" + \
-               f"Main element: {self.main_element:<5} | Infusion element: {' '.join(self.infusion_element)}"
+               f"Element: {self.element:<5} | Infusion element: {' '.join(self.infusion_element)}"
         
     def get_skill(self, code_name):
         for i in self.skills:

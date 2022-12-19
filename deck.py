@@ -78,7 +78,7 @@ class Deck:
     def get_current_element(self):
         for i in self.characters:
             if i.active:
-                return i.main_element
+                return i.element
                 
     def get_current_character(self):
         for i in self.characters:

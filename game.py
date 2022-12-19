@@ -109,6 +109,7 @@ class Game:
                     d_type = self.get_current_deck().d.random_type()
                 self.get_current_deck().cost(d_type, -d_num)
             elif cmdw[0] == 'activate':
+                print('biubiubiu'* 10)
                 self.get_current_deck().get_character(cmdw[1]).activate()
                 self.switch_agent = True
             else:
@@ -122,9 +123,9 @@ class Game:
         
         # check if character dead
         self.has_alive_changed()
-        
         self.current_agent = self.agent_moves_first
         self.agent_moves_first = None
+        
             
     def print_desk(self, event=''):
         print('\n' * 3 + '=' * 50)
@@ -144,17 +145,18 @@ class Game:
                 tmp = self.current_agent
                 self.current_agent = i
                 assert i != tmp
-                print(f'\n\nPlayer {i} needs to switch character')
+                print(f'\n\nPlayer {i + 1} needs to switch character')
                 d.print_actions()
                 # ask user to activate a new character
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state())
+                self.parse_space_action(action)
+                
                 self.switch_agent = False
                 self.current_agent = tmp
                 return
             
     
-        
     def game_loop(self, show=False):
         for i in self.decks:
             i.shuffle()

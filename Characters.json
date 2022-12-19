@@ -2,7 +2,8 @@
     {
         "img": "Diluc_Genius_Invokation_Card_2.png",
         "name": "Diluc",
-		"energy_limit": 3,
+        "energy_limit": 3,
+		"element": "Pyro",
         "skills": [
             {
                 "name": "Tempered Sword",
@@ -19,7 +20,7 @@
                     ],
                     "p_num": 0
                 },
-				"code": "dmg Physical 2",
+                "code": "dmg Physical 2",
                 "code_name": "tempered_sword"
             },
             {
@@ -35,7 +36,7 @@
                     ],
                     "p_num": 0
                 },
-				"code": "if_else self.round_usage==3:dmg Pyro 5:dmg Pyro 3",
+                "code": "if_else self.round_usage==3:dmg Pyro 5:dmg Pyro 3",
                 "code_name": "searing_onslaught"
             },
             {
@@ -51,10 +52,69 @@
                     ],
                     "p_num": 3
                 },
-				"code": "dmg Pyro 8;infusion Pyro;energy 0",
+                "code": "dmg Pyro 8;infusion Pyro;energy 0",
                 "code_name": "dawn"
             }
         ],
         "code_name": "diluc"
+    },
+    {
+        "img": "Kaeya_Genius_Invokation_Card.png",
+        "name": "Kaeya",
+        "energy_limit": 2,
+		"element": "Cryo",
+        "skills": [
+            {
+                "name": "Ceremonial Bladework",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Die and 2 Unaligned Dices.",
+                "cost": {
+                    "d_type": [
+                        "Pyro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "code_name": "ceremonial_bladework"
+            },
+            {
+                "name": "Frostgnaw",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Cryo DMG. Costs 3 Cryo Dices",
+                "cost": {
+                    "d_type": [
+                        "Cryo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Cryo 3",
+                "code_name": "frostgnaw"
+            },
+            {
+                "name": "Glacial Waltz",
+                "type": "Elemental Burst",
+                "des": "Deals 1 Cryo DMG, creates 1 Icicle. Costs 4 Cryo Dices and 2 Energy",
+                "cost": {
+                    "d_type": [
+                        "Cryo"
+                    ],
+                    "d_num": [
+                        4
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Cryo 1",
+                "code_name": "glacial_waltz"
+            }
+        ],
+        "code_name": "kaeya"
     }
 ]
