@@ -23,6 +23,7 @@ class Action:
         """
         self.des = data['des']
         self.tags = data['tags']
+        self.atype = data['type']
         
         if 'food' in self.tags:
             self.code += ';buff full'

@@ -14,6 +14,8 @@ pip install numpy
 ```
 
 ## Demo
+
+Edit ```p1.json``` and ```p2.json```  to change the card deck.
 ```
 python game.py
 ```

@@ -224,7 +224,7 @@ class Game:
         
         
 if __name__ == '__main__':
-    g = Game([Deck('p1', Agent()), Deck('p1', Agent())])
+    g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
     ret = g.game_loop(show=True)
     g.print_winner(ret)
     
