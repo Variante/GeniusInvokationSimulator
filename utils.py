@@ -24,8 +24,8 @@ def to_code_name(s):
         
 def count_total_dice(dices):
     c = 0
-    for i in dices:
-        c += dices[i]
+    for _, i in dices.items():
+        c += i
     return c
     
 def _is_affordable_single(d_type, d_num, dice):
@@ -58,9 +58,9 @@ def is_affordable(cost, dice, character):
 
 def build_cost(d_num):
     return {
-        'd_num': d_num,
+        'd_num': [d_num],
         'p_num': 0,
-        'd_type': 'Unaligned',
+        'd_type': ['Unaligned'],
     }
 
 
@@ -145,7 +145,7 @@ def _generate_action_space(cost, dice, character):
             global_solutions = temp_solutions
         # print('Global',len(global_solutions), global_solutions)
     return [
-        ';'.join([f"cost {g[i]} {i}" for i in g if g[i] > 0] + ([res] if len(res) else []))
+        ';'.join(([res] if len(res) else []) + [f"cost {g[i]} {i}" for i in g if g[i] > 0])
         for g in global_solutions
         ]
 
@@ -156,12 +156,31 @@ def generate_action_space(cost, dice, character, prefix=None):
     if isinstance(prefix, str):
         prefix = [prefix]
     # print(res, prefix)
-    return [';'.join([i, j]) for i in res for j in prefix]
+    return [';'.join([j, i]) for i in res for j in prefix]
 
 def print_dice(dice):
-    res ='| '.join([f"{i}: {dice[i]}" for i in dice if dice[i] > 0])
+    res = f'Total: {count_total_dice(dice)} | '+ ', '.join([f"{i} {dice[i]}" for i in dice if dice[i] > 0])
     print(res)
     return res
+    
+
+def modify_cost(original_cost, mods):
+    d_type = original_cost["d_type"]
+    d_num = original_cost["d_num"]
+    p_num = original_cost["p_num"]
+    
+    new_num = [i for i in d_num]
+    for buff_name, buff_num in mods.items():
+        for i, n in enumerate(d_type):
+            if to_code_name(n) + '_down' in buff_name:
+                new_num[i] = max(0, new_num[i] - buff_num) 
+
+    return {
+        "d_type": d_type, 
+        "d_num": new_num,
+        "p_num": p_num
+    }
+
 
 reaction_table = load_js('Reaction')
  

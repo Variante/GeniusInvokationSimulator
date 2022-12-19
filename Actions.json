@@ -45,7 +45,7 @@
         "img": "Jueyun_Guoba.png",
         "name": "Jueyun Guoba",
         "cost_raw": "No Cost",
-        "code": "buff normal_attack_dmg 1",
+        "code": "buff normal_attack_dmg_up 1",
         "cost": {
             "d_type": [
                 "Unaligned"
@@ -66,7 +66,7 @@
         "img": "Adeptus'_Temptation.png",
         "name": "Adeptus' Temptation",
         "cost_raw": "2 Unaligned Dices",
-        "code": "buff elemental_burst_dmg 3",
+        "code": "buff elemental_burst_dmg_up 3",
         "cost": {
             "d_type": [
                 "Unaligned"
@@ -108,7 +108,7 @@
         "img": "Northern_Smoked_Chicken.png",
         "name": "Northern Smoked Chicken",
         "cost_raw": "No Cost",
-        "code": "buff normal_attack_cost_unaligned 1",
+        "code": "buff normal_attack_cost_unaligned_down 1",
         "cost": {
             "d_type": [
                 "Unaligned"
@@ -150,7 +150,7 @@
         "img": "Minty_Meat_Rolls.png",
         "name": "Minty Meat Rolls",
         "cost_raw": "1 Elemental Dice",
-        "code": "buff normal_attack_cost_unaligned 1,life 1 1 0",
+        "code": "buff normal_attack_cost_unaligned_down 1,life 1 1 0",
         "cost": {
             "d_type": [
                 "Unaligned"

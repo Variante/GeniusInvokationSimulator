@@ -4,7 +4,7 @@ class Skill:
     def __init__(self, data):
         self.name = data['name']
         self.code_name = data['code_name']
-        self.stype = data['type']
+        self.stype = to_code_name(data['type'])
         self.cost = data['cost']
         self.des = data['des']
         self.code = data['code'].split(';')
@@ -25,13 +25,30 @@ class Skill:
                 else:
                     code = conds[2]
                 cmds = code.split()
-            
+                
             if cmds[0] == 'dmg':
                 dmg_type = cmds[1]
                 dmg += int(cmds[2])
+                
+                # query all buffs
+                res = my_char.take_pattern_buff(self.stype)
+                for i in res:
+                    if 'dmg_up' in i:
+                        dmg += res[i]
+                        
+                """
+                if self.stype == "normal_attack":
+                    dmg += my_char.take_pattern_buff("normal_attack_dmg_up")
+                    my_char.take_buff("normal_attack_cost_unaligned_down")
+                elif self.stype == "elemental_burst"
+                    dmg += my_char.take_buff("elemental_burst_dmg_up")
+                """
+                
             elif cmds[0] == 'energy':
                 energy_gain = int(cmds[1])
             elif cmds[0] == 'infusion':
+                my_char.infusion(cmds[1])
+            elif cmds[0] == 'buff':
                 my_char.infusion(cmds[1])
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
@@ -50,6 +67,7 @@ class Buff:
         self.init_life = self.life 
         self.rf_by_round = 1 # life reduced per round
         self.rf_by_activated = 1 # life reduced by activated
+        self.transfer = False
         self.attribs = {}
         self.parse_code(code)
 
@@ -62,6 +80,8 @@ class Buff:
                 self.rf_by_round = int(cmdw[2])
                 self.rf_by_activated = int(cmdw[3])
                 self.init_life = self.life 
+            elif cmdw[0] == 'transfer':
+                self.transfer = True
             elif cmdw[0] == 'buff':
                 try:
                     self.attribs[cmdw[1]] = int(cmdw[2])
@@ -100,10 +120,10 @@ class Character:
         self.name = name
         self.code_name = data['code_name']
         self.skills = [Skill(i) for i in data['skills']]
-        self.health = data.get('health', 5)
         self.health_limit = data.get('health_limit', 10)
-        self.energy = 3
+        self.health = 3 # self.health_limit
         self.energy_limit = data.get('energy_limit', 3)
+        self.energy = self.energy_limit # 0
         self.element = data.get('element', 'Pyro')
         
         self.weapon = None
@@ -120,7 +140,10 @@ class Character:
     def affordable_skills(self, dice):
         res = []
         for skill in self.skills:
-            res.extend(generate_action_space(skill.cost, dice, self, prefix=f'skill {self.code_name} {skill.code_name}'))
+            mods = self.query_pattern_buff(skill.stype)
+            res.extend(
+                generate_action_space(modify_cost(skill.cost, mods),
+                dice, self, prefix=f'skill {self.code_name} {skill.code_name}'))
         return res
         
     def get_action_space(self, deck):
@@ -128,33 +151,59 @@ class Character:
             return []
         if self.query_buff('frozen'):
             return []
-        res = self.affordable_skills(deck.current_dice)
-        if not self.active:
-            res.extend(generate_action_space(build_cost(self.activate_cost), deck.current_dice,
-            self, prefix=f'activate {self.name}'))
-        return res
+        return self.affordable_skills(deck.current_dice)
     
     def query_buff(self, keyword):
         value = 0
         for i in self.buffs:
             value += i.query(keyword)
         return value
-        
+    
+    def query_pattern_buff(self, buff_head):
+        res = {}
+        for i in self.buffs:
+            for j in i.attribs:
+                if j.startswith(buff_head):
+                    res[j] = i.query(j)
+        return res
+
     def take_buff(self, keyword):
         value = 0
         for i in self.buffs:
-            v = i.query(keyword)
-            if v > 0:
+            if keyword in i.attribs:
                 i.on_activated()
-                value += v
+                value += i.query(keyword)
         self.refresh_buffs()
         return value
+        
+    def take_pattern_buff(self, buff_head):
+        res = {}
+        for i in self.buffs:
+            activated = False
+            for j in i.attribs:
+                if j.startswith(buff_head):
+                    activated = True
+                    res[j] = i.query(j)
+            if activated:
+                i.on_activated()
+        self.refresh_buffs()
+        return res
     
     def refresh_buffs(self):
         self.buffs = [buff for buff in self.buffs if buff.life > 0]
     
-    def activate(self):
+    def activate(self, buffs=[]):
+        self.buffs.extend(buffs)
         self.active = True
+        
+    def deactivate(self):
+        self.active = False
+        transfer_buff = []
+        for i in range(len(self.buffs) - 1, -1, -1):
+            if self.buffs[i].transfer:
+                transfer_buff.append(self.buffs.pop(i))
+        return transfer_buff
+        
     
     def on_dead(self):
         self.weapon = None
@@ -221,7 +270,7 @@ class Character:
         return vars(self)
         
     def __repr__(self):
-        return f"{self.name} ({self.health}) {'<*>'if self.active else ''}\n" + \
+        return f"{self.name} | H: {self.health} / {self.health_limit} | E: {self.energy} / {self.energy_limit} {'| <*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
                f"W: {'[W]' if self.weapon else ''} |A: {'[A]' if self.artifact else ''} |E: {'[E]' if self.equip else ''}\n" + \
                f"Element: {self.element:<5} | Infusion element: {' '.join(self.infusion_element)}"

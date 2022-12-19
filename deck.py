@@ -75,6 +75,15 @@ class Deck:
         }
         return res
     
+    def activate(self, code_name):
+        # transfer buffs if necessary
+        current_char = self.get_current_character()
+        if current_char is None:
+            buffs = []
+        else:
+            buffs = current_char.deactivate()
+        self.get_character(code_name).activate(buffs=buffs)
+    
     def get_current_element(self):
         for i in self.characters:
             if i.active:
@@ -92,16 +101,27 @@ class Deck:
     
     def get_action_space(self):
         char = self.get_current_character()
+        # query character skill
         if char is not None:
             res = char.get_action_space(self)
         else:
-            # switch character due to death
+            # switch character due to death (free switch)
             return [f"activate {i.code_name}" for i in self.characters if i.alive]
+        
+        # query action cards
         visited_action = set()
         for i in self.available_actions:
             if i.code_name not in visited_action:
                 res.extend(i.get_action_space(self))
             visited_action.add(i.code_name)
+        
+        # query switch character
+        for char in self.characters:
+            if char.alive and not char.active:
+                res.extend(
+                generate_action_space(build_cost(char.activate_cost),
+                self.current_dice, char, 
+                prefix=f'activate {char.code_name}'))
         res.append('finish')
         return res
         
@@ -123,9 +143,13 @@ class Deck:
     def print_deck(self):
         print_dice(self.current_dice)
         print('-' * 40)
+        print('Characters:')
         for c in self.characters:
+            print(' ')
             print(c)
+            
         print('-' * 40)
+        print('Cards:')
         for a in self.available_actions:
             print(a)
         print('-' * 40)

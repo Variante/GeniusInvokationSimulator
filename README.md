@@ -27,6 +27,7 @@ python game.py
 12/19/22:
 1. Finish basic skill pipeline
 2. Better character switch pipeline when one character is dead
+3. Buff from foods is done
 
 
 12/18/22:

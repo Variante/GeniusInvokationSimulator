@@ -70,7 +70,7 @@
                 "des": "Deals 2 Physical DMG. Costs 1 Cryo Die and 2 Unaligned Dices.",
                 "cost": {
                     "d_type": [
-                        "Pyro",
+                        "Cryo",
                         "Unaligned"
                     ],
                     "d_num": [
@@ -111,7 +111,7 @@
                     ],
                     "p_num": 2
                 },
-                "code": "dmg Cryo 1",
+                "code": "dmg Cryo 1;buff when_activate Cryo 2,life 3 1 0,transfer",
                 "code_name": "glacial_waltz"
             }
         ],

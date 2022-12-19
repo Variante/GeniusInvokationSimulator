@@ -1,3 +1,5 @@
+import numpy as np
+
 class Agent:
     def __init__(self):
         self.test_count = 0
@@ -6,9 +8,8 @@ class Agent:
         return {}
         
     def get_action(self, state):
-        self.test_count += 1
         try:
-            return state['action_space'][0]
+            return np.random.choice(state['action_space'])
         except IndexError:
             return ''
         
