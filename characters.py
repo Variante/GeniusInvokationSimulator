@@ -61,6 +61,12 @@ class Skill:
 
     def on_round_finished(self):
         self.round_usage = 0
+        
+    def state(self):
+        return vars(self)
+        
+    def __repr__(self):
+        return json.dumps(self.state())
 
 
 class Buff:
@@ -106,6 +112,9 @@ class Buff:
         
     def on_round_finished(self):
         self.life -= self.rf_by_round
+
+    def state(self):
+        return vars(self)
 
     def __repr__(self):
         attribs = ','.join([f'{i}({self.attribs[i]})' for i in self.attribs])
@@ -302,7 +311,27 @@ class Character:
             self.infusion_element.append(element)
 
     def state(self):
-        return vars(self)
+        return {
+            'name': self.name,
+            'code_name': self.code_name,
+            'skills': [i.state() for i in self.skills],
+            'health_limit': self.health_limit,
+            'health': self.health,
+            'energy_limit': self.energy_limit,
+            'energy': self.energy,
+            'element': self.element,
+            
+            'weapon': self.weapon,
+            'artifact': self.artifact,
+            'equip': self.equip,
+            
+            'buffs': [i.state() for i in self.buffs],
+            
+            'infusion_element': self.infusion_element,
+            'active': self.active,
+            'active_cost': self.activate_cost,
+            'alive': self.alive
+        }
         
     def __repr__(self):
         return f"{self.name} | H: {self.health} / {self.health_limit} | E: {self.energy} / {self.energy_limit} {'| <*>'if self.active else ''}\n" + \
@@ -341,3 +370,5 @@ def init_characters(names):
     return res
     
         
+if __name__ == '__main__':
+    print(init_characters(['Diluc'])[0].state())
