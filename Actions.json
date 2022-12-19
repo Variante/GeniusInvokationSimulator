@@ -129,7 +129,7 @@
         "img": "Mushroom_Pizza.png",
         "name": "Mushroom Pizza",
         "cost_raw": "1 Elemental Dice",
-        "code": "heal 1;buff regain 1,life 3 1 0",
+        "code": "heal 1;buff next_regain 1,life 3 1 0",
         "cost": {
             "d_type": [
                 "Unaligned"

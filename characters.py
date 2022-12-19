@@ -14,6 +14,7 @@ class Buff:
         self.source = source
         self.code = code
         self.life = 1
+        self.init_life = self.life 
         self.rf_by_round = 1 # life reduced per round
         self.rf_by_activated = 1 # life reduced by activated
         self.attribs = {}
@@ -27,6 +28,7 @@ class Buff:
                 self.life = int(cmdw[1])
                 self.rf_by_round = int(cmdw[2])
                 self.rf_by_activated = int(cmdw[3])
+                self.init_life = self.life 
                 
             elif cmdw[0] == 'buff':
                 try:
@@ -36,6 +38,12 @@ class Buff:
                 
     def get_attribs(self):
         return self.attribs
+        
+    def query(self, keyword):
+        value = self.attribs.get(keyword, 0)
+        if keyword.startswith('next') and self.life == self.init_life:
+            value = 0
+        return value
 
     def on_activated(self):
         self.life -= self.rf_by_activated
@@ -100,13 +108,13 @@ class Character:
     def query_buff(self, keyword):
         value = 0
         for i in self.buffs:
-            value += i.get_attribs().get(keyword, 0)
+            value += i.query(keyword)
         return value
         
     def take_buff(self, keyword):
         value = 0
         for i in self.buffs:
-            v = i.get_attribs().get(keyword, 0)
+            v = i.query(keyword)
             if v > 0:
                 i.on_activated()
                 value += v
@@ -117,6 +125,9 @@ class Character:
         self.buffs = [buff for buff in self.buffs if buff.life > 0]
     
     def on_round_finished(self):
+        self.heal(self.take_buff('regain'))
+        self.heal(self.take_buff('next_regain'))
+        
         for i in self.buffs:
             i.on_round_finished()
         self.refresh_buffs()

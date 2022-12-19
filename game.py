@@ -95,7 +95,6 @@ class Game:
                 self.engine_action(action, cmdw[2])
             elif cmdw[0] == 'convert':
                 action = self.get_current_deck().execute_action(cmdw[1])
-                self.switch_agent = True
             elif cmdw[0] == 'skill':
                 self.switch_agent = True
             elif cmdw[0] == 'cost':
@@ -146,7 +145,8 @@ class Game:
                 i.pull()
             
             if show:
-                self.print_desk('Pull cards')
+                pass
+                # self.print_desk('Pull cards')
             # throw dices
             for a, d in zip(self.agents, self.decks):
                 d.roll()
