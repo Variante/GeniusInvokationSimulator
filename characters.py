@@ -38,7 +38,6 @@ class Skill:
                 for i in res:
                     if 'dmg_up' in i:
                         dmg += res[i]
-                        
                 """
                 if self.stype == "normal_attack":
                     dmg += my_char.take_pattern_buff("normal_attack_dmg_up")
@@ -55,7 +54,8 @@ class Skill:
                 my_char.add_buff(f'skill {self.code_name}', code)
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
-        
+                
+        my_char.energy_charge(energy_gain)
         if do_dmg:
             enemy_char.take_dmg(dmg_type, dmg)
 
@@ -82,8 +82,10 @@ class Buff:
 
     # buff parse engine
     def _parse_code(self, code):
-        assert code.startswith('buff ')
-        cmds = code[5:].split(',')
+        if code.startswith('buff '):
+            cmds = code[5:].split(',')
+        else:
+            cmds = code.split(',')
         for cmd in cmds:
             cmdw = cmd.split()
             if cmdw[0] == 'life':
@@ -135,7 +137,7 @@ class Character:
         self.code_name = data['code_name']
         self.skills = [Skill(i) for i in data['skills']]
         self.health_limit = data.get('health_limit', 10)
-        self.health = 3 # self.health_limit
+        self.health = self.health_limit
         self.energy_limit = data.get('energy_limit', 3)
         self.energy = self.energy_limit # 0
         self.element = data.get('element', 'Pyro')
@@ -237,8 +239,7 @@ class Character:
         
         for buff in self.get_buff('on_character_activated'):
             self.engine_buff(buff)
-        
-        
+
     def deactivate(self):
         transfer_buff = []
         for i in range(len(self.buffs) - 1, -1, -1):
@@ -258,7 +259,7 @@ class Character:
         self.active = False
         self.activate_cost = 1e9
         self.alive = False
-        
+
     def on_round_finished(self):
         for buff in self.get_buff('on_round_finished'):
             self.engine_buff(buff)
@@ -270,15 +271,15 @@ class Character:
             i.on_round_finished()
         self.refresh_buffs()
 
-    def add_buff(self, name, code):
+    def add_buff(self, source, code):
         if isinstance(code, str):
-            self.buffs.append(Buff(name, code))
+            self.buffs.append(Buff(source, code))
         else:
             raise NotImplementedError('Unknown buff code format')
-
-    def frozen(self):
-        self.add_buff('frozen', 'life 1 1 0')
-        
+    
+    def energy_charge(self, gain):
+        self.energy = min(self.energy + gain, self.energy_limit)
+    
     def heal(self, num):
         self.health = min(num + self.health, self.health_limit)
         
@@ -288,8 +289,9 @@ class Character:
         self.dmg(dmg_num)
         
     def dmg(self, num):
+        v = self.take_buff('vulnerable')
         d = self.take_buff('shield')
-        num = max(num - d, 0)
+        num = max(num + v - d, 0)
         
         self.health = max(self.health - num, 0)
         # dead
@@ -297,17 +299,34 @@ class Character:
             self.deactivate()
             self.on_dead()
 
+    def melt_or_vaporize(self, reaction):
+        self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
+        
+    def overloaded(self):
+        self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
+        if self.active:
+            self.deck_ptr.activate_next()
+        
+    def frozen(self):
+        self.add_buff('reaction_frozen', 'life 1 1 0')
+
     def infusion(self, element):
         for t, i in enumerate(self.infusion_element):
-            if element_can_react(i, element):
-                # TODO: add reaction later
-                raise NotImplementedError(f'no reaction implemented {i} vs {element}')
+            reaction = element_can_react(i, element)
+            if reaction:
+                if reaction in ['melt' or 'vaporize']:
+                    self.melt_or_vaporize(reaction)
+                elif reaction == 'overloaded':
+                    self.overloaded()
+                else:
+                    # TODO: add reaction later
+                    raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')
                 try:
                     self.infusion_element = self.infusion_element[:t] + self.infusion_element[t + 1:]
                 except IndexError:
                     self.infusion_element = self.infusion_element[:t]
                 return
-        if element not in self.infusion_element:
+        if element not in self.infusion_element and element not in ['Geo', 'Anemo']:
             self.infusion_element.append(element)
 
     def state(self):

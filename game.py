@@ -7,10 +7,9 @@ class Game:
     def __init__(self, decks):
         assert len(decks) == 2
         self.decks = decks
-        self.agents = [i.agent for i in decks]
         for i in range(2):
-            self.agents[i].enemy_ptr = self.agents[1 - i]
-        
+            self.decks[i].enemy_ptr = self.decks[1 - i]
+        self.agents = [i.agent for i in decks]
         self.agent_num = len(decks)
         self.round_num = 0
         self.agent_moves_first = None
@@ -152,17 +151,19 @@ class Game:
                 return
             
     
-    def game_loop(self, show=False):
+    def game_loop(self, show=False, simplied=False):
         for i in self.decks:
             i.shuffle()
-            i._pull(5)
-            # swap init cards
-            if show:
-                self.print_desk(f'Player {self.current_agent + 1} init cards')
-            keep_card = i.agent.get_keep_card(self.state())
-            i.keep_action(keep_card)
-            if show:
-                self.print_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
+            if not simplied:
+                i._pull(5)
+                # swap init cards
+                if show:
+                    self.print_desk(f'Player {self.current_agent + 1} init cards')
+                keep_card = i.agent.get_keep_card(self.state())
+                i.keep_action(keep_card)
+                if show:
+                    self.print_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
+
             
         # round start
         while self.check_win() < 0 and self.round_num < 5:
@@ -170,12 +171,13 @@ class Game:
             self.round_num += 1
             self.finish_round = [False] * self.agent_num
             
-            # pull cards
-            for i in self.decks:
-                i.pull()
-            
-            if show:
-                self.print_desk('Pull cards')
+            if not simplied:
+                # pull cards
+                for i in self.decks:
+                    i.pull()
+                
+                if show:
+                    self.print_desk('Pull cards')
             # throw dices
             for d in self.decks:
                 d.roll()
@@ -186,6 +188,7 @@ class Game:
                 self.switch_agent = False
                 
                 tmp = self.current_agent
+                
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state())
                 self.parse_space_action(action)
@@ -225,6 +228,6 @@ class Game:
         
 if __name__ == '__main__':
     g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
-    ret = g.game_loop(show=True)
+    ret = g.game_loop(show=True, simplied=False)
     g.print_winner(ret)
     

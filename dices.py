@@ -17,7 +17,7 @@ class Dices:
         
     def roll(self, total_num=8, keep=None):
         if keep is None:
-            keep = np.zeros(self.l, dtype=np.uint8)
+            keep = np.zeros(total_num, dtype=np.uint8)
         else:
             if isinstance(keep, list):
                 keep = np.array(keep)
@@ -37,6 +37,5 @@ if __name__ == '__main__':
     for i in range(10):
         keep = np.array([0] * 8)
         keep[i % 8] += i % 8
-        r, c = d.roll(keep=keep)
-        print(r, c)
+        print(d.roll(keep=keep))
         

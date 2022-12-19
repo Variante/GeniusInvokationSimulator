@@ -11,6 +11,7 @@ class Deck:
         self.characters = init_characters(deck['characters'])
         for c in self.characters:
             c.deck_ptr = self
+        self.character_order = list(range(len(self.characters)))
         self.transfer_buff = []
             
         self.to_pull_actions = init_actions(deck['actions'])
@@ -28,17 +29,18 @@ class Deck:
     
     def has_alive_changed(self):
         changed = False
-        for i, c in enumerate(self.characters):
-            if self.last_alive[i] ^ c.alive:
-                self.last_alive[i] = c.alive
+        for i in self.character_order:
+            c = self.characters[i].alive
+            if self.last_alive[i] ^ c:
+                self.last_alive[i] = c
                 changed = True
         return changed
         
     
     def is_alive(self):
         res = False
-        for i in self.characters:
-            res |= i.alive
+        for i in self.character_order:
+            res |= self.characters[i].alive
         return res
     
     def shuffle(self):
@@ -48,7 +50,8 @@ class Deck:
         self.current_dice = self.d.roll()
         
     def reroll(self, keep, total_num=8):
-        self.current_dice = self.d.roll(total_num=total_num, keep=keep)
+        self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))
+        # self.current_dice = self.d.roll(total_num=total_num, keep=keep)
         
     def _pull(self, pull_num):
         for _ in range(pull_num):
@@ -81,37 +84,68 @@ class Deck:
         }
         return res
     
-    def activate(self, code_name):
+    def activate_prev(self):
+        try:
+            idx = self.character_order[-1]
+        except IndexError:
+            idx = self.character_order[0]
+        self.activate_by_id(idx)
+    
+    def activate_next(self):
+        try:
+            idx = self.character_order[1]
+        except IndexError:
+            idx = self.character_order[0]
+        self.activate_by_id(idx)
+         
+    def _deactivate(self):
         # transfer buffs if necessary
         current_char = self.get_current_character()
-        if current_char is not None:
+        cidx = self.character_order.pop(0)
+        if current_char.alive:
+            # manually deactivate
             buffs = current_char.deactivate()
-        self.get_character(code_name).activate()
+            # add back to the end
+            self.character_order.append(cidx)
+         
+    def activate_by_id(self, idx):
+        self._deactivate()
+        # move to the first
+        self.character_order.remove(idx)
+        self.character_order.insert(0, idx)
+        self.characters[idx].activate()
+            
+    def activate(self, code_name):
+        self._deactivate()
+        idx, c = self.get_character_idx(code_name)
+        # move to the first
+        self.character_order.remove(idx)
+        self.character_order.insert(0, idx)
+        c.activate()
     
     def get_current_element(self):
-        for i in self.characters:
-            if i.active:
-                return i.element
+        return self.get_current_character().element
                 
     def get_current_character(self):
-        for i in self.characters:
-            if i.active:
-                return i
+        return self.characters[self.character_order[0]]
     
     def get_enemy_current_character(self):
-        for i in self.enemy_ptr.characters:
-            if i.active:
-                return i
+        return self.enemy_ptr.characters[self.enemy_ptr.character_order[0]]
     
     def get_character(self, code_name):
         for i in self.characters:
             if i.code_name == code_name:
                 return i
     
+    def get_character_idx(self, code_name):
+        for idx, i in enumerate(self.characters):
+            if i.code_name == code_name:
+                return idx, i
+    
     def get_action_space(self):
         char = self.get_current_character()
         # query character skill
-        if char is not None:
+        if char.alive:
             res = char.get_action_space(self)
         else:
             # switch character due to death (free switch)
@@ -158,7 +192,7 @@ class Deck:
     def print_deck(self):
         print_dice(self.current_dice)
         print('-' * 40)
-        print('Characters:')
+        print('Characters: ', self.character_order)
         for c in self.characters:
             print(' ')
             print(c)

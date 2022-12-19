@@ -150,6 +150,7 @@ def _generate_action_space(cost, dice, character):
         ]
 
 def generate_action_space(cost, dice, character, prefix=None):
+    # print('Cost, dice, prefix', cost, dice, prefix)
     res = _generate_action_space(cost, dice, character)
     if prefix is None:
         return res
