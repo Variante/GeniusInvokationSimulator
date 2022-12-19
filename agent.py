@@ -7,5 +7,8 @@ class Agent:
         
     def get_action(self, state):
         self.test_count += 1
-        return state['action_space'][0]
+        try:
+            return state['action_space'][0]
+        except IndexError:
+            return ''
         

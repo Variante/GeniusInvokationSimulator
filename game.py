@@ -4,12 +4,11 @@ from agent import Agent
 import random
 
 class Game:
-    def __init__(self, decks, agents):
+    def __init__(self, decks):
+        assert len(decks) == 2
         self.decks = decks
-        self.agents = agents
-        assert len(self.decks) == len(self.agents)
-        
-        self.agent_num = len(agents)
+        self.agents = [i.agent for i in decks]
+        self.agent_num = len(decks)
         self.round_num = 0
         self.agent_moves_first = None
         self.current_agent = 0
@@ -36,18 +35,18 @@ class Game:
     def check_win(self):
         res = True
         for i in self.decks:
-            res &= i.alive
+            res &= i.is_alive()
         if res:
             return -1 # on going game
             
         res = False
         for i in self.decks:
-            res |= i.alive
+            res |= i.is_alive()
         if not res:
             return 0 # Draw
             
         for i, j in enumerate(self.decks):
-            if j.alive:
+            if j.is_alive():
                 return i + 1
                 
     def state(self):
@@ -96,6 +95,9 @@ class Game:
             elif cmdw[0] == 'convert':
                 action = self.get_current_deck().execute_action(cmdw[1])
             elif cmdw[0] == 'skill':
+                my_char = self.get_current_deck().get_character(cmdw[1])
+                enemy_char = self.get_other_deck().get_current_character()
+                my_char.get_skill(cmdw[2]).exec(self, my_char, enemy_char)
                 self.switch_agent = True
             elif cmdw[0] == 'cost':
                 d_num = int(cmdw[1])
@@ -106,6 +108,9 @@ class Game:
                 if d_type == 'Rand':
                     d_type = self.get_current_deck().d.random_type()
                 self.get_current_deck().cost(d_type, -d_num)
+            elif cmdw[0] == 'activate':
+                self.get_current_deck().get_character(cmdw[1]).activate()
+                self.switch_agent = True
             else:
                 raise NotImplementedError(f'[parse_space_action]{cmd}')
                 
@@ -114,7 +119,10 @@ class Game:
         # update all states
         for deck in self.decks:
             deck.on_round_finished()
-            
+        
+        # check if character dead
+        self.has_alive_changed()
+        
         self.current_agent = self.agent_moves_first
         self.agent_moves_first = None
             
@@ -129,13 +137,29 @@ class Game:
                 print('Available actions:')
                 d.print_actions()
             print('-' * 50)
+   
+    def has_alive_changed(self):
+        for i, d in enumerate(self.decks):
+            if d.has_alive_changed():
+                tmp = self.current_agent
+                self.current_agent = i
+                assert i != tmp
+                print(f'\n\nPlayer {i} needs to switch character')
+                d.print_actions()
+                # ask user to activate a new character
+                agent = self.agents[self.current_agent]
+                action = agent.get_action(self.state())
+                self.switch_agent = False
+                self.current_agent = tmp
+                return
             
+    
         
     def game_loop(self, show=False):
         for i in self.decks:
             i.shuffle()
         # round start
-        while self.check_win() < 0 and self.round_num < 3:
+        while self.check_win() < 0 and self.round_num < 5:
             # start a new round
             self.round_num += 1
             self.finish_round = [False] * self.agent_num
@@ -144,29 +168,28 @@ class Game:
             for i in self.decks:
                 i.pull()
             
-            if show:
-                pass
-                # self.print_desk('Pull cards')
+            if False:
+                self.print_desk('Pull cards')
             # throw dices
             for a, d in zip(self.agents, self.decks):
                 d.roll()
                 keep_dice = a.get_keep_dice(self.state())
                 d.reroll(keep=keep_dice)
                 
-            if show:
-                self.print_desk('Roll & Reroll')
-                
             while True:
                 self.switch_agent = False
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state())
-                self.parse_space_action(action)
-                
                 if show:
-                    self.print_desk(f'Player {self.current_agent + 1} exec: ' + action)
+                    self.print_desk(f'Player {self.current_agent + 1} BEFORE exec: ' + action)
+                self.parse_space_action(action)
+                if show:
+                    self.print_desk(f'Player {self.current_agent + 1} AFTER exec: ' + action)
                 ret = self.check_win()
                 if ret >= 0:
                     return ret
+                    
+                self.has_alive_changed()
                 if self.is_round_finished():
                     break
                 if self.switch_agent:
@@ -185,14 +208,14 @@ class Game:
     def print_winner(self, ret):
         print('\n' * 3 + '=' * 20)
         if ret != 0:
-            print(f'Game finished. The winner is Player {ret + 1}')
+            print(f'Game finished. The winner is Player {ret}')
         else:
             print('Game finished. It is a draw')
         print('=' * 20)
         
         
 if __name__ == '__main__':
-    g = Game([Deck('p1'), Deck('p1')], [Agent(), Agent()])
+    g = Game([Deck('p1', Agent()), Deck('p1', Agent())])
     ret = g.game_loop(show=True)
     g.print_winner(ret)
     

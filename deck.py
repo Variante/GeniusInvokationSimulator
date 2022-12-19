@@ -5,7 +5,7 @@ from actions import init_actions
 import random
 
 class Deck:
-    def __init__(self, deck_name):
+    def __init__(self, deck_name, agent):
         self.d = Dices()
         deck = load_js(deck_name)
         self.characters = init_characters(deck['characters'])
@@ -14,10 +14,22 @@ class Deck:
         self.available_actions = []
         
         self.pre_pull_num = 2
-        self.alive = self._is_alive()
+        # self.alive = self._is_alive()
         self.current_dice = self.d.roll()
+        self.agent = agent
+        
+        self.last_alive = [True] * len(self.characters)
     
-    def _is_alive(self):
+    def has_alive_changed(self):
+        changed = False
+        for i, c in enumerate(self.characters):
+            if self.last_alive[i] ^ c.alive:
+                self.last_alive[i] = c.alive
+                changed = True
+        return changed
+        
+    
+    def is_alive(self):
         res = False
         for i in self.characters:
             res |= i.alive
@@ -45,7 +57,10 @@ class Deck:
                 self.available_actions.append(action)
    
     def cost(self, d_type, d_num):
-        self.current_dice[d_type] -= d_num
+        if d_type == 'energy':
+            self.get_current_character().energy -= d_num
+        else:
+            self.current_dice[d_type] -= d_num
    
     def pull(self):
         return self._pull(self.pre_pull_num)
@@ -76,13 +91,17 @@ class Deck:
                 return i
     
     def get_action_space(self):
-        res = []
+        char = self.get_current_character()
+        if char is not None:
+            res = char.get_action_space(self)
+        else:
+            # switch character due to death
+            return [f"activate {i.code_name}" for i in self.characters if i.alive]
         visited_action = set()
         for i in self.available_actions:
             if i.code_name not in visited_action:
                 res.extend(i.get_action_space(self))
             visited_action.add(i.code_name)
-        res.extend(self.get_current_character().get_action_space(self))
         res.append('finish')
         return res
         
@@ -93,7 +112,7 @@ class Deck:
         action = self.available_actions.pop(idx)
         self.used_actions.append(action)
         return action
-        
+    
     def on_round_finished(self):
         for cha in self.characters:
             cha.on_round_finished()
@@ -112,15 +131,15 @@ class Deck:
         print('-' * 40)
          
     def print_actions(self):
-        print(*self.get_action_space(), sep='\n')
+        print(*['- ' + i for i in self.get_action_space()], sep='\n')
         
         
         
         
 
 if __name__ == '__main__':
-    d = Deck('p1')
-    d.reroll(keep=[0, 0, 0, 0, 0, 4, 0, 0], total_num=4)
+    d = Deck('p1', None)
+    d.reroll(keep=[0, 2, 0, 0, 0, 0, 0, 0], total_num=2)
     d.pull()
     print('Current dices: ', d.current_dice, sep = "\n")
     print('Action space: ')

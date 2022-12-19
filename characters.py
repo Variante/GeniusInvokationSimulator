@@ -7,6 +7,39 @@ class Skill:
         self.stype = data['type']
         self.cost = data['cost']
         self.des = data['des']
+        self.code = data['code'].split(';')
+        self.round_usage = 0        
+        
+    def exec(self, deck, my_char, enemy_char):
+        self.round_usage += 1
+        energy_gain = 1
+        dmg=0
+        dmg_type = 'Physical'
+        
+        for code in self.code:
+            cmds = code.split()
+            if cmds[0] == 'if_else':
+                conds = code.split(':')
+                if eval(conds[0].split()[1]):
+                    code = conds[1]
+                else:
+                    code = conds[2]
+                cmds = code.split()
+            
+            if cmds[0] == 'dmg':
+                dmg_type = cmds[1]
+                dmg += int(cmds[2])
+            elif cmds[0] == 'energy':
+                energy_gain = int(cmds[1])
+            elif cmds[0] == 'infusion':
+                my_char.infusion(cmds[1])
+            else:
+                raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
+        
+        enemy_char.take_dmg(dmg, dmg_type)
+
+    def on_round_finished(self):
+        self.round_usage = 0
 
 
 class Buff:
@@ -29,7 +62,6 @@ class Buff:
                 self.rf_by_round = int(cmdw[2])
                 self.rf_by_activated = int(cmdw[3])
                 self.init_life = self.life 
-                
             elif cmdw[0] == 'buff':
                 try:
                     self.attribs[cmdw[1]] = int(cmdw[2])
@@ -70,8 +102,8 @@ class Character:
         self.skills = [Skill(i) for i in data['skills']]
         self.health = data.get('health', 5)
         self.health_limit = data.get('health_limit', 10)
-        self.power = 3
-        self.power_limit = data.get('power_limit', 3)
+        self.energy = 3
+        self.energy_limit = data.get('energy_limit', 3)
         self.main_element = data.get('element', 'Pyro')
         
         self.weapon = None
@@ -80,14 +112,11 @@ class Character:
         self.buffs = []
         
         
-        self.attached_element = None
+        self.infusion_element = []
         self.active = False
-        self.activate_cost = 1
-        
+        self.activate_cost = 1    
         self.alive = True
 
-    
-    
     def affordable_skills(self, dice):
         res = []
         for skill in self.skills:
@@ -124,9 +153,41 @@ class Character:
     def refresh_buffs(self):
         self.buffs = [buff for buff in self.buffs if buff.life > 0]
     
+    def activate(self):
+        self.active = True
+    
+    def on_dead(self):
+        self.weapon = None
+        self.artifact = None
+        self.equip = None
+        
+        self.infusion_element = []
+        self.buffs = []
+        self.active = False
+        self.activate_cost = 1e9
+        self.alive = False
+        
+        """
+        # request a character switch
+        agent = self.deck.agent
+        game = self.deck.game
+        print("REQUEST change current agent: Player", game.current_agent + 1)
+        # request current agent
+        game.current_agent = game.agents.index(agent)
+        print("REQUEST after change current agent: Player ", game.current_agent + 1)
+        print(game.state())
+        action = agent.get_action(game.state())
+        game.parse_space_action(action)
+        game.switch_agent = True
+        """
+
+        
     def on_round_finished(self):
         self.heal(self.take_buff('regain'))
         self.heal(self.take_buff('next_regain'))
+        
+        for i in self.skills:
+            i.on_round_finished()
         
         for i in self.buffs:
             i.on_round_finished()
@@ -144,6 +205,11 @@ class Character:
     def heal(self, num):
         self.health = min(num + self.health, self.health_limit)
         
+    def take_dmg(self, dmg, dmg_type):
+        if dmg_type != 'Physical':
+            self.infusion(dmg_type)
+        self.dmg(dmg)
+        
     def dmg(self, num):
         d = self.take_buff('shield')
         num = max(num - d, 0)
@@ -151,16 +217,20 @@ class Character:
         self.health = max(self.health - num, 0)
         # dead
         if self.health == 0:
-            self.weapon = None
-            self.artifact = None
-            self.equip = None
-            
-            self.attached_element = None
-            self.buffs = []
-            self.active = False
-            self.activate_cost = 1e9
-            
-            self.alive = False
+            self.on_dead()
+
+    def infusion(self, element):
+        for t, i in enumerate(self.infusion_element):
+            if element_can_react(i, element):
+                # TODO: add reaction later
+                raise NotImplementedError(f'no reaction implemented {i} vs {element}')
+                try:
+                    self.infusion_element = self.infusion_element[:t] + self.infusion_element[t + 1:]
+                except IndexError:
+                    self.infusion_element = self.infusion_element[:t]
+                return
+        if element not in self.infusion_element:
+            self.infusion_element.append(element)
 
     def state(self):
         return vars(self)
@@ -169,9 +239,13 @@ class Character:
         return f"{self.name} ({self.health}) {'<*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
                f"W: {'[W]' if self.weapon else ''} |A: {'[A]' if self.artifact else ''} |E: {'[E]' if self.equip else ''}\n" + \
-               f"Main element: {self.main_element:<5} | Attached element: {' '.join(self.attached_element) if self.attached_element else ''}"
+               f"Main element: {self.main_element:<5} | Infusion element: {' '.join(self.infusion_element)}"
         
-
+    def get_skill(self, code_name):
+        for i in self.skills:
+            if i.code_name == code_name:
+                return i
+                
 def init_characters(names):
     # assert len(set(names)) == 3
     pool = load_js('Characters')
@@ -189,7 +263,7 @@ def init_characters(names):
                 save = True
                 j['code_name'] = to_code_name(j['name'])
     if save:
-        dump_js('Characters.json', pool)
+        dump_js('Characters', pool)
     
     print('Available characters: ', chrs)
     

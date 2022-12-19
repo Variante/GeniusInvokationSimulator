@@ -2,11 +2,15 @@ import json
 import numpy as np
 
 def load_js(name, prefix=''):
-    with open(prefix + name + '.json', 'r') as f:
+    fs = prefix + name + '.json'
+    # print(f'Load from {fs}')
+    with open(fs, 'r') as f:
         return json.load(f)
 
 def dump_js(name, data, prefix=''):
-    with open(prefix + name, 'w') as f:
+    fs = prefix + name + '.json'
+    # print(f'Dump to {fs}')
+    with open(fs, 'w') as f:
         json.dump(data, f, indent = 4)
 
 def get_project_progress():
@@ -43,7 +47,7 @@ def _is_affordable_single(d_type, d_num, dice):
     return True
     
 def is_affordable(cost, dice, character):
-    if cost['p_num'] > character.power:
+    if cost['p_num'] > character.energy:
         return False
         
     for d_type, d_num in zip(cost['d_type'], cost['d_num']):
@@ -62,10 +66,10 @@ def build_cost(d_num):
 
 def _generate_action_space(cost, dice, character):
     res = ''
-    if cost['p_num'] > character.power:
+    if cost['p_num'] > character.energy:
         return []
     elif cost['p_num'] > 0:
-        res = f"cost {cost['p_num']} power"
+        res = f"cost {cost['p_num']} energy"
     if sum(cost['d_num']) == 0:
         return ['cost 0 Omni;' + res] if len(res) else ['cost 0 Omni']
     if sum(cost['d_num']) > count_total_dice(dice):
@@ -73,14 +77,17 @@ def _generate_action_space(cost, dice, character):
 
     global_solutions = None
     
+
     for d_type, d_num in zip(cost['d_type'], cost['d_num']):
+        def generate_solution_with_omni(i):
+            return [{i: t, 'Omni': d_num - t} for t in range(dice[i] + 1) if d_num - t <= dice['Omni'] and d_num - t >= 0]
         # solution for one cost requirement
         if d_type == 'Matching':
             local_solutions = []
             for i in dice:
                 if i == 'Omni':
                     continue
-                local_solutions.extend([{i: t, 'Omni': d_num - t} for t in range(dice[i] + 1) if d_num - t <= dice['Omni'] and d_num - t >= 0])
+                local_solutions.extend(generate_solution_with_omni(i))
                 
         elif d_type == 'Unaligned':
             if d_num > count_total_dice(dice):
@@ -92,7 +99,7 @@ def _generate_action_space(cost, dice, character):
                 if num_needed < 1: # in case i'm stupid
                     return [{}]
                 if num_needed == 1:
-                    return [{i: 1} for i in dices if i not in visited]
+                    return [{i: 1} for i in dices if i not in visited and dices[i] > 0]
                 else:
                     res = []
                     for i in dices:
@@ -111,10 +118,11 @@ def _generate_action_space(cost, dice, character):
             local_solutions = generate_unaligned_action_space(d_num, dice)
                 
         else:
-            if d_num > dice[d_type]:
+            if d_num > dice[d_type] + dice['Omni']:
                 return []
             else:
-                local_solutions = [{d_type: d_num}]
+                # local_solutions = [{d_type: d_num}]
+                local_solutions = generate_solution_with_omni(d_type)
                 
         # print(f'Local ask {d_type} {d_num}', local_solutions)
         # merge solutions and check
@@ -154,7 +162,13 @@ def print_dice(dice):
     res ='| '.join([f"{i}: {dice[i]}" for i in dice if dice[i] > 0])
     print(res)
     return res
+
+reaction_table = load_js('Reaction')
  
+def element_can_react(e1, e2):
+    if e2 in reaction_table[e1]:
+        return reaction_table[e1][e2]
+    return None
  
 if __name__ == '__main__':
     get_project_progress()

@@ -1,0 +1,48 @@
+{	
+	"Hydro": {
+		"Geo": "crystallize",
+		"Anemo": "swirl",
+		"Pyro": "vaporize",
+		"Electro": "electro_charged",
+		"Dendro": "bloom",
+		"Cryo": "frozen"
+	},
+	"Geo": {
+		"Pyro": "crystallize",
+		"Hydro": "crystallize",
+		"Cryo": "crystallize",
+		"Electro": "crystallize"
+	},
+	"Anemo": {
+		"Pyro": "swirl",
+		"Hydro": "swirl",
+		"Cryo": "swirl",
+		"Electro": "swirl"
+	},
+	"Dendro": {
+		"Hydro": "bloom",
+		"Electro": "catalyze",
+		"Pyro": "burning"
+	},
+	"Electro": {
+		"Hydro": "electro_charged",
+		"Geo": "crystallize",
+		"Anemo": "swirl",
+		"Dendro": "catalyze",
+		"Pyro": "overloaded"
+	},
+	"Pyro": {
+		"Hydro": "vaporize",
+		"Geo": "crystallize",
+		"Anemo": "swirl",
+		"Dendro": "burning",
+		"Electro": "overloaded",
+		"Cryo": "melt"
+	},
+	"Cryo": {
+		"Pyro": "melt",
+		"Hydro": "frozen",
+		"Geo": "crystallize",
+		"Anemo": "swirl"
+	}
+}

@@ -2,6 +2,7 @@
     {
         "img": "Diluc_Genius_Invokation_Card_2.png",
         "name": "Diluc",
+		"energy_limit": 3,
         "skills": [
             {
                 "name": "Tempered Sword",
@@ -18,6 +19,7 @@
                     ],
                     "p_num": 0
                 },
+				"code": "dmg Physical 2",
                 "code_name": "tempered_sword"
             },
             {
@@ -33,6 +35,7 @@
                     ],
                     "p_num": 0
                 },
+				"code": "if_else self.round_usage==3:dmg Pyro 5:dmg Pyro 3",
                 "code_name": "searing_onslaught"
             },
             {
@@ -48,6 +51,7 @@
                     ],
                     "p_num": 3
                 },
+				"code": "dmg Pyro 8;infusion Pyro;energy 0",
                 "code_name": "dawn"
             }
         ],

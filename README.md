@@ -18,7 +18,17 @@ pip install numpy
 python game.py
 ```
 
+## TODO
+1. The effect of buffs and debuffs
+2. Elemental reactions
+3. More characters and action cards
+
 ## Update log
+12/19/22:
+1. Finish basic skill pipeline
+2. Better character switch pipeline when one character is dead
+
+
 12/18/22:
 1. Build basic concepts including characters, actions, dice, deck and game framework.
 2. Finish the game pipeline and add the first action card "Sweet Madame"

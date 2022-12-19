@@ -52,7 +52,7 @@ class Action:
         return vars(self)
     
     def __repr__(self):
-        return f"{self.name}: {self.des}"
+        return f"- {self.name}: {self.des}"
 
 def init_actions(names):
     # assert len(names) == 30
@@ -66,7 +66,7 @@ def init_actions(names):
             save = True
             i['code_name'] = to_code_name(i['name'])
     if save:
-        dump_js('Actions.json', pool)
+        dump_js('Actions', pool)
         
     print('Available actions: ', chrs)
     return [Action(name, pool) for name in names]
