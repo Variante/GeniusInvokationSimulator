@@ -22,3 +22,4 @@ python game.py
 12/18/22:
 1. Build basic concepts including characters, actions, dice, deck and game framework.
 2. Finish the game pipeline and add the first action card "Sweet Madame"
+3. Init buff system and add all food cards

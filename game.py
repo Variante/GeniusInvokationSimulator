@@ -73,14 +73,13 @@ class Game:
         for cmd in cmds:
             cmdw = cmd.split()
             if cmdw[0] == 'heal':
-                print(target)
                 target.heal(int(cmdw[1]))
-            elif cmdw[0] == 'feed':
-                target.hungry = False
+            elif cmdw[0] == 'buff':
+                target.add_buff(action.code_name, cmd)
             else:
-                print(f'Not implemented cmd {cmd}')
+                raise NotImplementedError(f'[engine_action]{cmd}')
             
-    def parse_action(self, action):
+    def parse_space_action(self, action):
         if action == 'finish':
             self.finish_round[self.current_agent] = True
             # player who finishes first moves first in the next round
@@ -96,6 +95,9 @@ class Game:
                 self.engine_action(action, cmdw[2])
             elif cmdw[0] == 'convert':
                 action = self.get_current_deck().execute_action(cmdw[1])
+                self.switch_agent = True
+            elif cmdw[0] == 'skill':
+                self.switch_agent = True
             elif cmdw[0] == 'cost':
                 d_num = int(cmdw[1])
                 self.get_current_deck().cost(cmdw[2], d_num)
@@ -105,9 +107,8 @@ class Game:
                 if d_type == 'Rand':
                     d_type = self.get_current_deck().d.random_type()
                 self.get_current_deck().cost(d_type, -d_num)
-                
             else:
-                print(f'Not implemented cmd {cmd}')
+                raise NotImplementedError(f'[parse_space_action]{cmd}')
                 
    
     def on_round_finished(self):
@@ -132,10 +133,14 @@ class Game:
             
         
     def game_loop(self, show=False):
+        for i in self.decks:
+            i.shuffle()
         # round start
         while self.check_win() < 0 and self.round_num < 3:
             # start a new round
             self.round_num += 1
+            self.finish_round = [False] * self.agent_num
+            
             # pull cards
             for i in self.decks:
                 i.pull()
@@ -155,7 +160,7 @@ class Game:
                 self.switch_agent = False
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state())
-                self.parse_action(action)
+                self.parse_space_action(action)
                 
                 if show:
                     self.print_desk(f'Player {self.current_agent + 1} exec: ' + action)

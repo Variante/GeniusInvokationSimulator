@@ -16,7 +16,7 @@ def get_project_progress():
         print(f"[{name}] {len(load_js(name))} / {len(load_js('todo_' + name))}")
 
 def to_code_name(s):
-    return s.lower().strip().replace(' ', '_')
+    return s.lower().strip().replace(' ', '_').replace("'", '')
         
 def count_total_dice(dices):
     c = 0

@@ -38,9 +38,133 @@
         "tags": [
             "food"
         ],
-        "types": [
-            "event"
-        ],
+        "type": "Event",
         "code_name": "mondstadt_hash_brown"
+    },
+    {
+        "img": "Jueyun_Guoba.png",
+        "name": "Jueyun Guoba",
+        "cost_raw": "No Cost",
+        "code": "buff normal_attack_dmg 1",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Normal Attack deals +1 DMG.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "jueyun_guoba"
+    },
+    {
+        "img": "Adeptus'_Temptation.png",
+        "name": "Adeptus' Temptation",
+        "cost_raw": "2 Unaligned Dices",
+        "code": "buff elemental_burst_dmg 3",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Elemental Burst deals +3 DMG.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "adeptus_temptation"
+    },
+    {
+        "img": "Lotus_Flower_Crisp.png",
+        "name": "Lotus Flower Crisp",
+        "cost_raw": "1 Elemental Dice",
+        "code": "buff shield 3",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character takes -3 DMG the next time.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "lotus_flower_crisp"
+    },
+    {
+        "img": "Northern_Smoked_Chicken.png",
+        "name": "Northern Smoked Chicken",
+        "cost_raw": "No Cost",
+        "code": "buff normal_attack_cost_unaligned 1",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Normal Attack costs 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "northern_smoked_chicken"
+    },
+    {
+        "img": "Mushroom_Pizza.png",
+        "name": "Mushroom Pizza",
+        "cost_raw": "1 Elemental Dice",
+        "code": "heal 1;buff regain 1,life 3 1 0",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Heal the target character for 1 HP. For the next two Rounds, heal this character for 1 HP again at the End Phase.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "mushroom_pizza"
+    },
+    {
+        "img": "Minty_Meat_Rolls.png",
+        "name": "Minty Meat Rolls",
+        "cost_raw": "1 Elemental Dice",
+        "code": "buff normal_attack_cost_unaligned 1,life 1 1 0",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Before this Round ends, the target character's Normal Attacks cost 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "minty_meat_rolls"
     }
 ]

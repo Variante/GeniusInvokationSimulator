@@ -25,7 +25,7 @@ class Action:
         self.tags = data['tags']
         
         if 'food' in self.tags:
-            self.code += ';feed'
+            self.code += ';buff full'
         
         
         self.active_character = data.get('active_character', None)
@@ -37,7 +37,7 @@ class Action:
     def _get_action_prefix(self, deck):
         if 'food' in self.tags:
             # if someone has full health, he/she still can be healed, which is different from the original game
-            return [f'action {self.code_name} {cha.code_name}' for cha in deck.characters if cha.hungry]
+            return [f'action {self.code_name} {cha.code_name}' for cha in deck.characters if cha.query_buff('full') == 0]
         return f'action {self.code_name}'
     
     def get_action_space(self, deck):
@@ -58,12 +58,17 @@ def init_actions(names):
     # assert len(names) == 30
     pool = load_js('Actions')
     
-
+    chrs = set()
+    save = False
     for i in pool:
-        i['code_name'] = to_code_name(i['name'])
-    dump_js('Actions.json', pool)
-
-    
+        chrs.add(i['name'])
+        if 'code_name' not in i:
+            save = True
+            i['code_name'] = to_code_name(i['name'])
+    if save:
+        dump_js('Actions.json', pool)
+        
+    print('Available actions: ', chrs)
     return [Action(name, pool) for name in names]
     
         
