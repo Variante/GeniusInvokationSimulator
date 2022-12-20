@@ -63,6 +63,12 @@ class Summon(Buff):
         
     def change_keyword(self, kw, v):
         self.attribs[kw] = v
+
+    def heal(self, num):
+        self.life += num
+
+    def kill(self):
+        pass
         
     def __repr__(self):
         return f'{self.name}: ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \

@@ -61,6 +61,12 @@ class Skill:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
                 
         my_char.recharge(energy_gain)
+
+        if my_char.query_buff('on_skill_finished'):
+            if my_char.take_buff('switch_my_prev'):
+                my_deck.activate_prev()
+
+
             
 
     def on_round_finished(self):
@@ -226,6 +232,9 @@ class Character:
         else:
             raise NotImplementedError('Unknown buff code format')
     
+    def get_health_need(self):
+        return self.health_limit - self.health
+
     def get_energy_need(self):
         return self.energy_limit - self.energy
     

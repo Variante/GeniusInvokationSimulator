@@ -119,27 +119,22 @@ class Deck:
             self.summons[s['action_space'].index(rep)] = sobj
         else:
             self.summons.append(sobj)
+
+    def kill_summon(self, code_name):
+        for s in self.summons:
+            if s.code_name == code_name:
+                s.kill()
+                self.summons.remove(s)
+                return
     
+    def kill_all_summons(self):
+        self.summons = []
+
     def get_summon_buff(self, keyword):
         return [i for i in self.summons if i.query(keyword)]
         
     def add_support(self, source, code_name):
         pass
-    
-    def activate_prev(self):
-        try:
-            idx = self.character_order[-1]
-        except IndexError:
-            idx = self.character_order[0]
-        # print('[activate_prev]', idx, self.character_order)
-        self.activate_by_id(idx)
-    
-    def activate_next(self):
-        try:
-            idx = self.character_order[1]
-        except IndexError:
-            idx = self.character_order[0]
-        self.activate_by_id(idx)
          
     def _deactivate(self):
         # transfer buffs if necessary
@@ -179,6 +174,20 @@ class Deck:
         self.character_order.remove(idx)
         self.character_order.insert(0, idx)
         c.activate()
+
+    def activate_prev(self):
+        try:
+            idx = self.character_order[-1]
+        except IndexError:
+            return
+        self.activate_by_id(idx)
+    
+    def activate_next(self):
+        try:
+            idx = self.character_order[1]
+        except IndexError:
+            return
+        self.activate_by_id(idx)
     
     def get_current_element(self):
         return self.get_current_character().element
@@ -197,6 +206,11 @@ class Deck:
     
     def get_character(self, code_name):
         for i in self.characters:
+            if i.code_name == code_name:
+                return i
+
+    def get_summon(self, code_name):
+        for i in self.summons:
             if i.code_name == code_name:
                 return i
     

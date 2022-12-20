@@ -1599,57 +1599,6 @@
         ]
     },
     {
-        "img": "Quick_Knit.png",
-        "name": "Quick Knit",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Choose one Summon on your side and grant it +1 Usage(s).",
-        "tags": [],
-        "types": []
-    },
-    {
-        "img": "Send_Off.png",
-        "name": "Send Off",
-        "cost_raw": "2 Unaligned Dices",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "Choose one Summon on the opposing side and destroy it.",
-        "tags": [],
-        "types": []
-    },
-    {
-        "img": "Guardian's_Oath.png",
-        "name": "Guardian's Oath",
-        "cost_raw": "4 Matching Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Matching"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Destroy all Summons. (Affects both you and your opponent!)",
-        "tags": [],
-        "types": []
-    },
-    {
         "img": "Abyssal_Summons.png",
         "name": "Abysssal Summons",
         "cost_raw": "2 Matching Elemental Dice",
@@ -1665,22 +1614,5 @@
         "des": "Summon 1 Random Hilichurl Summon!\n(You must have at least 2 Monster characters in your deck to add this card to your deck.)",
         "tags": [],
         "types": []
-    },
-	{
-        "img": "When_the_Crane_Returned.png",
-        "name": "When the Crane Returned",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "The next time you use a Skill: Switch your next character in to be the active character.",
-        "tags": [],
-        "type": "event"
     }
 ]

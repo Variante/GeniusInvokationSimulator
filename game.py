@@ -89,6 +89,13 @@ class Game:
             elif cmdw[0] == 'heal_other':
                 for c in cur_deck.get_other_characters():
                     c.heal(int(cmdw[1]))
+            elif cmdw[0] == 'heal_summon':
+                cur_deck.get_summon(target).heal(int(cmdw[1]))
+            elif cmdw[0] == 'kill_summon':
+                cur_deck.enemy_ptr.get_summon(target)
+            elif cmdw[0] == 'kill_all_summons':
+                cur_deck.kill_all_summons()
+                cur_deck.enemy_ptr.kill_all_summons()
             elif cmdw[0] == 'recharge':
                 cur_deck.recharge(cmdw)
             elif cmdw[0] == 'buff':
@@ -256,7 +263,6 @@ class Game:
             # one round finished
             self.on_round_finished()
             if show:
-                print(json.dumps(self.state_for_action()))
                 self.print_desk('round finished')
 
         return self.check_win()

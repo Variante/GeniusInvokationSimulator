@@ -36,17 +36,21 @@ class Action:
     
     def _get_action_prefix(self, deck):
         if 'food' in self.tags:
-            # if someone has full health, he/she still can be healed, which is different from the original game
-            return [f'action {self.code_name} {cha.code_name}' for cha in deck.characters 
-            if cha.query_buff('full') == 0 ]
-            
+            res = []
+            for cha in deck.characters:
+                if cha.query_buff('full'):
+                    continue
+                if 'heal' in self.code and cha.get_health_need() > 0:                    
+                    res.append(f'action {self.code_name} {cha.code_name}')
+            return res
+
         if 'switch_my' in self.code:
             return [f'action {self.code_name} {cha.code_name}' for cha in deck.get_other_characters() if cha.alive]
             
         if 'when_knocked_out' in self.tags and deck.kocked_out_this_round == 0:
             return []
             
-        if 'recharge_active' in self.tags and deck.get_current_character().get_energy_need() < 1:
+        if 'recharge_active' in self.tags and deck.get_current_character().get_energy_need() == 0:
             return []
             
         if 'recharge_any' in self.tags:
@@ -56,7 +60,7 @@ class Action:
             else:
                 return []
                 
-        if 'recharge_to' in self.tags:
+        if 'recharge_to_active' in self.tags:
             to_move = 0
             for cha in deck.get_other_characters():
                 to_move += cha.energy
@@ -64,9 +68,20 @@ class Action:
                 return []
             if deck.get_current_character().get_energy_need() < 1:
                 return []
+
+        if 'heal_summon' in self.code:
+            if len(deck.summons) > 0:
+                return [f'action {self.code_name} {s.code_name}' for s in deck.summons]
+            return []
             
-            
-            
+        if 'kill_summon' in self.code:
+            if len(deck.summons) > 0:
+                return [f'action {self.code_name} {s.code_name}' for s in deck.enemy_ptr.summons]
+            return []
+
+        if 'kill_all_summons' in self.code and len(deck.summons) + len(deck.enemy_ptr.summons) == 0:
+            return []
+
         return f'action {self.code_name}'
     
     def get_action_space(self, deck):
