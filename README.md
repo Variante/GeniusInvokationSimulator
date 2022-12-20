@@ -3,7 +3,7 @@
 This is a simulator of Genius Invokation, which is a built-in game of Genshin Impact. 
 
 Please note that this simulator is designed for (RL) research, I don't have any copyrights of the game.
-Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/Genius_Invokation:_All_Genshin_TCG_Cards).
+Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/Genius_Invokation:_All_Genshin_TCG_Cards), [this Wiki](https://genshin-impact.fandom.com/wiki/Genius_Invokation_TCG/Card_List) and [this Chinese Wiki](https://wiki.biligame.com/ys/%E4%B8%83%E5%9C%A3%E5%8F%AC%E5%94%A4).
 
 ---
 ## This project is still under construction. 
