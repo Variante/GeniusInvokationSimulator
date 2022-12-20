@@ -14,11 +14,7 @@ class Skill:
     def exec(self, my_deck, my_char, enemy_char):
         self.round_usage += 1
         energy_gain = 1 if self.stype != 'elemental_burst' else 0
-        
-        dmg=0
-        dmg_type = 'Physical'
-        do_dmg = False
-        
+
         for code in self.code:
             cmds = code.split()
             if cmds[0] == 'if_else':
@@ -30,15 +26,16 @@ class Skill:
                 cmds = code.split()
                 
             if cmds[0] == 'dmg':
-                do_dmg = True
                 dmg_type = cmds[1]
-                dmg += int(cmds[2])
+                dmg = int(cmds[2])
                 
                 # query all buffs
                 res = my_char.take_pattern_buff(self.stype)
                 for i in res:
                     if 'dmg_up' in i:
                         dmg += res[i]
+                        
+                enemy_char.take_dmg(dmg_type, dmg)
                 """
                 if self.stype == "normal_attack":
                     dmg += my_char.take_pattern_buff("normal_attack_dmg_up")
@@ -64,8 +61,7 @@ class Skill:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
                 
         my_char.energy_charge(energy_gain)
-        if do_dmg:
-            enemy_char.take_dmg(dmg_type, dmg)
+            
 
     def on_round_finished(self):
         self.round_usage = 0
@@ -264,7 +260,7 @@ class Character:
             self.deck_ptr.activate_next()
     
     def swirl(self, element):
-        print('\n\n swirl element ', element)
+        # print('\n\n swirl element ', element)
         for c in self.deck_ptr.get_other_characters():
             """
             # add swirl dmg to buff
@@ -298,7 +294,10 @@ class Character:
                 else:
                     # TODO: add reaction later
                     raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')
-                self.infusion_element = self.infusion_element[:t] + self.infusion_element[t:]
+                try:
+                    self.infusion_element = self.infusion_element[:t] + self.infusion_element[t + 1:]
+                except IndexError:
+                    self.infusion_element = self.infusion_element[:t]
                 return
         if element not in ['Geo', 'Anemo']:
             self.infusion_element.append(element)

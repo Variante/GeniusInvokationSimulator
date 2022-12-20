@@ -210,9 +210,12 @@ class Deck:
     
     def keep_action(self, keep_card):
         assert len(self.available_actions) == len(keep_card)
+        c = 0
         for i in range(len(keep_card) - 1, -1, -1):
             if keep_card[i] == 0:
                 self.to_pull_actions.append(self.available_actions.pop(i))
+                c += 1
+        self._pull(c)
     
     def execute_action(self, code_name):
         for idx, i in enumerate(self.available_actions):
