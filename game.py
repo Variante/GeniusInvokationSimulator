@@ -61,17 +61,41 @@ class Game:
             if i != self.current_agent:
                 return j
         
+    def gen_dice(self, cmdw):
+        d_num = int(cmdw[1])
+        d_type = cmdw[2]
+        if d_type == 'Rand':
+            d_type = self.get_current_deck().d.random_type()
+        self.get_current_deck().cost(d_type, -d_num)
         
     def engine_action(self, action, target):
         code_name = action.code_name
-        target = self.get_current_deck().get_character(target)
+        cur_deck = self.get_current_deck()
+        
+        target_char = cur_deck.get_character(target)
+        if target_char is None:
+            # for buff without a specific target
+            target_char = cur_deck.get_current_character()
         cmds = action.code.split(';')
         for cmd in cmds:
             cmdw = cmd.split()
             if cmdw[0] == 'heal':
-                target.heal(int(cmdw[1]))
+                target_char.heal(int(cmdw[1]))
+            elif cmdw[0] == 'heal_other':
+                for c in cur_deck.get_other_characters():
+                    c.heal(int(cmdw[1]))
+            elif cmdw[0] == 'charge':
+                for i in cur_deck.character_order:
+                    c = cur_deck.characters[i]
+                    if c.get_energy_need() > 0:
+                        c.energy_charge(int(cmdw[1]))   
             elif cmdw[0] == 'buff':
-                target.add_buff(action.code_name, cmd)
+                target_char.add_buff(action.code_name, cmd)
+            elif cmdw[0] == 'gen':
+                self.gen_dice(cmdw)
+            # use card to switch characters
+            elif cmdw[0] == 'switch_my':
+                cur_deck.activate(target)
             else:
                 raise NotImplementedError(f'[engine_action]{cmd}')
             
@@ -90,7 +114,8 @@ class Game:
             cmdw = cmd.split()
             if cmdw[0] == 'action':
                 action = self.get_current_deck().execute_action(cmdw[1])
-                self.engine_action(action, cmdw[2])
+                # not all actions have a target
+                self.engine_action(action, cmdw[2] if len(cmdw) > 2 else None)
             elif cmdw[0] == 'convert':
                 action = self.get_current_deck().execute_action(cmdw[1])
             elif cmdw[0] == 'skill':
@@ -103,11 +128,9 @@ class Game:
                 d_num = int(cmdw[1])
                 self.get_current_deck().cost(cmdw[2], d_num)
             elif cmdw[0] == 'gen':
-                d_num = int(cmdw[1])
-                d_type = cmdw[2]
-                if d_type == 'Rand':
-                    d_type = self.get_current_deck().d.random_type()
-                self.get_current_deck().cost(d_type, -d_num)
+                self.gen_dice(cmdw)
+            elif cmdw[0] == 'fast_activate':
+                self.get_current_deck().activate(cmdw[1])
             elif cmdw[0] == 'activate':
                 self.get_current_deck().activate(cmdw[1])
                 self.switch_agent = True
@@ -178,11 +201,14 @@ class Game:
                 # pull cards
                 for i in self.decks:
                     i.pull()
-                
-                if show:
-                    self.print_desk('Pull cards')
-            # throw dices
+
+            # select character and throw dices
             for d in self.decks:
+                s = self.state()
+                s['action_space'] = [f"activate {i.code_name}" for i in d.characters]
+                action = d.agent.get_action(s)
+                self.parse_space_action(action)
+                
                 d.roll()
                 keep_dice = d.agent.get_keep_dice(self.state())
                 d.reroll(keep=keep_dice)

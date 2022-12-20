@@ -166,5 +166,257 @@
         ],
         "type": "Event",
         "code_name": "minty_meat_rolls"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Ice_Card.png",
+        "name": "Elemental Resonance: Woven Ice",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Cryo Die.\n(You must have at least 2 Cryo characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Cryo",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_ice"
+    },
+    {
+        "img": "Elemental_Resonance_Shattering_Ice.png",
+        "name": "Elemental Resonance: Shattering Ice",
+        "cost_raw": "1 Cryo Dice",
+        "cost": {
+            "d_type": [
+                "Cryo"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, your current active character will deal +2 DMG for the next instance.\n(You must have at least 2 Cryo characters in your deck to add this card to your deck.)",
+        "code": "buff normal_attack_dmg_up 2,elemental_burst_dmg_up 2,elemental_skill_dmg_up 2",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_shattering_ice"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Waters.png",
+        "name": "Elemental Resonance: Woven Waters",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Hydro Die.\n(You must have at least 2 Hydro characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Hydro",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_waters"
+    },
+    {
+        "img": "Elemental_Resonance_Soothing_Water.png",
+        "name": "Elemental Resonance: Soothing Water",
+        "cost_raw": "1 Hydro Dice",
+        "cost": {
+            "d_type": [
+                "Hydro"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Heal your active character for 2 HP and all your characters on standby for 1 HP.\n(You must have at least 2 Hydro characters in your deck to add this card to your deck.)",
+        "code": "heal 2;heal_other 1",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_soothing_water"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Flames.png",
+        "name": "Elemental Resonance: Woven Flames",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Pyro Die.\n(You must have at least 2 Pyro characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Pyro",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_flames"
+    },
+    {
+        "img": "Elemental_Resonance_Fervent_Flames.png",
+        "name": "Elemental Resonance: Fervent Flames",
+        "cost_raw": "1 Pyro Dice",
+        "cost": {
+            "d_type": [
+                "Pyro"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this round, the next instance of Pyro-Related Reactions your current active character triggers deals +3 DMG.\n(You must have at least 2 Pyro characters in your deck to add this card to your deck.)",
+        "code": "buff pyro_reaction_dmg_up 3",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_fervent_flames"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Thunder.png",
+        "name": "Elemental Resonance: Woven Thunder",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Electro Die.\n(You must have at least 2 Electro characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Electro",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_thunder"
+    },
+    {
+        "img": "Elemental_Resonance_High_Voltage.png",
+        "name": "Elemental Resonance: High Resonance",
+        "cost_raw": "1 Electro Dice",
+        "cost": {
+            "d_type": [
+                "Electro"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "One of your characters without maximum Energy gains 1 Energy. (Active Character prioritized)\n(You must have at least 2 Electro characters in your deck to add this card to your deck.)",
+		"code": "charge 1",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_high_resonance"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Winds.png",
+        "name": "Elemental Resonance: Woven Winds",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Anemo Die.\n(You must have at least 2 Anemo characters in your deck to add this card to your deck.)",
+		"code": "gen 1 Anemo",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_winds"
+    },
+    {
+        "img": "Elemental_Resonance_Impetuous_Winds.png",
+        "name": "Elemental Resonance: Impetuous Winds",
+        "cost_raw": "1 Anemo Dice",
+        "cost": {
+            "d_type": [
+                "Anemo"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Switch to the target character and create Omni Element Die.\n(You must have at least 2 Anemo characters in your deck to add this card to your deck.)",
+        "tags": [
+            "elemental_resonance"
+        ],
+		"code": "gen 1 Omni;switch_my target",
+        "type": "event",
+        "code_name": "elemental_resonance_impetuous_winds"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Stone.png",
+        "name": "Elemental Resonance: Woven Stone",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Geo Die.\n(You must have at least 2 Geo characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Geo",
+		"tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_stone"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Weeds.png",
+        "name": "Elemental Resonance: Woven Weeds",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Dendro Die.\n(You must have at least 2 Dendro characters in your deck to add this card to your deck.)",
+        "tags": [
+            "elemental_resonance"
+        ],
+		"code": "gen 1 Dendro",
+        "type": "event",
+        "code_name": "elemental_resonance_woven_weeds"
     }
 ]

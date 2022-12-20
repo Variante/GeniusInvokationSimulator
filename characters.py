@@ -35,7 +35,7 @@ class Skill:
                     if 'dmg_up' in i:
                         dmg += res[i]
                         
-                enemy_char.take_dmg(dmg_type, dmg)
+                enemy_char.take_dmg(dmg_type, dmg, self.code_name)
                 """
                 if self.stype == "normal_attack":
                     dmg += my_char.take_pattern_buff("normal_attack_dmg_up")
@@ -46,14 +46,14 @@ class Skill:
             elif cmds[0] == 'energy':
                 energy_gain = int(cmds[1])
             elif cmds[0] == 'infusion':
-                my_char.take_dmg(cmds[1], 0)
+                my_char.take_dmg(cmds[1], 0, self.code_name)
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'summon':
                 my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1])
-            elif cmds[0] == 'switch':
-                deck = my_deck if cmds[1] == 'my' else my_deck.enemy_ptr
-                if cmds[2] == 'prev':
+            elif cmds[0] == 'switch_enemy':
+                deck = my_deck.enemy_ptr
+                if cmds[1] == 'prev':
                     deck.activate_prev()
                 else:
                     deck.activate_next()
@@ -107,13 +107,12 @@ class Character:
 
     def engine_buff(self, buff):
         activated = False
-        
+
         res = buff.query('dmg')
         if isinstance(res, tuple) and res[1] > 0:
             activated = True
-            self.deck_ptr.get_enemy_current_character().take_dmg(*res)
+            self.deck_ptr.get_enemy_current_character().take_dmg(res[0], res[1], buff.source)
 
-            
         res = buff.query('heal')
         if res > 0:
             activated = True
@@ -227,15 +226,23 @@ class Character:
         else:
             raise NotImplementedError('Unknown buff code format')
     
+    def get_energy_need(self):
+        return self.energy_limit - self.energy
+    
     def energy_charge(self, gain):
         self.energy = min(self.energy + gain, self.energy_limit)
     
     def heal(self, num):
         self.health = min(num + self.health, self.health_limit)
         
-    def take_dmg(self, dmg_type, dmg_num):
+    def take_dmg(self, dmg_type, dmg_num, source):
+        if dmg_type in ['Physical', 'Pyro']:
+            if self.take_buff('frozen'):
+                self.add_buff(f'reaction_unfrozen', 'vulnerable 2')
+            
         if dmg_type != 'Physical':
-            self.infusion(dmg_type)
+            self.infusion(dmg_type, source)
+        
         self.dmg(dmg_num)
         
     def dmg(self, num):
@@ -268,7 +275,7 @@ class Character:
             # attach new element and calculate dmg
             c.take_dmg(element, 0)
             """
-            c.take_dmg(element, 1)
+            c.take_dmg(element, 1, 'swirl')
         
         # swirl for the large wind spirit
         for i in self.deck_ptr.enemy_ptr.get_summon_buff('on_swirl'):
@@ -277,14 +284,21 @@ class Character:
             i.change_keyword('dmg', (element, dval))
     
     def frozen(self):
-        self.add_buff('reaction_frozen', 'life 1 1 0')
+        self.add_buff('reaction_frozen', 'frozen')
 
-    def infusion(self, element):
+    def infusion(self, element, source):
         if element in self.infusion_element:
             return
         for t, i in enumerate(self.infusion_element):
             reaction = element_can_react(i, element)
             if reaction:
+                
+                if 'Pyro' in [i, element] and source == self.deck_ptr.get_enemy_current_character().code_name:
+                    if self.take_buff(f'pyro_reaction_dmg_up'):
+                        self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
+                        # TODO: not sure about this, should be good according to this video:
+                        # https://www.bilibili.com/video/BV13P4y1X74c/
+                    
                 if reaction in ['melt' or 'vaporize']:
                     self.melt_or_vaporize(reaction)
                 elif reaction == 'overloaded':
@@ -357,9 +371,7 @@ def init_characters(names):
     
     print('Available characters: ', chrs)
     
-    res = [Character(name, pool) for name in names]
-    res[0].active = True
-    return res
+    return [Character(name, pool) for name in names]
     
         
 if __name__ == '__main__':

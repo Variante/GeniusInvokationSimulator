@@ -165,6 +165,8 @@ class Deck:
     def activate(self, code_name):
         self._deactivate()
         idx, c = self.get_character_idx(code_name)
+        if idx not in self.character_order:
+            return
         # move to the first
         self.character_order.remove(idx)
         self.character_order.insert(0, idx)

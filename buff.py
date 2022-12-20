@@ -31,7 +31,7 @@ class Buff:
                 
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
-        if 'starts_since_next_round' in self.attribs and self.life == self.init_life:
+        if ('starts_since_next_round' in self.attribs and self.life == self.init_life) or self.life <= 0:
             if isinstance(value, int):
                 value = 0
             elif isinstance(value, tuple):

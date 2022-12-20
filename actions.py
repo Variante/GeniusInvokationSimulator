@@ -27,9 +27,8 @@ class Action:
         
         if 'food' in self.tags:
             self.code += ';buff full'
-        
-        
-        self.active_character = data.get('active_character', None)
+
+        # self.active_character = data.get('active_character', None)
     """
     def is_affordable(self, dice, character):
         return is_affordable(self.cost, dice, character)
@@ -39,6 +38,10 @@ class Action:
         if 'food' in self.tags:
             # if someone has full health, he/she still can be healed, which is different from the original game
             return [f'action {self.code_name} {cha.code_name}' for cha in deck.characters if cha.query_buff('full') == 0]
+            
+        if 'switch_my' in self.code:
+            return [f'action {self.code_name} {cha.code_name}' for cha in deck.get_other_characters() if cha.alive]
+            
         return f'action {self.code_name}'
     
     def get_action_space(self, deck):

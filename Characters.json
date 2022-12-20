@@ -153,7 +153,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg Anemo 3;switch enemy prev",
+                "code": "dmg Anemo 3;switch_enemy prev",
                 "des": "Deals 3 Anemo DMG, the target is forcibly switched to the previous character. Costs 3 Anemo Dices.",
                 "code_name": "astable_anemohypostasis_creation_-_6308"
             },
