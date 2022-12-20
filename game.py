@@ -72,11 +72,27 @@ class Game:
             d_type = self.get_current_deck().d.random_type()
         self.get_current_deck().cost(d_type, -d_num)
         
-        
-    def engine_action(self, action, target):
+    def engine_equipment(self, action, target):
         code_name = action.code_name
         cur_deck = self.get_current_deck()
-        
+        target_char = cur_deck.get_character(target)
+        if target_char is None:
+            # for buff without a specific target
+            target_char = cur_deck.get_current_character()
+        cmds = action.code.split(';')
+        for cmd in cmds:
+            cmdw = cmd.split()
+            if cmdw[0] == 'skill':
+                self._proc_skill(cmdw)
+            elif cmdw[0] == 'talent':
+                assert target_char.code_name == cmdw[1]
+                target_char.add_talent(cmd)
+            elif cmdw[0] == 'buff':
+                target_char.add_buff(code_name, cmd)
+
+    def engine_event(self, action, target):
+        code_name = action.code_name
+        cur_deck = self.get_current_deck()
         target_char = cur_deck.get_character(target)
         if target_char is None:
             # for buff without a specific target
@@ -99,7 +115,7 @@ class Game:
             elif cmdw[0] == 'recharge':
                 cur_deck.recharge(cmdw)
             elif cmdw[0] == 'buff':
-                target_char.add_buff(action.code_name, cmd)
+                target_char.add_buff(code_name, cmd)
             elif cmdw[0] == 'gen':
                 self._gen_dice(cmdw)
             # use card to switch characters
@@ -108,8 +124,15 @@ class Game:
             elif cmdw[0] == 'draw':
                 cur_deck.pull(int(cmdw[1]))
             else:
-                raise NotImplementedError(f'[engine_action]{cmd}')
-            
+                raise NotImplementedError(f'[engine_event]{cmd}')
+
+    def _proc_skill(self, cmdw):
+        my_deck = self.get_current_deck()
+        my_char = my_deck.get_character(cmdw[1])
+        enemy_char = self.get_other_deck().get_current_character()
+        my_char.get_skill(cmdw[2]).exec(my_deck, my_char, enemy_char)
+        self.switch_agent = True
+
     def parse_space_action(self, action):
         if action in ['finish', '']:
             self.finish_round[self.current_agent] = True
@@ -121,18 +144,18 @@ class Game:
         cmds = action.split(';')
         for cmd in cmds:
             cmdw = cmd.split()
-            if cmdw[0] == 'action':
-                action = self.get_current_deck().execute_action(cmdw[1])
+            if cmdw[0] == 'event':
+                action = self.get_current_deck().use_action_card(cmdw[1])
                 # not all actions have a target
-                self.engine_action(action, cmdw[2] if len(cmdw) > 2 else None)
+                self.engine_event(action, cmdw[2] if len(cmdw) > 2 else None)
+            elif cmdw[0] == 'equipment':
+                action = self.get_current_deck().use_action_card(cmdw[1])
+                # not all actions have a target
+                self.engine_equipment(action, cmdw[2] if len(cmdw) > 2 else None)
             elif cmdw[0] == 'convert':
-                action = self.get_current_deck().execute_action(cmdw[1])
+                action = self.get_current_deck().use_action_card(cmdw[1])
             elif cmdw[0] == 'skill':
-                my_deck = self.get_current_deck()
-                my_char = my_deck.get_character(cmdw[1])
-                enemy_char = self.get_other_deck().get_current_character()
-                my_char.get_skill(cmdw[2]).exec(my_deck, my_char, enemy_char)
-                self.switch_agent = True
+                self._proc_skill(cmdw)
             elif cmdw[0] == 'cost':
                 d_num = int(cmdw[1])
                 self.get_current_deck().cost(cmdw[2], d_num)

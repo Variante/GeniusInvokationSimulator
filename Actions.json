@@ -634,5 +634,26 @@
         "tags": [],
         "type": "event",
         "code_name": "guardian_s_oath"
+    },
+    {
+        "img": "Flowing_Flame_Card.png",
+        "name": "Flowing Flame",
+        "cost_raw": "3 Pyro Dices",
+        "cost": {
+            "d_type": [
+                "Pyro"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "Combat Action:  When your active character is Diluc, equip this card.\nAfter Diluc equips this card, immediately use Searing Onslaught once.\nWhen your Diluc, who has this card equipped, uses Searing Onslaught for the second time in one Round, spend 1 less Pyro Die.\n(You must have Diluc in your deck to add this card to your deck.)",
+        "code": "talent diluc;buff elemental_skill_cost_pyro_down 1,life 1 0 0;skill diluc searing_onslaught",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "flowing_flame"
     }
 ]

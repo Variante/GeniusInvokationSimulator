@@ -18,7 +18,7 @@ def get_project_progress():
     names = ['Characters', 'Actions']
     print('Card progress')
     for name in names:
-        print(f"[{name}] {len(load_js(name))} / {len(load_js('todo_' + name)) + len(load_js(name))}")
+        print(f"[{name}] {len(load_js(name))} / {len(load_js('todo_' + namegit)) + len(load_js(name))}")
 
 def to_code_name(s):
     return '_'.join(re.sub(r'[^\w]', ' ', s).lower().strip().split())
@@ -167,6 +167,9 @@ def print_dice(dice):
     
 
 def modify_cost(original_cost, mods):
+    if len(mods) == 0:
+        return original_cost
+        
     d_type = original_cost["d_type"]
     d_num = original_cost["d_num"]
     p_num = original_cost["p_num"]

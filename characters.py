@@ -67,7 +67,9 @@ class Skill:
                 my_deck.activate_prev()
 
 
-            
+    def get_cost(self, my_char):
+        cost = self.cost 
+        return cost
 
     def on_round_finished(self):
         self.round_usage = 0
@@ -100,7 +102,7 @@ class Character:
         
         self.weapon = None
         self.artifact = None
-        self.equip = None
+        self.talent = False
         self.buffs = []
         
         
@@ -110,6 +112,9 @@ class Character:
         self.alive = True
         
         self.deck_ptr = None
+
+    def add_talent(self, talent):
+        self.talent = True
 
     def engine_buff(self, buff):
         activated = False
@@ -133,7 +138,7 @@ class Character:
         for skill in self.skills:
             mods = self.query_pattern_buff(skill.stype)
             res.extend(
-                generate_action_space(modify_cost(skill.cost, mods),
+                generate_action_space(modify_cost(skill.get_cost(self), mods),
                 dice, self, prefix=f'skill {self.code_name} {skill.code_name}'))
         return res
         
@@ -338,7 +343,7 @@ class Character:
             
             'weapon': self.weapon,
             'artifact': self.artifact,
-            'equip': self.equip,
+            'talent': self.talent,
             
             'buffs': [i.state() for i in self.buffs],
             
@@ -351,7 +356,7 @@ class Character:
     def __repr__(self):
         return f"{self.name} | H: {self.health} / {self.health_limit} | E: {self.energy} / {self.energy_limit} {'| <*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
-               f"W: {'[W]' if self.weapon else ''} |A: {'[A]' if self.artifact else ''} |E: {'[E]' if self.equip else ''}\n" + \
+               f"W: {'[W]' if self.weapon else ''} |A: {'[A]' if self.artifact else ''} |T: {self.talent}\n" + \
                f"Element: {self.element:<5} | Infusion element: {' '.join(self.infusion_element)}"
         
     def get_skill(self, code_name):

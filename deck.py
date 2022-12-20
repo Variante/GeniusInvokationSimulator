@@ -257,7 +257,7 @@ class Deck:
                 c += 1
         self.pull(c)
     
-    def execute_action(self, code_name):
+    def use_action_card(self, code_name):
         for idx, i in enumerate(self.available_actions):
             if i.code_name == code_name:
                 break

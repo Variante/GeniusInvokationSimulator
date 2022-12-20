@@ -13,7 +13,9 @@ class Agent:
     def get_action(self, state):
         try:
             for i in state['action_space'][::-1]:
-                if i.startswith('action'):
+                if 'diluc' in i:
+                    return i
+                if i.startswith('equipment'):
                     return i
             return np.random.choice(state['action_space'])    
         except IndexError:
