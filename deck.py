@@ -19,7 +19,6 @@ class Deck:
         self.used_actions = []
         self.available_actions = []
         
-        self.pre_pull_num = 2
         # self.alive = self._is_alive()
         self.current_dice = self.d.roll()
         self.agent = agent
@@ -32,6 +31,8 @@ class Deck:
         self.summon_pool = load_js('Summons')
         self.summons = []
         self.supports = []
+        
+        self.kocked_out_this_round = 0
     
     def has_alive_changed(self):
         changed = False
@@ -56,10 +57,10 @@ class Deck:
         self.current_dice = self.d.roll()
         
     def reroll(self, keep, total_num=8):
-        self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))
-        # self.current_dice = self.d.roll(total_num=total_num, keep=keep)
+        # self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))
+        self.current_dice = self.d.roll(total_num=total_num, keep=keep)
         
-    def _pull(self, pull_num):
+    def pull(self, pull_num):
         for _ in range(pull_num):
             try:
                 action = self.to_pull_actions.pop()
@@ -77,8 +78,9 @@ class Deck:
         else:
             self.current_dice[d_type] -= d_num
    
-    def pull(self):
-        return self._pull(self.pre_pull_num)
+    def pre_round_pull(self):
+        pre_pull_num = 2
+        return self.pull(pre_pull_num)
         
     def state(self):
         res = {
@@ -123,7 +125,7 @@ class Deck:
             idx = self.character_order[-1]
         except IndexError:
             idx = self.character_order[0]
-        print('[activate_prev]', idx, self.character_order)
+        # print('[activate_prev]', idx, self.character_order)
         self.activate_by_id(idx)
     
     def activate_next(self):
@@ -203,7 +205,7 @@ class Deck:
         if char.alive:
             res = char.get_action_space(self)
         else:
-            # switch character due to death (free switch)
+            # activate character due to death (free switch)
             return [f"activate {i.code_name}" for i in self.characters if i.alive]
         
         # query action cards
@@ -214,12 +216,15 @@ class Deck:
             visited_action.add(i.code_name)
         
         # query switch character
+        c_mode = char.query_buff('switch_cost_down')
+        
         for char in self.characters:
             if char.alive and not char.active:
+                sw_cost = max(char.activate_cost - c_mode, 0)
                 res.extend(
-                generate_action_space(build_cost(char.activate_cost),
+                generate_action_space(build_cost(sw_cost),
                 self.current_dice, char, 
-                prefix=f'activate {char.code_name}'))
+                prefix=f'switch {char.code_name}'))
         res.append('finish')
         return res
     
@@ -230,7 +235,7 @@ class Deck:
             if keep_card[i] == 0:
                 self.to_pull_actions.append(self.available_actions.pop(i))
                 c += 1
-        self._pull(c)
+        self.pull(c)
     
     def execute_action(self, code_name):
         for idx, i in enumerate(self.available_actions):
@@ -240,6 +245,19 @@ class Deck:
         self.used_actions.append(action)
         return action
     
+    def on_round_start(self,):
+        # draw 2 cards
+        self.pre_round_pull()
+        
+        # get dices
+        self.roll()
+        keep_dice = self.agent.get_keep_dice(self.state())
+        self.reroll(keep=keep_dice)
+        
+        # clear counter
+        self.kocked_out_this_round = 0
+        
+
     def on_round_finished(self):
         for cha in self.characters:
             cha.on_round_finished()
@@ -258,7 +276,24 @@ class Deck:
             except IndexError:
                 break
     
-    
+    def recharge(self, cmdw):
+        if cmdw[1] == 'any':
+            for i in self.character_order:
+                c = self.characters[i]
+                if c.get_energy_need() > 0:
+                    c.recharge(int(cmdw[2]))
+                    break
+        elif cmdw[1] == 'active':
+            self.get_current_character().recharge(int(cmdw[2]))
+        elif cmdw[1] == 'to_active':
+            cur = self.get_current_character()
+            v = int(cmdw[2])
+            for i in self.character_order[1:]:
+                c = self.characters[i]
+                if cur.get_energy_need() > 0 and c.energy >= v:
+                    cur.recharge(v)
+                    c.recharge(-v)
+                
     def __repr__(self):
         return json.dumps(self.state())
         
@@ -295,7 +330,7 @@ class Deck:
 if __name__ == '__main__':
     d = Deck('p1', None)
     d.reroll(keep=[0, 2, 0, 0, 0, 0, 0, 0], total_num=2)
-    d.pull()
+    d.pre_round_pull()
     print('Current dices: ', d.current_dice, sep = "\n")
     print('Action space: ')
     print(*d.get_action_space(), sep = "\n")

@@ -11,7 +11,7 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 ```
 Progress
 [Characters] 3 / 27
-[Actions] 20 / 117
+[Actions] 27 / 117
 ```
 
 ## Dependence
@@ -35,7 +35,8 @@ python game.py
 
 ## Update log
 12/20/22:
-1. Add some Elemental Resonance cards
+1. Add some Elemental Resonance cards and some event cards
+2. reorganize the game loop structure
 
 12/19/22:
 1. Finish basic skill pipeline

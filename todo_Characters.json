@@ -26,27 +26,6 @@
         ]
     },
     {
-        "img": "Kaeya_Genius_Invokation_Card.png",
-        "name": "Kaeya",
-        "skill": [
-            {
-                "name": "Ceremonial Bladework",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Cryo Die and 2 Unaligned Dices."
-            },
-            {
-                "name": "Frostgnaw",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Cryo DMG. Costs 3 Cryo Dices"
-            },
-            {
-                "name": "Glacial Waltz",
-                "type": "Elemental Burst",
-                "des": "Deals 1 Cryo DMG, creates 1 Icicle. Costs 4 Cryo Dices and 2 Energy"
-            }
-        ]
-    },
-    {
         "img": "Diona_Genius_Invokatio_Card.png",
         "name": "Diona",
         "skill": [
@@ -179,42 +158,6 @@
                 "name": "Illusory Torrent",
                 "type": "Passive Skill",
                 "des": "When you perform \"Switch Character\" while Mona is your active character: This switch is considered a Fast Action instead of a Combat Action. (Once per round)."
-            }
-        ]
-    },
-    {
-        "img": "Diluc_Genius_Invokation_Card_2.png",
-        "name": "Diluc",
-        "skill": [
-            {
-                "name": "Tempered Sword",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices.",
-				"cost": {
-					"d_type": ["Pyro", "Unaligned"],
-					"d_num": [1, 2],
-					"p_num": 0
-				}
-            },
-            {
-                "name": "Searing Onslaught",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Pyro DMG. For the third use of this Skill each round, deals +2 DMG. Costs 3 Pyro Dices.",
-				"cost": {
-					"d_type": ["Pyro"],
-					"d_num": [3],
-					"p_num": 0
-				}
-            },
-            {
-                "name": "Dawn",
-                "type": "Elemental Burst",
-                "des": "Deals 8 Pyro DMG. This character gains Pyro Infusion. Costs 4 Pyro Dices and 3 Energy.",
-				"cost": {
-					"d_type": ["Pyro"],
-					"d_num": [4],
-					"p_num": 3
-				}
             }
         ]
     },
@@ -367,27 +310,6 @@
                 "name": "Lawful Enforcer",
                 "type": "Passive Skill",
                 "des": "When the battle begins, this character gains Pactsworn Pathclearer."
-            }
-        ]
-    },
-    {
-        "img": "Sucrose_Genius_Invokation_Card.png",
-        "name": "Sucrose",
-        "skill": [
-            {
-                "name": "Wind Spirit Creation",
-                "type": "Normal Attack",
-                "des": "Deals 1 Anemo DMG. Costs 1 Anemo Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Astable Anemohypostasis Creation - 6308",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Anemo DMG, the target is forcibly switched to the previous character. Costs 3 Anemo Dices."
-            },
-            {
-                "name": "Forbidden Creation - Isomer 74 / Type II",
-                "type": "Elemental Burst",
-                "des": "Deals 1 Anemo DMG, summons 1 Large Wind Spirit. Costs 3 Anemo Dices and 2 Energy."
             }
         ]
     },

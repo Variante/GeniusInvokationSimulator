@@ -328,9 +328,10 @@
             "p_num": 0
         },
         "des": "One of your characters without maximum Energy gains 1 Energy. (Active Character prioritized)\n(You must have at least 2 Electro characters in your deck to add this card to your deck.)",
-		"code": "charge 1",
+        "code": "recharge any 1",
         "tags": [
-            "elemental_resonance"
+            "elemental_resonance",
+            "recharge_any"
         ],
         "type": "event",
         "code_name": "elemental_resonance_high_resonance"
@@ -349,7 +350,7 @@
             "p_num": 0
         },
         "des": "Create 1 Anemo Die.\n(You must have at least 2 Anemo characters in your deck to add this card to your deck.)",
-		"code": "gen 1 Anemo",
+        "code": "gen 1 Anemo",
         "tags": [
             "elemental_resonance"
         ],
@@ -373,7 +374,7 @@
         "tags": [
             "elemental_resonance"
         ],
-		"code": "gen 1 Omni;switch_my target",
+        "code": "gen 1 Omni;switch_my target",
         "type": "event",
         "code_name": "elemental_resonance_impetuous_winds"
     },
@@ -392,7 +393,7 @@
         },
         "des": "Create 1 Geo Die.\n(You must have at least 2 Geo characters in your deck to add this card to your deck.)",
         "code": "gen 1 Geo",
-		"tags": [
+        "tags": [
             "elemental_resonance"
         ],
         "type": "event",
@@ -415,8 +416,147 @@
         "tags": [
             "elemental_resonance"
         ],
-		"code": "gen 1 Dendro",
+        "code": "gen 1 Dendro",
         "type": "event",
         "code_name": "elemental_resonance_woven_weeds"
+    },
+    {
+        "img": "The_Bestest_Travel_Companion!.png",
+        "name": "The Bestest Travel Companion!",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "Convert the Elemental Dice spent to Omni Element Die.",
+        "code": "gen 2 Omni",
+        "tags": [],
+        "type": "event",
+        "code_name": "the_bestest_travel_companion"
+    },
+    {
+        "img": "Changing_Shifts.png",
+        "name": "Changing Shifts",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "The next time you perform \"Switch Character\": Spend 1 less Elemental Die.",
+        "code": "buff switch_cost_down 1,life 1 0 1",
+        "tags": [],
+        "type": "event",
+        "code_name": "changing_shifts"
+    },
+    {
+        "img": "Strategize.png",
+        "name": "Strategize",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Draw 2 cards.",
+        "code": "draw 2",
+        "tags": [],
+        "type": "event",
+        "code_name": "strategize"
+    },
+    {
+        "img": "I_Haven't_Lost_Yet!.png",
+        "name": "I Haven't Lost Yet!",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Only playable if one of your characters is defeated this Round:\nCreate Omni Element Die and your current active character gains 1 Energy.",
+        "code": "recharge active 1;gen 1 Omni",
+        "tags": [
+            "when_knocked_out"
+        ],
+        "type": "event",
+        "code_name": "i_haven_t_lost_yet"
+    },
+    {
+        "img": "Leave_It_to_Me!.png",
+        "name": "Leave It to Me!",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "The next time you perform \"Switch Character\": This switch will be considered a Fast Action instead of a Combat Action.",
+        "code": "buff switch_fast 1,life 1 0 1",
+        "tags": [],
+        "type": "event",
+        "code_name": "leave_it_to_me"
+    },
+    {
+        "img": "Starsigns.png",
+        "name": "Starsigns",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "Your current Active Character gains 1 Energy.",
+        "code": "recharge active 1",
+        "tags": [
+            "recharge_active"
+        ],
+        "type": "event",
+        "code_name": "starsigns"
+    },
+    {
+        "img": "Calx's_Arts.png",
+        "name": "Calx's Arts",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Shift 1 Energy from at most 2 of your characters on standby to your active character.",
+        "code": "recharge to_active 1",
+        "tags": [
+            "recharge_to_active"
+        ],
+        "type": "event",
+        "code_name": "calx_s_arts"
     }
 ]

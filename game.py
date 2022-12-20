@@ -61,12 +61,13 @@ class Game:
             if i != self.current_agent:
                 return j
         
-    def gen_dice(self, cmdw):
+    def _gen_dice(self, cmdw):
         d_num = int(cmdw[1])
         d_type = cmdw[2]
         if d_type == 'Rand':
             d_type = self.get_current_deck().d.random_type()
         self.get_current_deck().cost(d_type, -d_num)
+        
         
     def engine_action(self, action, target):
         code_name = action.code_name
@@ -84,25 +85,22 @@ class Game:
             elif cmdw[0] == 'heal_other':
                 for c in cur_deck.get_other_characters():
                     c.heal(int(cmdw[1]))
-            elif cmdw[0] == 'charge':
-                for i in cur_deck.character_order:
-                    c = cur_deck.characters[i]
-                    if c.get_energy_need() > 0:
-                        c.energy_charge(int(cmdw[1]))   
+            elif cmdw[0] == 'recharge':
+                cur_deck.recharge(cmdw)
             elif cmdw[0] == 'buff':
                 target_char.add_buff(action.code_name, cmd)
             elif cmdw[0] == 'gen':
-                self.gen_dice(cmdw)
+                self._gen_dice(cmdw)
             # use card to switch characters
             elif cmdw[0] == 'switch_my':
                 cur_deck.activate(target)
+            elif cmdw[0] == 'draw':
+                cur_deck.pull(int(cmdw[1]))
             else:
                 raise NotImplementedError(f'[engine_action]{cmd}')
             
     def parse_space_action(self, action):
-        if action == '':
-            return
-        if action == 'finish':
+        if action in ['finish', '']:
             self.finish_round[self.current_agent] = True
             # player who finishes first moves first in the next round
             if self.agent_moves_first is None:
@@ -128,15 +126,27 @@ class Game:
                 d_num = int(cmdw[1])
                 self.get_current_deck().cost(cmdw[2], d_num)
             elif cmdw[0] == 'gen':
-                self.gen_dice(cmdw)
-            elif cmdw[0] == 'fast_activate':
-                self.get_current_deck().activate(cmdw[1])
+                self._gen_dice(cmdw)
             elif cmdw[0] == 'activate':
                 self.get_current_deck().activate(cmdw[1])
                 self.switch_agent = True
+            elif cmdw[0] == 'switch':
+                my_deck = self.get_current_deck()
+                my_char = my_deck.get_current_character()
+                res = my_char.take_pattern_buff('switch')
+                self.get_current_deck().activate(cmdw[1])
+                self.switch_agent = res.get('switch_fast', 0) == 0
             else:
                 raise NotImplementedError(f'[parse_space_action]{cmd}')
                 
+   
+    def on_round_start(self):
+        # clear states
+        self.finish_round = [False] * self.agent_num
+        
+        # update all states
+        for deck in self.decks:
+            deck.on_round_start()
    
     def on_round_finished(self):
         # update all states
@@ -150,6 +160,16 @@ class Game:
         
             
     def print_desk(self, event=''):
+        # print(self.state())
+        print('\n' * 3 + '=' * 50)
+        print(f"[Round {self.round_num:02d}] {event}")
+        print('-' * 50)
+        for i, d in enumerate(self.decks):
+            print(f'Player {i + 1} ' + ('[√]' if self.finish_round[i] else '[ ]') + (' <*>' if self.current_agent == i else ''))
+            d.print_deck()
+            print('-' * 50)
+   
+    def print_full_desk(self, event=''):
         print('\n' * 3 + '=' * 50)
         print(f"[Round {self.round_num:02d}] {event}")
         print('-' * 50)
@@ -160,7 +180,7 @@ class Game:
                 print('Available actions:')
                 d.print_actions()
             print('-' * 50)
-   
+            
     def has_alive_changed(self):
         for i, d in enumerate(self.decks):
             if d.has_alive_changed():
@@ -177,42 +197,34 @@ class Game:
                 return
             
     
-    def game_loop(self, show=False, simplied=False):
+    def game_loop(self, show=False):
+        # init the game
         for i in self.decks:
+            # draw 5 init cards
             i.shuffle()
-            if not simplied:
-                i._pull(5)
-                # swap init cards
-                if show:
-                    self.print_desk(f'Player {self.current_agent + 1} init cards')
-                keep_card = i.agent.get_keep_card(self.state())
-                i.keep_action(keep_card)
-                if show:
-                    self.print_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
-
+            i.pull(5)
+            # swap init cards
             
+            if show:
+                self.print_desk(f'Player {self.current_agent + 1} init cards')
+                
+            keep_card = i.agent.get_keep_card(self.state())
+            i.keep_action(keep_card)
+
+            # select the first character
+            s = self.state()
+            s['action_space'] = [f"activate {i.code_name}" for i in i.characters]
+            action = i.agent.get_action(s)
+            self.parse_space_action(action)
+            
+            if show:
+                self.print_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
+
         # round start
         while self.check_win() < 0 and self.round_num < 15:
             # start a new round
             self.round_num += 1
-            self.finish_round = [False] * self.agent_num
-            
-            if not simplied:
-                # pull cards
-                for i in self.decks:
-                    i.pull()
-
-            # select character and throw dices
-            for d in self.decks:
-                s = self.state()
-                s['action_space'] = [f"activate {i.code_name}" for i in d.characters]
-                action = d.agent.get_action(s)
-                self.parse_space_action(action)
-                
-                d.roll()
-                keep_dice = d.agent.get_keep_dice(self.state())
-                d.reroll(keep=keep_dice)
-                
+            self.on_round_start()
             while True:
                 self.switch_agent = False
                 
@@ -236,13 +248,12 @@ class Game:
                     
                 if show:
                     self.print_desk(f'Player {tmp + 1} exec: ' + action)
-                
-                
+
             # one round finished
             self.on_round_finished()
             if show:
                 self.print_desk('round finished')
-            
+
         return self.check_win()
         
         
@@ -257,6 +268,6 @@ class Game:
         
 if __name__ == '__main__':
     g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
-    ret = g.game_loop(show=True, simplied=False)
+    ret = g.game_loop(show=True)
     g.print_winner(ret)
     

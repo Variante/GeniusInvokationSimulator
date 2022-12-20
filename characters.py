@@ -60,7 +60,7 @@ class Skill:
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
                 
-        my_char.energy_charge(energy_gain)
+        my_char.recharge(energy_gain)
             
 
     def on_round_finished(self):
@@ -229,8 +229,8 @@ class Character:
     def get_energy_need(self):
         return self.energy_limit - self.energy
     
-    def energy_charge(self, gain):
-        self.energy = min(self.energy + gain, self.energy_limit)
+    def recharge(self, gain):
+        self.energy = max(min(self.energy + gain, self.energy_limit), 0)
     
     def heal(self, num):
         self.health = min(num + self.health, self.health_limit)

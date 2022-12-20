@@ -1,5 +1,6 @@
 import json
 import numpy as np
+import re
 
 def load_js(name, prefix=''):
     fs = prefix + name + '.json'
@@ -17,10 +18,10 @@ def get_project_progress():
     names = ['Characters', 'Actions']
     print('Card progress')
     for name in names:
-        print(f"[{name}] {len(load_js(name))} / {len(load_js('todo_' + name))}")
+        print(f"[{name}] {len(load_js(name))} / {len(load_js('todo_' + name)) + len(load_js(name))}")
 
 def to_code_name(s):
-    return s.lower().strip().replace(' ', '_').replace("'", '').replace(":", '')
+    return '_'.join(re.sub(r'[^\w]', ' ', s).lower().strip().split())
         
 def count_total_dice(dices):
     c = 0
