@@ -6,10 +6,10 @@ class Dices:
         self.l = len(self.options)
 
     def _count_to_dict(self, count):
-        return {t: c for t, c in zip(self.options, count)}
+        return {t: int(c) for t, c in zip(self.options, count)}
         
     def _dict_to_count(self, d):
-        return np.array([d.get(i, 0) for i in self.options], dtype=np.uint8)
+        return np.array([d.get(i, 0) for i in self.options], dtype=int)
         
     def random_type(self):
         # don't roll Omni
@@ -17,7 +17,7 @@ class Dices:
         
     def roll(self, total_num=8, keep=None):
         if keep is None:
-            keep = np.zeros(total_num, dtype=np.uint8)
+            keep = np.zeros(total_num, dtype=int)
         else:
             if isinstance(keep, list):
                 keep = np.array(keep)
@@ -37,5 +37,6 @@ if __name__ == '__main__':
     for i in range(10):
         keep = np.array([0] * 8)
         keep[i % 8] += i % 8
-        print(d.roll(keep=keep))
+        print(json.dumps(d.roll(keep=keep)))
+
         

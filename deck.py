@@ -82,16 +82,22 @@ class Deck:
         pre_pull_num = 2
         return self.pull(pre_pull_num)
         
-    def state(self):
-        res = {
-            'current_dice': self.current_dice,
+
+    def state_for_enemy(self):
+        return {
+            'current_dice_num': count_total_dice(self.current_dice),
             'characters': [i.state() for i in self.characters],
-            'to_pull_actions': [i.state() for i in self.to_pull_actions],
-            'used_actions': [i.state() for i in self.used_actions],
-            'available_actions': [i.state() for i in self.available_actions],
             'summons': [i.state() for i in self.summons],
             'supports': [i.state() for i in self.supports]
         }
+        
+
+    def state(self):
+        res = self.state_for_enemy()
+        res['current_dice'] = self.current_dice
+        res['to_pull_actions'] = [i.state() for i in self.to_pull_actions]
+        res['used_actions'] = [i.state() for i in self.used_actions]
+        res['available_actions'] = [i.state() for i in self.available_actions]
         return res
         
     def add_summon(self, source, code_name):
@@ -324,9 +330,6 @@ class Deck:
         print(*['- ' + i for i in self.get_action_space()], sep='\n')
         
         
-        
-        
-
 if __name__ == '__main__':
     d = Deck('p1', None)
     d.reroll(keep=[0, 2, 0, 0, 0, 0, 0, 0], total_num=2)
@@ -335,3 +338,5 @@ if __name__ == '__main__':
     print('Action space: ')
     print(*d.get_action_space(), sep = "\n")
     print('-' * 8)
+    print(d)
+    

@@ -206,7 +206,7 @@ class Character:
         self.infusion_element = []
         self.buffs = []
         self.active = False
-        self.activate_cost = 1e9
+        self.activate_cost = 100
         self.alive = False
 
     def on_round_finished(self):
@@ -375,4 +375,6 @@ def init_characters(names):
     
         
 if __name__ == '__main__':
-    print(init_characters(['Diluc'])[0].state())
+    print(json.dumps(init_characters(['Diluc'])[0].state()))
+
+

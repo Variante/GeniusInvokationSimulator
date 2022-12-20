@@ -3,6 +3,7 @@ from deck import Deck
 from agent import Agent
 import random
 
+
 class Game:
     def __init__(self, decks):
         assert len(decks) == 2
@@ -44,13 +45,16 @@ class Game:
             return 1
         else:
             return 2
-            
-                
+    
+    def state_for_action(self):
+        res = self.state()
+        res['action_space'] = self.get_current_deck().get_action_space()
+        return res
+
     def state(self):
         return {
                 'my_state': self.get_current_deck().state(),
-                'other_state': self.get_other_deck().state(),
-                'action_space': self.get_current_deck().get_action_space()
+                'other_state': self.get_other_deck().state_for_enemy()
             }
             
     def get_current_deck(self):
@@ -190,7 +194,7 @@ class Game:
                 d.print_actions()
                 # ask user to activate a new character
                 agent = self.agents[self.current_agent]
-                action = agent.get_action(self.state())
+                action = agent.get_action(self.state_for_action())
                 self.parse_space_action(action)
                 self.switch_agent = True
                 self.current_agent = tmp
@@ -231,7 +235,7 @@ class Game:
                 tmp = self.current_agent
                 
                 agent = self.agents[self.current_agent]
-                action = agent.get_action(self.state())
+                action = agent.get_action(self.state_for_action())
                 self.parse_space_action(action)
                 
                 ret = self.check_win()
@@ -252,6 +256,7 @@ class Game:
             # one round finished
             self.on_round_finished()
             if show:
+                print(json.dumps(self.state_for_action()))
                 self.print_desk('round finished')
 
         return self.check_win()
