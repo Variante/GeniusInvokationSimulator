@@ -1,5 +1,6 @@
 from utils import *
 from dices import Dices
+from buff import Summon
 from characters import init_characters
 from actions import init_actions
 import random
@@ -26,6 +27,11 @@ class Deck:
         self.last_alive = [True] * len(self.characters)
         
         self.enemy_ptr = None
+        self.game_ptr = None
+        
+        self.summon_pool = load_js('Summons')
+        self.summons = []
+        self.supports = []
     
     def has_alive_changed(self):
         changed = False
@@ -81,8 +87,36 @@ class Deck:
             'to_pull_actions': [i.state() for i in self.to_pull_actions],
             'used_actions': [i.state() for i in self.used_actions],
             'available_actions': [i.state() for i in self.available_actions],
+            'summons': [i.state() for i in self.summons],
+            'supports': [i.state() for i in self.supports]
         }
         return res
+        
+    def add_summon(self, source, code_name):
+        for i in self.summon_pool:
+            if i['code_name'] == code_name:
+                summon_data = i
+                break
+        
+        sobj = Summon(source, summon_data)
+        for i, s in enumerate(self.summons):
+            if s.code_name == code_name:
+                self.summons[i] = sobj
+                return
+                
+        if len(self.summons) >= 4:
+            s = self.game_ptr.state()
+            s['action_space'] = [f'replace {i.code_name}' for i in self.summons ]
+            rep = self.agent.get_action(s)
+            self.summons[s['action_space'].index(rep)] = sobj
+        else:
+            self.summons.append(sobj)
+    
+    def get_summon_buff(self, keyword):
+        return [i for i in self.summons if i.query(keyword)]
+        
+    def add_support(self, source, code_name):
+        pass
     
     def activate_prev(self):
         try:
@@ -128,6 +162,12 @@ class Deck:
                 
     def get_current_character(self):
         return self.characters[self.character_order[0]]
+        
+    def get_other_characters(self):
+        try:
+            return [self.characters[i] for i in self.character_order[1:]]
+        except IndexError:
+            return []
     
     def get_enemy_current_character(self):
         return self.enemy_ptr.characters[self.enemy_ptr.character_order[0]]
@@ -185,6 +225,21 @@ class Deck:
     def on_round_finished(self):
         for cha in self.characters:
             cha.on_round_finished()
+            
+        # process summons
+        i = 0
+        while True:
+            try:
+                s = self.summons[i]
+                self.get_current_character().engine_buff(s)
+                s.on_round_finished()
+                if s.life > 0:
+                    i += 1
+                else:
+                    self.summons.pop(i)
+            except IndexError:
+                break
+    
     
     def __repr__(self):
         return json.dumps(self.state())
@@ -196,7 +251,16 @@ class Deck:
         for c in self.characters:
             print(' ')
             print(c)
-            
+        print('-' * 40)
+        print('Supports: ')
+        for s in self.supports:
+            print(' ')
+            print(s)
+        print('-' * 40)
+        print('Summons: ')
+        for s in self.summons:
+            print(' ')
+            print(s)
         print('-' * 40)
         print('Cards:')
         for a in self.available_actions:

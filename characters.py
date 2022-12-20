@@ -1,4 +1,5 @@
 from utils import *
+from buff import Buff
 
 class Skill:
     def __init__(self, data):
@@ -10,7 +11,7 @@ class Skill:
         self.code = data['code'].split(';')
         self.round_usage = 0        
         
-    def exec(self, deck, my_char, enemy_char):
+    def exec(self, my_deck, my_char, enemy_char):
         self.round_usage += 1
         energy_gain = 1 if self.stype != 'elemental_burst' else 0
         
@@ -45,13 +46,20 @@ class Skill:
                 elif self.stype == "elemental_burst"
                     dmg += my_char.take_buff("elemental_burst_dmg_up")
                 """
-                
             elif cmds[0] == 'energy':
                 energy_gain = int(cmds[1])
             elif cmds[0] == 'infusion':
-                my_char.infusion(cmds[1])
+                my_char.take_dmg(cmds[1], 0)
             elif cmds[0] == 'buff':
-                my_char.add_buff(f'skill {self.code_name}', code)
+                my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
+            elif cmds[0] == 'summon':
+                my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1])
+            elif cmds[0] == 'switch':
+                deck = my_deck if cmds[1] == 'my' else my_deck.enemy_ptr
+                if cmds[2] == 'prev':
+                    deck.activate_prev()
+                else:
+                    deck.activate_next()
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
                 
@@ -67,61 +75,7 @@ class Skill:
         
     def __repr__(self):
         return json.dumps(self.state())
-
-
-class Buff:
-    def __init__(self, source, code):
-        self.source = source
-        self.code = code
-        self.life = 1
-        self.init_life = self.life 
-        self.rf_by_round = 1 # life reduced per round
-        self.rf_by_activated = 1 # life reduced by activated
-        self.attribs = {}
-        self._parse_code(code)
-
-    # buff parse engine
-    def _parse_code(self, code):
-        if code.startswith('buff '):
-            cmds = code[5:].split(',')
-        else:
-            cmds = code.split(',')
-        for cmd in cmds:
-            cmdw = cmd.split()
-            if cmdw[0] == 'life':
-                self.life = int(cmdw[1])
-                self.rf_by_round = int(cmdw[2])
-                self.rf_by_activated = int(cmdw[3])
-                self.init_life = self.life 
-            elif len(cmdw) > 2:
-                self.attribs[cmdw[0]] = tuple(cmdw[1:-1] + [int(cmdw[-1])])
-            elif len(cmdw) == 2:
-                self.attribs[cmdw[0]] = int(cmdw[1])
-            else:
-                self.attribs[cmdw[0]] = 1
-                
-    def query(self, keyword):
-        value = self.attribs.get(keyword, 0)
-        if 'starts_since_next_round' in self.attribs and self.life == self.init_life:
-            if isinstance(value, int):
-                value = 0
-            elif isinstance(value, tuple):
-                value = (value[0], 0)
-        return value
-
-    def on_activated(self):
-        self.life -= self.rf_by_activated
         
-    def on_round_finished(self):
-        self.life -= self.rf_by_round
-
-    def state(self):
-        return vars(self)
-
-    def __repr__(self):
-        attribs = ','.join([f'{i}({self.attribs[i]})' for i in self.attribs])
-        return f"[{attribs} from {self.source} ({self.life})]"
-
 
 class Character:
     def __init__(self, name, pool):
@@ -290,8 +244,10 @@ class Character:
         
     def dmg(self, num):
         v = self.take_buff('vulnerable')
-        d = self.take_buff('shield')
-        num = max(num + v - d, 0)
+        num += v
+        if num > 0:
+            d = self.take_buff('shield')
+            num = max(num - d, 0)
         
         self.health = max(self.health - num, 0)
         # dead
@@ -303,14 +259,33 @@ class Character:
         self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
         
     def overloaded(self):
-        self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
+        self.add_buff(f'reaction_overloaded', 'vulnerable 2')
         if self.active:
             self.deck_ptr.activate_next()
+    
+    def swirl(self, element):
+        print('\n\n swirl element ', element)
+        for c in self.deck_ptr.get_other_characters():
+            """
+            # add swirl dmg to buff
+            c.add_buff(f'reaction_swirl_{element}', 'vulnerable 1')
+            # attach new element and calculate dmg
+            c.take_dmg(element, 0)
+            """
+            c.take_dmg(element, 1)
         
+        # swirl for the large wind spirit
+        for i in self.deck_ptr.enemy_ptr.get_summon_buff('on_swirl'):
+            i.remove_keyword('on_swirl')
+            dtype, dval = i.query('dmg')
+            i.change_keyword('dmg', (element, dval))
+    
     def frozen(self):
         self.add_buff('reaction_frozen', 'life 1 1 0')
 
     def infusion(self, element):
+        if element in self.infusion_element:
+            return
         for t, i in enumerate(self.infusion_element):
             reaction = element_can_react(i, element)
             if reaction:
@@ -318,15 +293,14 @@ class Character:
                     self.melt_or_vaporize(reaction)
                 elif reaction == 'overloaded':
                     self.overloaded()
+                elif reaction == 'swirl':
+                    self.swirl(i)
                 else:
                     # TODO: add reaction later
                     raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')
-                try:
-                    self.infusion_element = self.infusion_element[:t] + self.infusion_element[t + 1:]
-                except IndexError:
-                    self.infusion_element = self.infusion_element[:t]
+                self.infusion_element = self.infusion_element[:t] + self.infusion_element[t:]
                 return
-        if element not in self.infusion_element and element not in ['Geo', 'Anemo']:
+        if element not in ['Geo', 'Anemo']:
             self.infusion_element.append(element)
 
     def state(self):

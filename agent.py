@@ -20,4 +20,6 @@ class Agent:
             return np.random.choice(state['action_space'])    
         except IndexError:
             return ''
+        except ValueError:
+            return ''
         

@@ -1,0 +1,8 @@
+[
+	{
+        "img": "Large_Wind_Spirit_Summon",
+        "name": "Large Wind Spirit",
+		"code_name": "large_wind_spirit",
+		"code": "life 3 1 0,dmg Anemo 2,on_swirl"
+	}
+]

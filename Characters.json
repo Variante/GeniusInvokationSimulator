@@ -3,7 +3,7 @@
         "img": "Diluc_Genius_Invokation_Card_2.png",
         "name": "Diluc",
         "energy_limit": 3,
-		"element": "Pyro",
+        "element": "Pyro",
         "skills": [
             {
                 "name": "Tempered Sword",
@@ -62,7 +62,7 @@
         "img": "Kaeya_Genius_Invokation_Card.png",
         "name": "Kaeya",
         "energy_limit": 2,
-		"element": "Cryo",
+        "element": "Cryo",
         "skills": [
             {
                 "name": "Ceremonial Bladework",
@@ -116,5 +116,64 @@
             }
         ],
         "code_name": "kaeya"
+    },
+    {
+        "img": "Sucrose_Genius_Invokation_Card.png",
+        "name": "Sucrose",
+        "energy_limit": 2,
+        "element": "Anemo",
+        "skills": [
+            {
+                "name": "Wind Spirit Creation",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Anemo",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Anemo 2",
+                "des": "Deals 1 Anemo DMG. Costs 1 Anemo Dice and 2 Unaligned Dices.",
+                "code_name": "wind_spirit_creation"
+            },
+            {
+                "name": "Astable Anemohypostasis Creation - 6308",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Anemo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Anemo 3;switch enemy prev",
+                "des": "Deals 3 Anemo DMG, the target is forcibly switched to the previous character. Costs 3 Anemo Dices.",
+                "code_name": "astable_anemohypostasis_creation_-_6308"
+            },
+            {
+                "name": "Forbidden Creation - Isomer 74 / Type II",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Anemo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Anemo 1;summon large_wind_spirit",
+                "des": "Deals 1 Anemo DMG, summons 1 Large Wind Spirit. Costs 3 Anemo Dices and 2 Energy.",
+                "code_name": "forbidden_creation_-_isomer_74_/_type_ii"
+            }
+        ],
+        "code_name": "sucrose"
     }
 ]

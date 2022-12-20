@@ -10,7 +10,7 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 
 ```
 Progress
-[Characters] 2 / 27
+[Characters] 3 / 27
 [Actions] 8 / 117
 ```
 
@@ -27,11 +27,11 @@ python game.py
 ```
 
 ## TODO
-1. Elemental reactions
+1. Elemental reactions: electro, hydro, dendro, geo
 2. Support card
-3. Summons
+3. Summons: now beta
 4. More characters and action cards
-5. Debug
+5. Debug - Thank you so much for helping me test it! Please report any bugs you found via issue, and include as many as logs if possible.
 
 ## Update log
 12/19/22:
@@ -39,6 +39,8 @@ python game.py
 2. Better character switch pipeline when one character is dead
 3. Buff from foods is done
 4. Add swap card phase at the beginning of the game
+5. Summons is beta now
+6. Add Anemo reactions
 
 
 12/18/22:

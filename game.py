@@ -9,6 +9,7 @@ class Game:
         self.decks = decks
         for i in range(2):
             self.decks[i].enemy_ptr = self.decks[1 - i]
+            self.decks[i].game_ptr = self
         self.agents = [i.agent for i in decks]
         self.agent_num = len(decks)
         self.round_num = 0
@@ -75,6 +76,8 @@ class Game:
                 raise NotImplementedError(f'[engine_action]{cmd}')
             
     def parse_space_action(self, action):
+        if action == '':
+            return
         if action == 'finish':
             self.finish_round[self.current_agent] = True
             # player who finishes first moves first in the next round
@@ -91,9 +94,10 @@ class Game:
             elif cmdw[0] == 'convert':
                 action = self.get_current_deck().execute_action(cmdw[1])
             elif cmdw[0] == 'skill':
-                my_char = self.get_current_deck().get_character(cmdw[1])
+                my_deck = self.get_current_deck()
+                my_char = my_deck.get_character(cmdw[1])
                 enemy_char = self.get_other_deck().get_current_character()
-                my_char.get_skill(cmdw[2]).exec(self, my_char, enemy_char)
+                my_char.get_skill(cmdw[2]).exec(my_deck, my_char, enemy_char)
                 self.switch_agent = True
             elif cmdw[0] == 'cost':
                 d_num = int(cmdw[1])
@@ -139,7 +143,6 @@ class Game:
             if d.has_alive_changed():
                 tmp = self.current_agent
                 self.current_agent = i
-                assert i != tmp
                 print(f'\n\nPlayer {i + 1} needs to switch character')
                 d.print_actions()
                 # ask user to activate a new character
@@ -166,7 +169,7 @@ class Game:
 
             
         # round start
-        while self.check_win() < 0 and self.round_num < 5:
+        while self.check_win() < 0 and self.round_num < 15:
             # start a new round
             self.round_num += 1
             self.finish_round = [False] * self.agent_num
