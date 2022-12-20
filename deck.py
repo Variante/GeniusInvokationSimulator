@@ -123,6 +123,7 @@ class Deck:
             idx = self.character_order[-1]
         except IndexError:
             idx = self.character_order[0]
+        print('[activate_prev]', idx, self.character_order)
         self.activate_by_id(idx)
     
     def activate_next(self):
@@ -135,16 +136,28 @@ class Deck:
     def _deactivate(self):
         # transfer buffs if necessary
         current_char = self.get_current_character()
-        cidx = self.character_order.pop(0)
+        idx = self.character_order.pop(0)
         if current_char.alive:
             # manually deactivate
             buffs = current_char.deactivate()
             # add back to the end
-            self.character_order.append(cidx)
+            self.character_order.append(idx)
+        # print('[_deactivate]', idx, self.character_order)
          
     def activate_by_id(self, idx):
         self._deactivate()
         # move to the first
+        # print('[activate_by_id]', idx, self.character_order)
+        if idx not in self.character_order:
+            # character killed by skill first, then request a switch
+            # in this case just ignore the switch
+            """
+            print('\n' * 5)
+            print(self.characters[idx])
+            print('Killed')
+            print('\n' * 5)
+            """
+            return
         self.character_order.remove(idx)
         self.character_order.insert(0, idx)
         self.characters[idx].activate()
