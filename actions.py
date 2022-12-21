@@ -29,6 +29,8 @@ class Action:
             self.code += ';buff full'
         elif 'weapon' in self.tags:
             self.code = 'weapon ' + self.code
+        elif 'artifact' in self.tags:
+            self.code = 'artifact ' + self.code
 
         # self.active_character = data.get('active_character', None)
     """

@@ -1,5 +1,5 @@
 from utils import *
-from buff import Buff, Weapon
+from buff import Buff, Weapon, Artifact
 
 class Skill:
     def __init__(self, data):
@@ -153,9 +153,11 @@ class Character:
     def add_weapon(self, source, data):
         self.weapon = Weapon(source, data, self, self.weapon_type)
 
+    def add_artifact(self, source, data):
+        self.artifact = Artifact(source, data, self)
+
     def add_shield(self, source, strength):
         self.shield += strength
-
     
     def proc_buff_event(self, keyword):
         for buff in self.get_buff(keyword):

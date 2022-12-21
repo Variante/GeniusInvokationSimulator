@@ -91,6 +91,8 @@ class Game:
                 target_char.add_buff(code_name, cmd)
             elif cmdw[0] == 'weapon':
                 target_char.add_weapon(code_name, cmd)
+            elif cmdw[0] == 'artifact':
+                target_char.add_artifact(code_name, cmd)
             elif cmdw[0] == 'shield':
                 try:
                     target_char.add_shield(code_name, int(cmdw[1]))

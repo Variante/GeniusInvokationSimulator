@@ -1017,7 +1017,7 @@
         },
         "des": "After a character uses a Normal Attack: Heal self for 1 HP. (Max 3 times per Round)\n(A character can equip a maximum of 1 Artifact)",
         "tags": [
-            "atrifact"
+            "artifact"
         ],
         "code": "heal 1,on_normal_attack_finished,life 3 0 1",
         "type": "equipment",
@@ -1038,7 +1038,7 @@
         },
         "des": "After the character uses an Elemental Skill: Heal self for 2 HP. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
         "tags": [
-            "atrifact"
+            "artifact"
         ],
         "code": "heal 1,on_elemental_skill_finished",
         "type": "equipment",
@@ -1059,7 +1059,7 @@
         },
         "des": "After a character uses an Elemental Burst: Heal all your characters for 1 HP. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
         "tags": [
-            "atrifact"
+            "artifact"
         ],
         "code": "heal_all 1,on_elemental_burst_finished",
         "type": "equipment",
@@ -1080,7 +1080,7 @@
         },
         "des": "After an opposing character is defeated: If the character this card is attached to is the active character, create Omni Element Die.\n(A character can equip a maximum of 1 Artifact)",
         "tags": [
-            "atrifact"
+            "artifact"
         ],
         "code": "gen_Omni 2,on_defeated",
         "type": "equipment",
@@ -1101,7 +1101,7 @@
         },
         "des": "After a character triggers an Elemental Reaction: Create 1 Elemental Die that matches this Character's Elemental Type. (Max 3 times per Round)\n(A character can equip a maximum of 1 Artifact)",
         "tags": [
-            "atrifact"
+            "artifact"
         ],
         "code": "gen_current 1,life 3 0 1,on_reaction",
         "type": "equipment",
@@ -1123,9 +1123,289 @@
         "des": "After a character uses an Elemental Burst: All your characters on standby gain 1 Energy. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
         "code": "recharge_bg 1,on_elemental_burst_finished",
         "tags": [
-            "atrifact"
+            "artifact"
         ],
         "type": "equipment",
         "code_name": "exile_s_circlet"
+    },
+    {
+        "img": "Broken_Rime's_Circlet_Card.png",
+        "name": "Broken Rime's Echo",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Cryo Die. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "broken_rime_s_echo"
+    },
+    {
+        "img": "Blizzard_Strayer_Card.png",
+        "name": "Blizzard Strayer",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Cryo Die. (Once per Round)\nRoll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to be Cryo Dice.\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "blizzard_strayer"
+    },
+    {
+        "img": "Wine-Stained_Tricorne_Card.png",
+        "name": "Wine-Stained Tricorne",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Hydro Die. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "wine_stained_tricorne"
+    },
+    {
+        "img": "Heart_of_Depth_Card.png",
+        "name": "Heart of Depth",
+        "cost_raw": "3 Matching Elemental  Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Hydro Die. (Once per Round)\nRoll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to be Hydro Dice.\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "heart_of_depth"
+    },
+    {
+        "img": "Witch's_Scorching_Hat_Card.png",
+        "name": "Witch's Scorching Hat",
+        "cost_raw": "2 Matching Elemental  Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Pyro Die. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "witch_s_scorching_hat"
+    },
+    {
+        "img": "Crimson_Witch_of_Flames_Card.png",
+        "name": "Crimson Witch of Flames",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Pyro Die. (Once per Round)\nRoll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to be Pyro Dice.\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "crimson_witch_of_flames"
+    },
+    {
+        "img": "Thunder_Summoner's_Crown_Card.png",
+        "name": "Thunder Summoner's Crown",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Electro Die. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "thunder_summoner_s_crown"
+    },
+    {
+        "img": "Thundering_Fury_Card.png",
+        "name": "Thundering Fury",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Electro Die. (Once per Round)\nRoll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to be Electro Dice.\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "thundering_fury"
+    },
+    {
+        "img": "Viridescent_Venerer's_Diadem_Card.png",
+        "name": "Viridescent Venerer's Diadem",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Anemo Die. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "viridescent_venerer_s_diadem"
+    },
+    {
+        "img": "Viridescent_Venerer_Card.png",
+        "name": "Viridescent Venerer",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Anemo Die. (Once per Round)\nRoll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to be Anemo Dice.\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "viridescent_venerer"
+    },
+    {
+        "img": "Mask_of_Solitude_Basalt_Card.png",
+        "name": "Mask of Solitude Basalt",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Geo Die. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "mask_of_solitude_basalt"
+    },
+    {
+        "img": "Archaic_Petra_Card.png",
+        "name": "Archaic Petra",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Geo Die. (Once per Round)\nRoll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to be Geo Dice.\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "archaic_petra"
+    },
+    {
+        "img": "Laurel_Coronet_Card.png",
+        "name": "Laurel Coronet",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Dendro Die. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "laurel_coronet"
+    },
+    {
+        "img": "Deepwood_Memories_Card.png",
+        "name": "Deepwood Memories",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "When a character uses a Skill or equips a Talent: Spend 1 less Dendro Die. (Once per Round)\nRoll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to be Dendro Dice.\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "artifact"
+        ],
+        "type": "equipment",
+        "code_name": "deepwood_memories"
     }
 ]
