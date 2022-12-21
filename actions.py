@@ -12,7 +12,7 @@ class Action:
             
         self.name = name   
         self.code_name = data['code_name']
-        self.code = data['code']
+        self.code = data.get('code', '')
         self.cost = data['cost']
         """
         "cost": {
@@ -27,6 +27,8 @@ class Action:
         
         if 'food' in self.tags:
             self.code += ';buff full'
+        elif 'weapon' in self.tags:
+            self.code = 'weapon ' + self.code
 
         # self.active_character = data.get('active_character', None)
     """
@@ -36,15 +38,16 @@ class Action:
     
     def _get_action_prefix(self, deck):
         if self.atype == 'equipment':
-
             if 'talent' in self.tags and deck.get_current_character().code_name not in self.code:
-                    return []
+                return []
+            elif 'weapon' in self.tags:
+                return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters() if to_code_name(cha.weapon_type) in self.tags]
 
             return f'equipment {self.code_name}'
         else:
             if 'food' in self.tags:
                 res = []
-                for cha in deck.characters:
+                for cha in deck.get_alive_characters():
                     if cha.query_buff('full'):
                         continue
                     if 'heal' in self.code and cha.get_health_need() > 0:                    
@@ -61,8 +64,8 @@ class Action:
                 return []
                 
             if 'recharge_any' in self.tags:
-                for cha in deck.characters:
-                    if cha.get_energy_need():
+                for cha in deck.get_alive_characters():
+                    if cha.get_energy_need() and cha.alive:
                         break
                 else:
                     return []

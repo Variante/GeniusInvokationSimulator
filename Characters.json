@@ -4,6 +4,8 @@
         "name": "Diluc",
         "energy_limit": 3,
         "element": "Pyro",
+        "weapon": "Claymore",
+        "faction": "Mondstadt",
         "skills": [
             {
                 "name": "Tempered Sword",
@@ -63,6 +65,8 @@
         "name": "Kaeya",
         "energy_limit": 2,
         "element": "Cryo",
+        "faction": "Mondstadt",
+        "weapon": "Sword",
         "skills": [
             {
                 "name": "Ceremonial Bladework",
@@ -122,6 +126,8 @@
         "name": "Sucrose",
         "energy_limit": 2,
         "element": "Anemo",
+        "weapon": "Catalyst",
+        "faction": "Mondstadt",
         "skills": [
             {
                 "name": "Wind Spirit Creation",

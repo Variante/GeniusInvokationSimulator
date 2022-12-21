@@ -18,6 +18,8 @@ class Buff:
         else:
             cmds = code.split(',')
         for cmd in cmds:
+            if len(cmd) == 0:
+                continue
             cmdw = cmd.split()
             if cmdw[0] == 'life':
                 self.life = int(cmdw[1])
@@ -61,6 +63,20 @@ class Buff:
         attribs = ','.join([f'{i}({self.attribs[i]})' for i in self.attribs])
         return f"[{attribs} from {self.source} ({self.life})]"
 
+
+class Weapon(Buff):
+    def __init__(self, source, code, char_ptr, weapon_type):
+        # Put life in the front so that it can be overrided, and remove head "weapon"
+        super(Weapon, self).__init__(source, 'life 1 0 1,' + code[7:], char_ptr)
+        self.wtype = weapon_type
+        self.name = source
+
+    # In weapon: use life as a counter, which means how many times we used the weapon
+    # When the round finished, reset the life of the weapon
+    def on_round_finished(self):
+        self.life = self.init_life
+
+    
 
 class Summon(Buff):
     def __init__(self, source, data):

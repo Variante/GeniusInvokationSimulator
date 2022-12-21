@@ -87,7 +87,7 @@
         "img": "Lotus_Flower_Crisp.png",
         "name": "Lotus Flower Crisp",
         "cost_raw": "1 Elemental Dice",
-        "code": "buff shield 3",
+        "code": "buff dmg_down 3",
         "cost": {
             "d_type": [
                 "Unaligned"
@@ -676,5 +676,330 @@
         ],
         "type": "equipment",
         "code_name": "cold_blooded_strike"
+    },
+    {
+        "img": "Magic_Guide_Card.png",
+        "name": "Magic Guide",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\n(Only Catalyst Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "weapon",
+            "catalyst"
+        ],
+        "type": "equipment",
+        "code_name": "magic_guide"
+    },
+    {
+        "img": "Sacrificial_Fragments_Card.png",
+        "name": "Sacrificial Fragments",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nAfter the character uses an Elemental Skill: Create 1 Elemental Die of the same Elemental Type as this character. (Once per Round)\n(Only Catalyst Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "weapon",
+            "catalyst"
+        ],
+        "code": "gen_current_die 1",
+        "type": "equipment",
+        "code_name": "sacrificial_fragments"
+    },
+    {
+        "img": "Skyward_Atlas_Card.png",
+        "name": "Skyward Atlas",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nOnce per Round: This character's Normal Attacks deal +1 additional DMG.\n(Only Catalyst Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "weapon",
+            "catalyst"
+        ],
+        "code": "normal_attack_dmg_up 1",
+        "type": "equipment",
+        "code_name": "skyward_atlas"
+    },
+    {
+        "img": "Raven_Bow_Card.png",
+        "name": "Raven Bow",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\n(Only Bow Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "bow",
+            "weapon"
+        ],
+        "type": "equipment",
+        "code_name": "raven_bow"
+    },
+    {
+        "img": "Sacrificial_Bow_Card.png",
+        "name": "Sacrificial Bow",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nAfter the character uses an Elemental Skill: Create 1 Elemental Die of the same Elemental Type as this character. (Once per Round)\n(Only Bow Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "bow",
+            "weapon"
+        ],
+        "type": "equipment",
+        "code": "gen_current_die 1",
+        "code_name": "sacrificial_bow"
+    },
+    {
+        "img": "Skyward_Bow_Card.png",
+        "name": "Skyward Harp",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nOnce per Round: This character's Normal Attacks deal +1 additional DMG.\n(Only Bow Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "bow",
+            "weapon"
+        ],
+        "type": "equipment",
+        "code": "normal_attack_dmg_up 1",
+        "code_name": "skyward_harp"
+    },
+    {
+        "img": "White_Iron_Greatsword_Card.png",
+        "name": "White Iron Greatsword",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\n(Only Claymore Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "claymore",
+            "weapon"
+        ],
+        "type": "equipment",
+        "code_name": "white_iron_greatsword"
+    },
+    {
+        "img": "Sacrificial_Greatsword_Card.png",
+        "name": "Sacrificial Greatsword",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nAfter the character uses an Elemental Skill: Create 1 Elemental Die of the same Elemental Type as this character. (Once per Round)\n(Only Claymore Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "claymore",
+            "weapon"
+        ],
+        "code": "gen_current_die 1",
+        "type": "equipment",
+        "code_name": "sacrificial_greatsword"
+    },
+    {
+        "img": "Wolf's_Gravestone_Card.png",
+        "name": "Wolf's Gravestone",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nDeal +2 additional DMG if the target's remaining HP is equal to or less than 6.\n(Only Claymore Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "claymore",
+            "weapon"
+        ],
+        "code": "enemy_health_lower_than_six_dmg_up 2,life 1 0 0",
+        "type": "equipment",
+        "code_name": "wolf_s_gravestone"
+    },
+    {
+        "img": "White_Tassel_Card.png",
+        "name": "White Tassel",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\n(Only Polearm Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "polearm",
+            "weapon"
+        ],
+        "type": "equipment",
+        "code_name": "white_tassel"
+    },
+    {
+        "img": "Lithic_Spear_Card.png",
+        "name": "Lithic Spear",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nWhen played: For each party member from Liyue, grant 1 Shield point to the character to which this is attached. (Max 3 points)\n(Only Polearm Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "polearm",
+            "weapon"
+        ],
+        "code": ";shield liyue",
+        "type": "equipment",
+        "code_name": "lithic_spear"
+    },
+    {
+        "img": "Skyward_Spine_Card.png",
+        "name": "Skyward Spine",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nOnce per Round: This character's Normal Attacks deal +1 additional DMG.\n(Only Polearm Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "polearm",
+            "weapon"
+        ],
+        "code": "normal_attack_dmg_up 1",
+        "type": "equipment",
+        "code_name": "skyward_spine"
+    },
+    {
+        "img": "Traveler's_Handy_Sword_Card.png",
+        "name": "Traveler's Handy Sword",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\n(Only Sword Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "sword",
+            "weapon"
+        ],
+        "type": "equipment",
+        "code_name": "traveler_s_handy_sword"
+    },
+    {
+        "img": "Sacrificial_Sword_Card.png",
+        "name": "Sacrificial Sword",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nAfter the character uses an Elemental Skill: Create 1 Elemental Die of the same Elemental Type as this character. (Once per Round)\n(Only Sword Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "sword",
+            "weapon"
+        ],
+        "type": "equipment",
+        "code": "gen_current_die 1",
+        "code_name": "sacrificial_sword"
+    },
+    {
+        "img": "Aquila_Favonia_Card.png",
+        "name": "Aquila Favonia",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "The character deals +1 DMG.\nAfter the opposing character uses a Skill: If the character with this attached is the active character, heal this character for 1 HP. (Max twice per Round)\n(Only Sword Characters can equip this. A character can equip a maximum of 1 Weapon)",
+        "tags": [
+            "sword",
+            "weapon"
+        ],
+        "type": "equipment",
+        "code": "life 2 0 1,heal 1,on_enemy_skill_finished",
+        "code_name": "aquila_favonia"
     }
 ]

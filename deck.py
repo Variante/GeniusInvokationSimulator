@@ -99,7 +99,7 @@ class Deck:
         res['used_actions'] = [i.state() for i in self.used_actions]
         res['available_actions'] = [i.state() for i in self.available_actions]
         return res
-        
+
     def add_summon(self, source, code_name):
         for i in self.summon_pool:
             if i['code_name'] == code_name:
@@ -188,9 +188,19 @@ class Deck:
         except IndexError:
             return
         self.activate_by_id(idx)
-    
+
+    def count_character_by_faction(self, s):
+        res = 0
+        for c in self.characters:
+            if to_code_name(c.faction) == s:
+                res += 1
+        return res
+
     def get_current_element(self):
         return self.get_current_character().element
+
+    def get_alive_characters(self):
+        return [self.characters[i] for i in self.character_order]
                 
     def get_current_character(self):
         return self.characters[self.character_order[0]]
@@ -287,6 +297,7 @@ class Deck:
         while True:
             try:
                 s = self.summons[i]
+                # check the effect of this summon (buff)
                 self.get_current_character().engine_buff(s)
                 s.on_round_finished()
                 if s.life > 0:

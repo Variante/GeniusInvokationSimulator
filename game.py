@@ -89,6 +89,14 @@ class Game:
                 target_char.add_talent(cmd)
             elif cmdw[0] == 'buff':
                 target_char.add_buff(code_name, cmd)
+            elif cmdw[0] == 'weapon':
+                target_char.add_weapon(code_name, cmd)
+            elif cmdw[0] == 'shield':
+                try:
+                    target_char.add_shield(code_name, int(cmdw[1]))
+                except ValueError:
+                    value = cur_deck.count_character_by_faction(cmdw[1])
+                    target_char.add_shield(code_name, value)
 
     def engine_event(self, action, target):
         code_name = action.code_name

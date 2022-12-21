@@ -28,7 +28,7 @@ python game.py
 
 ## TODO
 1. Elemental reactions: electro, hydro, dendro, geo
-2. Support card, weapon, artifact equipment system
+2. Support card, artifact equipment system
 3. Summons: now beta
 4. More characters and action cards
 5. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
@@ -36,7 +36,10 @@ python game.py
 ## Update log
 12/20/22:
 1. Add some Elemental Resonance cards and some event cards
-2. reorganize the game loop structure
+2. Reorganize the game loop structure
+3. Init equipment system
+4. Add two talent cards and all weapon cards
+5. Add shield system
 
 12/19/22:
 1. Finish basic skill pipeline

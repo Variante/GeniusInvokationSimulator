@@ -1,5 +1,5 @@
 from utils import *
-from buff import Buff
+from buff import Buff, Weapon
 
 class Skill:
     def __init__(self, data):
@@ -19,6 +19,8 @@ class Skill:
 
         energy_gain = 1 if self.stype != 'elemental_burst' else 0
 
+        weapon =  my_char.weapon
+
         for code in self.code:
             cmds = code.split()
             if cmds[0] == 'if_else':
@@ -33,6 +35,10 @@ class Skill:
                 dmg_type = cmds[1]
                 dmg = int(cmds[2])
                 
+                if weapon is not None:
+                    dmg += 1
+                    if enemy_char.health <= 6:
+                        dmg += my_char.weapon.query('enemy_health_lower_than_six_dmg_up')
                 # query all buffs
                 res = my_char.take_pattern_buff(self.stype)
                 for i in res:
@@ -75,6 +81,16 @@ class Skill:
                 
         my_char.recharge(energy_gain)
 
+        # gen die based on the weapon
+        if self.stype == 'elemental_skill' and weapon is not None:
+            v = weapon.query('gen_current_die')
+            if v > 0:
+                my_deck.cost(my_char.element, -v) # generate dices
+                weapon.on_activated()
+
+        for buff in enemy_char.get_buff('on_enemy_skill_finished'):
+            enemy_char.engine_buff(buff)
+
         if my_char.query_buff('on_skill_finished'):
             if my_char.take_buff('switch_my_prev'):
                 my_deck.activate_prev()
@@ -110,16 +126,19 @@ class Character:
         self.skills = [Skill(i) for i in data['skills']]
         self.health_limit = data.get('health_limit', 10)
         self.health = self.health_limit
-        self.energy_limit = data.get('energy_limit', 3)
-        self.energy = self.energy_limit # 0
-        self.element = data.get('element', 'Pyro')
+        self.energy_limit = data['energy_limit']
+        self.energy = 0
+        self.element = data['element']
         
+        self.faction = data['faction']
+        self.weapon_type = data['weapon']
         self.weapon = None
         self.artifact = None
         self.talent = False
         self.buffs = []
         
-        
+        self.shield = 0
+
         self.infusion_element = []
         self.active = False
         self.activate_cost = 1    
@@ -129,6 +148,12 @@ class Character:
 
     def add_talent(self, talent):
         self.talent = True
+
+    def add_weapon(self, source, data):
+        self.weapon = Weapon(source, data, self, self.weapon_type)
+
+    def add_shield(self, source, strength):
+        self.shield += strength
 
     def engine_buff(self, buff):
         activated = False
@@ -163,18 +188,26 @@ class Character:
             return []
         return self.affordable_skills(deck.current_dice)
     
+    def _get_buff_list(self):
+        res = []
+        if self.weapon:
+            res.append(self.weapon)
+        if self.artifact:
+            res.append(self.artifact)
+        return self.buffs + res
+
     def get_buff(self, keyword):
-        return [i for i in self.buffs if i.query(keyword)]
+        return [i for i in self._get_buff_list() if i.query(keyword)]
         
     def query_buff(self, keyword):
         value = 0
-        for i in self.buffs:
+        for i in self._get_buff_list():
             value += i.query(keyword)
         return value
     
     def query_pattern_buff(self, buff_head):
         res = {}
-        for i in self.buffs:
+        for i in self._get_buff_list():
             for j in i.attribs:
                 if j.startswith(buff_head):
                     res[j] = i.query(j)
@@ -182,7 +215,7 @@ class Character:
 
     def take_buff(self, keyword):
         value = 0
-        for i in self.buffs:
+        for i in self._get_buff_list():
             if keyword in i.attribs:
                 i.on_activated()
                 value += i.query(keyword)
@@ -191,7 +224,7 @@ class Character:
 
     def take_pattern_buff(self, buff_head):
         res = {}
-        for i in self.buffs:
+        for i in self._get_buff_list():
             activated = False
             for j in i.attribs:
                 if j.startswith(buff_head):
@@ -271,16 +304,22 @@ class Character:
         if dmg_type != 'Physical':
             self.infusion(dmg_type, source)
         
-        self.dmg(dmg_num)
+        self.dmg(dmg_num, 0)
         
-    def dmg(self, num):
+    def dmg(self, dmg_num, dmg_no_shield):
         v = self.take_buff('vulnerable')
-        num += v
-        if num > 0:
-            d = self.take_buff('shield')
-            num = max(num - d, 0)
+        dmg_num += v
+        if dmg_num > 0:
+            d = self.take_buff('dmg_down')
+            dmg_num = max(dmg_num - d, 0)
         
-        self.health = max(self.health - num, 0)
+        if dmg_num >= self.shield:
+            dmg_num -= self.shield
+            self.shield = 0
+        else:
+            self.shield -= dmg_num
+
+        self.health = max(self.health - dmg_num - dmg_no_shield, 0)
         # dead
         if self.health == 0:
             self.deactivate()
@@ -309,6 +348,7 @@ class Character:
         for i in self.deck_ptr.enemy_ptr.get_summon_buff('on_swirl'):
             i.remove_keyword('on_swirl')
             dtype, dval = i.query('dmg')
+            assert dtype == 'Anemo'
             i.change_keyword('dmg', (element, dval))
     
     def frozen(self):
@@ -371,8 +411,8 @@ class Character:
     def __repr__(self):
         return f"{self.name} | H: {self.health} / {self.health_limit} | E: {self.energy} / {self.energy_limit} {'| <*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
-               f"W: {'[W]' if self.weapon else ''} |A: {'[A]' if self.artifact else ''} |T: {self.talent}\n" + \
-               f"Element: {self.element:<5} | Infusion element: {' '.join(self.infusion_element)}"
+               f"T: {self.talent} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
+               f"E: {self.element:<5} | {' '.join(self.infusion_element)}"
         
     def get_skill(self, code_name):
         for i in self.skills:
