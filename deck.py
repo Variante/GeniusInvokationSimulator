@@ -54,7 +54,16 @@ class Deck:
         random.shuffle(self.to_pull_actions)
         
     def roll(self):
-        self.current_dice = self.d.roll()
+        keep = {}
+        # an ugly way to process artifact effect
+        for c in self.get_alive_characters():
+            if c.artifact is None:
+                continue
+            for i in c.artifact.show_all_attr():
+                if i.startswith('roll_'):
+                    keep[i[5:]] = c.artifact.query(i)
+                    break
+        self.current_dice = self.d.roll(keep=keep)
         
     def reroll(self, keep, total_num=8):
         # self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))

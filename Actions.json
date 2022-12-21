@@ -1145,6 +1145,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "normal_attack_cost_cyro_down,elemental_skill_cost_cyro_down,elemental_brust_cost_cyro_down,talent_cost_cyro_down",
         "type": "equipment",
         "code_name": "broken_rime_s_echo"
     },
@@ -1165,6 +1166,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "roll_Cryo 2,normal_attack_cost_cyro_down,elemental_skill_cost_cyro_down,elemental_brust_cost_cyro_down,talent_cost_cyro_down",
         "type": "equipment",
         "code_name": "blizzard_strayer"
     },
@@ -1185,6 +1187,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "normal_attack_cost_hydro_down,elemental_skill_cost_hydro_down,elemental_brust_cost_hydro_down,talent_cost_hydro_down",
         "type": "equipment",
         "code_name": "wine_stained_tricorne"
     },
@@ -1205,6 +1208,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "roll_Hydro 2,normal_attack_cost_hydro_down,elemental_skill_cost_hydro_down,elemental_brust_cost_hydro_down,talent_cost_hydro_down",
         "type": "equipment",
         "code_name": "heart_of_depth"
     },
@@ -1225,6 +1229,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "normal_attack_cost_pyro_down,elemental_skill_cost_pyro_down,elemental_brust_cost_pyro_down,talent_cost_pyro_down",
         "type": "equipment",
         "code_name": "witch_s_scorching_hat"
     },
@@ -1245,6 +1250,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "roll_Pyro 2,normal_attack_cost_pyro_down,elemental_skill_cost_pyro_down,elemental_brust_cost_pyro_down,talent_cost_pyro_down",
         "type": "equipment",
         "code_name": "crimson_witch_of_flames"
     },
@@ -1265,6 +1271,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "normal_attack_cost_electro_down,elemental_skill_cost_electro_down,elemental_brust_cost_electro_down,talent_cost_electro_down",
         "type": "equipment",
         "code_name": "thunder_summoner_s_crown"
     },
@@ -1285,6 +1292,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "roll_Electro 2,normal_attack_cost_electro_down,elemental_skill_cost_electro_down,elemental_brust_cost_electro_down,talent_cost_electro_down",
         "type": "equipment",
         "code_name": "thundering_fury"
     },
@@ -1305,6 +1313,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "normal_attack_cost_anemo_down,elemental_skill_cost_anemo_down,elemental_brust_cost_anemo_down,talent_cost_anemo_down",
         "type": "equipment",
         "code_name": "viridescent_venerer_s_diadem"
     },
@@ -1325,6 +1334,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "roll_Anemo 2,normal_attack_cost_anemo_down,elemental_skill_cost_anemo_down,elemental_brust_cost_anemo_down,talent_cost_anemo_down",
         "type": "equipment",
         "code_name": "viridescent_venerer"
     },
@@ -1345,6 +1355,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "normal_attack_cost_geo_down,elemental_skill_cost_geo_down,elemental_brust_cost_geo_down,talent_cost_geo_down",
         "type": "equipment",
         "code_name": "mask_of_solitude_basalt"
     },
@@ -1365,6 +1376,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "roll_Geo 2,normal_attack_cost_geo_down,elemental_skill_cost_geo_down,elemental_brust_cost_geo_down,talent_cost_geo_down",
         "type": "equipment",
         "code_name": "archaic_petra"
     },
@@ -1385,6 +1397,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "normal_attack_cost_dendro_down,elemental_skill_cost_dendro_down,elemental_brust_cost_dendro_down,talent_cost_dendro_down",
         "type": "equipment",
         "code_name": "laurel_coronet"
     },
@@ -1405,6 +1418,7 @@
         "tags": [
             "artifact"
         ],
+        "code": "roll_Dendro 2,normal_attack_cost_dendro_down,elemental_skill_cost_dendro_down,elemental_brust_cost_dendro_down,talent_cost_dendro_down",
         "type": "equipment",
         "code_name": "deepwood_memories"
     }

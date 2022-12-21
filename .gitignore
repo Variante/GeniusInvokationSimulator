@@ -3,3 +3,4 @@ img/*
 parse.py
 web.html
 .vscode/*
+test_*

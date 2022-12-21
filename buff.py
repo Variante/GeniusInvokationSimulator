@@ -48,6 +48,9 @@ class Buff:
                 value = (value[0], 0)
         return value
 
+    def show_all_attr(self):
+        return self.attribs.keys()
+
     def on_activated(self):
         self.life -= self.rf_by_activated
         
@@ -87,6 +90,7 @@ class Artifact(Buff):
     # When the round finished, reset the life of the weapon
     def on_round_finished(self):
         self.life = self.init_life
+
     
 
 class Summon(Buff):

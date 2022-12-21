@@ -97,8 +97,14 @@ class Action:
 
             return f'event {self.code_name}'
     
+    def get_cost(self, deck):
+        if 'talent' in self.tags:
+            mods = deck.get_current_character().query_pattern_buff('talent')
+            return modify_cost(self.cost, mods)
+        return self.cost
+
     def get_action_space(self, deck):
-        res = generate_action_space(self.cost, deck.current_dice, deck.get_current_character(), prefix=self._get_action_prefix(deck))
+        res = generate_action_space(self.get_cost(deck), deck.current_dice, deck.get_current_character(), prefix=self._get_action_prefix(deck))
         if count_total_dice(deck.current_dice) > 0:
             for i in deck.current_dice:
                 if deck.current_dice[i] > 0:
@@ -129,3 +135,6 @@ def init_actions(names):
     return [Action(name, pool) for name in names]
     
         
+if __name__ == '__main__':
+    pool = load_js('Actions')
+    dump_js('test_action_list', [i['name'] for i in pool])

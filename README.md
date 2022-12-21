@@ -11,7 +11,7 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 ```
 Progress
 [Characters] 3 / 27
-[Actions] 48 / 117
+[Actions] 68 / 117
 ```
 
 ## Dependence
@@ -28,12 +28,14 @@ python game.py
 
 ## TODO
 1. Elemental reactions: electro, hydro, dendro, geo
-2. Support card, artifact equipment system
-3. Summons: now beta
-4. More characters and action cards
-5. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
+2. Support card, Talent card
+3. More characters
+4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
+12/21/22:
+1. Add all artifact cards, now Artifact sys is beta
+
 12/20/22:
 1. Add some Elemental Resonance cards and some event cards
 2. Reorganize the game loop structure
