@@ -13,9 +13,13 @@ class Agent:
     def get_action(self, state):
         try:
             for i in state['action_space'][::-1]:
-                if 'diluc' in i:
+                # if 'diluc' in i:
+                #     return i
+                if 'kaeya' in i:
                     return i
                 if i.startswith('equipment'):
+                    return i
+                if i.startswith('skill'):
                     return i
             return np.random.choice(state['action_space'])    
         except IndexError:

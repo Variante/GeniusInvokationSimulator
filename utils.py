@@ -18,7 +18,7 @@ def get_project_progress():
     names = ['Characters', 'Actions']
     print('Card progress')
     for name in names:
-        print(f"[{name}] {len(load_js(name))} / {len(load_js('todo_' + namegit)) + len(load_js(name))}")
+        print(f"[{name}] {len(load_js(name))} / {len(load_js('todo_' + name)) + len(load_js(name))}")
 
 def to_code_name(s):
     return '_'.join(re.sub(r'[^\w]', ' ', s).lower().strip().split())

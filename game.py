@@ -85,7 +85,7 @@ class Game:
             if cmdw[0] == 'skill':
                 self._proc_skill(cmdw)
             elif cmdw[0] == 'talent':
-                assert target_char.code_name == cmdw[1]
+                assert target_char.code_name in cmdw[1]
                 target_char.add_talent(cmd)
             elif cmdw[0] == 'buff':
                 target_char.add_buff(code_name, cmd)
@@ -210,9 +210,8 @@ class Game:
         for i, d in enumerate(self.decks):
             print(f'Player {i + 1} ' + ('[√]' if self.finish_round[i] else '[ ]') + (' <*>' if self.current_agent == i else ''))
             d.print_deck()
-            if self.current_agent == i:
-                print('Available actions:')
-                d.print_actions()
+            print('Available actions:')
+            d.print_actions()
             print('-' * 50)
             
     def has_alive_changed(self):
@@ -252,7 +251,7 @@ class Game:
             self.parse_space_action(action)
             
             if show:
-                self.print_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
+                self.print_full_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
 
         # round start
         while self.check_win() < 0 and self.round_num < 15:
@@ -281,7 +280,7 @@ class Game:
                     self.next_agent()
                     
                 if show:
-                    self.print_desk(f'Player {tmp + 1} exec: ' + action)
+                    self.print_full_desk(f'Player {tmp + 1} exec: ' + action)
 
             # one round finished
             self.on_round_finished()

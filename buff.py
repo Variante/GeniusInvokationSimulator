@@ -1,5 +1,5 @@
 class Buff:
-    def __init__(self, source, code):
+    def __init__(self, source, code, char_ptr=None):
         self.source = source
         self.code = code
         self.life = 1
@@ -8,6 +8,8 @@ class Buff:
         self.rf_by_activated = 1 # life reduced by activated
         self.attribs = {}
         self._parse_code(code)
+        self.condition = None
+        self.char_ptr = char_ptr
 
     # buff parse engine
     def _parse_code(self, code):
@@ -22,6 +24,8 @@ class Buff:
                 self.rf_by_round = int(cmdw[2])
                 self.rf_by_activated = int(cmdw[3])
                 self.init_life = self.life 
+            elif cmdw[0] == 'when':
+                self.condition = cmd[5:]
             elif len(cmdw) > 2:
                 self.attribs[cmdw[0]] = tuple(cmdw[1:-1] + [int(cmdw[-1])])
             elif len(cmdw) == 2:
@@ -31,7 +35,11 @@ class Buff:
                 
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
-        if ('starts_since_next_round' in self.attribs and self.life == self.init_life) or self.life <= 0:
+        disabled = self.life <= 0
+        disabled |= 'starts_since_next_round' in self.attribs and self.life == self.init_life
+        if self.condition is not None:
+            disabled |= not eval(self.condition)
+        if disabled:
             if isinstance(value, int):
                 value = 0
             elif isinstance(value, tuple):
@@ -48,6 +56,8 @@ class Buff:
         return vars(self)
 
     def __repr__(self):
+        if self.life == 0:
+            return ''
         attribs = ','.join([f'{i}({self.attribs[i]})' for i in self.attribs])
         return f"[{attribs} from {self.source} ({self.life})]"
 
@@ -71,6 +81,8 @@ class Summon(Buff):
         pass
         
     def __repr__(self):
+        if self.life == 0:
+            return ''
         return f'{self.name}: ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
             f" from {self.source} ({self.life})"
 

@@ -34,23 +34,6 @@
         "types": []
     },
     {
-        "img": "Cold-Blooded_Strike_Card.png",
-        "name": "Cold-Blooded Strike",
-        "cost_raw": "4 Cryo Dices",
-        "cost": {
-            "d_type": [
-                "Cryo"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Kaeya, equip this card.\nAfter Kaeya equips this card, immediately use Frostgnaw once.\nAfter your Kaeya, who has this card equipped, uses Frostgnaw, he heals himself for 2 HP. (Once per Round)\n(You must have Kaeya in your deck to add this card to your deck.)",
-        "tags": [],
-        "types": []
-    },
-    {
         "img": "Steady_Breathing_Card.png",
         "name": "Steady Breathing",
         "cost_raw": "4 Cryo Dices",

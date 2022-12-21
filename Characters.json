@@ -95,7 +95,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg Cryo 3",
+                "code": "dmg Cryo 3;heal 0",
                 "code_name": "frostgnaw"
             },
             {

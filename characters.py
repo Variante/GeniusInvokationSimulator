@@ -9,10 +9,14 @@ class Skill:
         self.cost = data['cost']
         self.des = data['des']
         self.code = data['code'].split(';')
-        self.round_usage = 0        
+        self.round_usage = 0
+        self.round_usage_with_talent = 0
         
     def exec(self, my_deck, my_char, enemy_char):
         self.round_usage += 1
+        if my_char.talent:
+            self.round_usage_with_talent += 1
+
         energy_gain = 1 if self.stype != 'elemental_burst' else 0
 
         for code in self.code:
@@ -43,6 +47,15 @@ class Skill:
                 elif self.stype == "elemental_burst"
                     dmg += my_char.take_buff("elemental_burst_dmg_up")
                 """
+            elif cmds[0] == 'heal':
+                h = int(cmds[1])
+                # query all buffs
+                res = my_char.take_pattern_buff(self.stype)
+                for i in res:
+                    if 'heal_up' in i:
+                        h += res[i]
+                my_char.heal(h)
+
             elif cmds[0] == 'energy':
                 energy_gain = int(cmds[1])
             elif cmds[0] == 'infusion':
@@ -73,6 +86,7 @@ class Skill:
 
     def on_round_finished(self):
         self.round_usage = 0
+        self.round_usage_with_talent = 0
         
     def state(self):
         return vars(self)
@@ -233,7 +247,7 @@ class Character:
 
     def add_buff(self, source, code):
         if isinstance(code, str):
-            self.buffs.append(Buff(source, code))
+            self.buffs.append(Buff(source, code, self))
         else:
             raise NotImplementedError('Unknown buff code format')
     
@@ -306,10 +320,11 @@ class Character:
         for t, i in enumerate(self.infusion_element):
             reaction = element_can_react(i, element)
             if reaction:
-                
-                if 'Pyro' in [i, element] and source == self.deck_ptr.get_enemy_current_character().code_name:
-                    if self.take_buff(f'pyro_reaction_dmg_up'):
-                        self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
+                enemy_char = self.deck_ptr.get_enemy_current_character()
+                if 'Pyro' in [i, element] and source == enemy_char.code_name:
+                    val = enemy_char.take_buff(f'pyro_reaction_dmg_up')
+                    if val > 0:
+                        self.add_buff(f'reaction_{reaction}', f'vulnerable {val}')
                         # TODO: not sure about this, should be good according to this video:
                         # https://www.bilibili.com/video/BV13P4y1X74c/
                     
