@@ -33,6 +33,12 @@ class Deck:
         self.supports = []
         
         self.defeated_this_round = 0
+
+    def save(self):
+        res = self.state()
+        res['last_alive'] = self.last_alive
+        res['defeated_this_round'] = self.defeated_this_round
+        return res
     
     def has_alive_changed(self):
         changed = False
@@ -107,6 +113,7 @@ class Deck:
         res['to_pull_actions'] = [i.state() for i in self.to_pull_actions]
         res['used_actions'] = [i.state() for i in self.used_actions]
         res['available_actions'] = [i.state() for i in self.available_actions]
+        res['action_space'] = self.get_action_space()
         return res
 
     def add_summon(self, source, code_name):
@@ -200,7 +207,7 @@ class Deck:
 
     def count_character_by_faction(self, s):
         res = 0
-        for c in self.characters:
+        for c in self.get_alive_characters():
             if to_code_name(c.faction) == s:
                 res += 1
         return res
@@ -315,6 +322,7 @@ class Deck:
                     self.summons.pop(i)
             except IndexError:
                 break
+
     
     def recharge(self, cmdw):
         if cmdw[1] == 'any':

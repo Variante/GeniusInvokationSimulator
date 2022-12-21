@@ -35,6 +35,7 @@ python game.py
 ## Update log
 12/21/22:
 1. Add all artifact cards, now Artifact sys is beta
+2. Add save function, now we can export all the states
 
 12/20/22:
 1. Add some Elemental Resonance cards and some event cards

@@ -17,8 +17,24 @@ class Game:
         self.agent_moves_first = None
         self.current_agent = 0
         self.finish_round = [False] * self.agent_num
-        
+
         self.switch_agent = False
+        self.action_history = []
+
+    def save(self):
+        game_state = {
+            'round_num': self.round_num,
+            'agent_moves_first': self.agent_moves_first,
+            'current_agent': self.current_agent,
+            'finish_round': self.finish_round,
+            'switch_agent': self.switch_agent,
+            'action_history': self.action_history
+        }
+        game_state['decks'] = [d.save() for d in self.decks]
+        return game_state
+            
+        
+
         
     def next_agent(self):
         idx = self.current_agent
@@ -144,6 +160,7 @@ class Game:
         self.switch_agent = True
 
     def parse_space_action(self, action):
+        self.action_history.append(f'Player {self.current_agent + 1}: {action}')
         if action in ['finish', '']:
             self.finish_round[self.current_agent] = True
             # player who finishes first moves first in the next round
@@ -240,19 +257,24 @@ class Game:
                 return
             
     
-    def game_loop(self, show=False):
+    def game_loop(self, show=False, save_hist=False):
         # init the game
         for i in self.decks:
             # draw 5 init cards
             i.shuffle()
             i.pull(5)
-            # swap init cards
             
+            # swap init cards
             if show:
                 self.print_desk(f'Player {self.current_agent + 1} init cards')
+            if save_hist:
+                dump_js(f'states/R{self.round_num:02d}_00_draw_card', self.save())
                 
             keep_card = i.agent.get_keep_card(self.state())
             i.keep_action(keep_card)
+
+            if save_hist:
+                dump_js(f'states/R{self.round_num:02d}_01_swap_card', self.save())
 
             # select the first character
             s = self.state()
@@ -262,17 +284,22 @@ class Game:
             
             if show:
                 self.print_full_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
+            if save_hist:
+                dump_js(f'states/R{self.round_num:02d}_02_activate', self.save())
 
         # round start
         while self.check_win() < 0 and self.round_num < 15:
             # start a new round
             self.round_num += 1
             self.on_round_start()
+            t = 0
             while True:
                 self.switch_agent = False
                 
                 tmp = self.current_agent
-                
+
+                dump_js(f'states/R{self.round_num:02d}_{t:02d}_before', self.save())
+
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state_for_action())
                 self.parse_space_action(action)
@@ -281,6 +308,8 @@ class Game:
                 if ret >= 0:
                     if show:
                         self.print_desk(f'Player {tmp + 1} exec: ' + action)
+                    if save_hist:
+                        dump_js(f'states/R{self.round_num:02d}_{t:02d}_done', self.save())
                     return ret
                     
                 self.has_alive_changed()
@@ -291,11 +320,16 @@ class Game:
                     
                 if show:
                     self.print_full_desk(f'Player {tmp + 1} exec: ' + action)
+                if save_hist:
+                    dump_js(f'states/R{self.round_num:02d}_{t:02d}_done', self.save())
+                t += 1
 
             # one round finished
             self.on_round_finished()
             if show:
                 self.print_desk('round finished')
+            if save_hist:
+                dump_js(f'states/R{self.round_num:02d}_{t:02d}_round_finished', self.save())
 
         return self.check_win()
         

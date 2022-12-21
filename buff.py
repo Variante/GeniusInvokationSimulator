@@ -57,8 +57,14 @@ class Buff:
     def on_round_finished(self):
         self.life -= self.rf_by_round
 
+    def remove_keyword(self, kw):
+        del self.attribs[kw]
+        
+    def change_keyword(self, kw, v):
+        self.attribs[kw] = v
+
     def state(self):
-        return vars(self)
+        return {i:j for i, j in vars(self).items() if i not in ['condition', 'char_ptr']}
 
     def __repr__(self):
         if self.life == 0:
@@ -98,12 +104,6 @@ class Summon(Buff):
         super(Summon, self).__init__(source, data['code']+',on_round_finished')
         self.name = data['name']
         self.code_name = data['code_name']
-        
-    def remove_keyword(self, kw):
-        del self.attribs[kw]
-        
-    def change_keyword(self, kw, v):
-        self.attribs[kw] = v
 
     def heal(self, num):
         self.life += num

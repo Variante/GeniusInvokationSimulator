@@ -46,13 +46,7 @@ class Skill:
                         dmg += res[i]
                         
                 enemy_char.take_dmg(dmg_type, dmg, 'e_' + self.code_name)
-                """
-                if self.stype == "normal_attack":
-                    dmg += my_char.take_pattern_buff("normal_attack_dmg_up")
-                    my_char.take_buff("normal_attack_cost_unaligned_down")
-                elif self.stype == "elemental_burst"
-                    dmg += my_char.take_buff("elemental_burst_dmg_up")
-                """
+
             elif cmds[0] == 'heal':
                 h = int(cmds[1])
                 # query all buffs
@@ -138,8 +132,6 @@ class Character:
         self.talent = False
         self.buffs = []
         
-        self.shield = 0
-
         self.infusion_element = []
         self.active = False
         self.activate_cost = 1    
@@ -157,7 +149,7 @@ class Character:
         self.artifact = Artifact(source, data, self)
 
     def add_shield(self, source, strength):
-        self.shield += strength
+        self.add_buff(source, f'shield {strength}')
     
     def proc_buff_event(self, keyword):
         for buff in self.get_buff(keyword):
@@ -339,6 +331,31 @@ class Character:
     def dmg(self, dmg_num, dmg_no_shield):
         v = self.take_buff('vulnerable')
         dmg_num += v
+        # This video is about how to calculate the shield
+        # https://www.bilibili.com/video/BV1384y1t7cE/
+
+        # move transfer buffs to the end
+        self.buffs.sort(key=lambda x: x.query('transfer'))
+        i = 0
+        while dmg_num > 0 and i < len(self.buffs):
+            buff = self.buffs[i]
+            res = buff.query('dmg_down')
+            if res > 0:
+                dmg_num -= res
+                buff.on_activated()
+
+            if dmg_num <= 0:
+                break
+
+            res = buff.query('shield')
+            if res > 0:
+                if dmg_num >= res:
+                    buff.change_keyword('shield', 0)
+                else:
+                    buff.change_keyword('shield', res - dmg_num)
+                    break                
+            i += 1
+        """
         if dmg_num > 0:
             d = self.take_buff('dmg_down')
             dmg_num = max(dmg_num - d, 0)
@@ -348,6 +365,7 @@ class Character:
             self.shield = 0
         else:
             self.shield -= dmg_num
+        """
 
         self.health = max(self.health - dmg_num - dmg_no_shield, 0)
         # dead
@@ -433,16 +451,18 @@ class Character:
             'energy_limit': self.energy_limit,
             'energy': self.energy,
             'element': self.element,
+            'faction': self.faction,
+            'weapon_type': self.weapon_type,
             
-            'weapon': self.weapon,
-            'artifact': self.artifact,
+            'weapon': self.weapon.state() if self.weapon else None,
+            'artifact': self.artifact.state() if self.artifact else None,
             'talent': self.talent,
             
             'buffs': [i.state() for i in self.buffs],
             
             'infusion_element': self.infusion_element,
             'active': self.active,
-            'active_cost': self.activate_cost,
+            'activate_cost': self.activate_cost,
             'alive': self.alive
         }
         

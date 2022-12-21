@@ -1,6 +1,8 @@
 *.pyc
 img/*
+states/*.json
 parse.py
 web.html
 .vscode/*
 test_*
+*.zip
