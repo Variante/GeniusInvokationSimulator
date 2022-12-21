@@ -33,9 +33,7 @@ class Game:
         game_state['decks'] = [d.save() for d in self.decks]
         return game_state
             
-        
 
-        
     def next_agent(self):
         idx = self.current_agent
         while True:
@@ -61,11 +59,6 @@ class Game:
             return 1
         else:
             return 2
-    
-    def state_for_action(self):
-        res = self.state()
-        res['action_space'] = self.get_current_deck().get_action_space()
-        return res
 
     def state(self):
         return {
@@ -73,6 +66,17 @@ class Game:
                 'other_state': self.get_other_deck().state_for_enemy()
             }
             
+    def state_for_action(self):
+        res = self.state()
+        res['action_space'] = self.get_current_deck().get_action_space()
+        return res
+
+    def state_only_mine(self):
+        return  {
+            'my_state': self.get_current_deck().state(),
+            'other_state': None,
+        }
+
     def get_current_deck(self):
         return self.decks[self.current_agent]
         
@@ -257,7 +261,7 @@ class Game:
                 return
             
     
-    def game_loop(self, show=False, save_hist=False):
+    def game_loop(self, show=False, save_hist=True):
         # init the game
         for i in self.decks:
             # draw 5 init cards
@@ -270,14 +274,14 @@ class Game:
             if save_hist:
                 dump_js(f'states/R{self.round_num:02d}_00_draw_card', self.save())
                 
-            keep_card = i.agent.get_keep_card(self.state())
+            keep_card = i.agent.get_keep_card(self.state_only_mine())
             i.keep_action(keep_card)
 
             if save_hist:
                 dump_js(f'states/R{self.round_num:02d}_01_swap_card', self.save())
 
             # select the first character
-            s = self.state()
+            s = self.state_only_mine()
             s['action_space'] = [f"activate {i.code_name}" for i in i.characters]
             action = i.agent.get_action(s)
             self.parse_space_action(action)
@@ -286,6 +290,7 @@ class Game:
                 self.print_full_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
             if save_hist:
                 dump_js(f'states/R{self.round_num:02d}_02_activate', self.save())
+            self.next_agent()
 
         # round start
         while self.check_win() < 0 and self.round_num < 15:
