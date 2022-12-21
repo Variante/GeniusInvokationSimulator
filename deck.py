@@ -32,7 +32,7 @@ class Deck:
         self.summons = []
         self.supports = []
         
-        self.kocked_out_this_round = 0
+        self.defeated_this_round = 0
     
     def has_alive_changed(self):
         changed = False
@@ -285,7 +285,7 @@ class Deck:
         self.reroll(keep=keep_dice)
         
         # clear counter
-        self.kocked_out_this_round = 0
+        self.defeated_this_round = 0
         
 
     def on_round_finished(self):
@@ -298,7 +298,7 @@ class Deck:
             try:
                 s = self.summons[i]
                 # check the effect of this summon (buff)
-                self.get_current_character().engine_buff(s)
+                self.get_current_character()._engine_buff(s)
                 s.on_round_finished()
                 if s.life > 0:
                     i += 1

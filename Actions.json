@@ -493,7 +493,7 @@
         "des": "Only playable if one of your characters is defeated this Round:\nCreate Omni Element Die and your current active character gains 1 Energy.",
         "code": "recharge active 1;gen 1 Omni",
         "tags": [
-            "when_knocked_out"
+            "when_defeated"
         ],
         "type": "event",
         "code_name": "i_haven_t_lost_yet"
@@ -1001,5 +1001,131 @@
         "type": "equipment",
         "code": "life 2 0 1,heal 1,on_enemy_skill_finished",
         "code_name": "aquila_favonia"
+    },
+    {
+        "img": "Adventurer's_Bandana_Card.png",
+        "name": "Adventurer's Bandana",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "After a character uses a Normal Attack: Heal self for 1 HP. (Max 3 times per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "atrifact"
+        ],
+        "code": "heal 1,on_normal_attack_finished,life 3 0 1",
+        "type": "equipment",
+        "code_name": "adventurer_s_bandana"
+    },
+    {
+        "img": "Lucky_Dog's_Circlet_Card.png",
+        "name": "Lucky Dog's Silver Circlet",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "After the character uses an Elemental Skill: Heal self for 2 HP. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "atrifact"
+        ],
+        "code": "heal 1,on_elemental_skill_finished",
+        "type": "equipment",
+        "code_name": "lucky_dog_s_silver_circlet"
+    },
+    {
+        "img": "Traveling_Doctor's_Handkerchief_Card.png",
+        "name": "Traveling Doctor's Handkerchief",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "After a character uses an Elemental Burst: Heal all your characters for 1 HP. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "atrifact"
+        ],
+        "code": "heal_all 1,on_elemental_burst_finished",
+        "type": "equipment",
+        "code_name": "traveling_doctor_s_handkerchief"
+    },
+    {
+        "img": "Gambler's_Earrings_Card.png",
+        "name": "Gambler's Earrings",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "After an opposing character is defeated: If the character this card is attached to is the active character, create Omni Element Die.\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "atrifact"
+        ],
+        "code": "gen_Omni 2,on_defeated",
+        "type": "equipment",
+        "code_name": "gambler_s_earrings"
+    },
+    {
+        "img": "Instructor's_Cap_Card.png",
+        "name": "Instructor's Cap",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "After a character triggers an Elemental Reaction: Create 1 Elemental Die that matches this Character's Elemental Type. (Max 3 times per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "tags": [
+            "atrifact"
+        ],
+        "code": "gen_current 1,life 3 0 1,on_reaction",
+        "type": "equipment",
+        "code_name": "instructor_s_cap"
+    },
+    {
+        "img": "Exile's_Circlet_Card.png",
+        "name": "Exile's Circlet",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "After a character uses an Elemental Burst: All your characters on standby gain 1 Energy. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
+        "code": "recharge_bg 1,on_elemental_burst_finished",
+        "tags": [
+            "atrifact"
+        ],
+        "type": "equipment",
+        "code_name": "exile_s_circlet"
     }
 ]

@@ -14,7 +14,7 @@
         },
         "des": "Combat Action:  When your active character is Ganyu, equip this card.\nAfter Ganyu equips this card, immediately use Frostflake Arrow once.\nWhen your Ganyu, who has this card equipped, uses Frostflake Arrow: Cryo DMG dealt by this Skill +1 if this Skill has been used before during this match, and it now deals 3 Piercing DMG to all opposing characters on standby instead.\n(You must have Ganyu in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Shaken,_Not_Purred_Card.png",
@@ -31,7 +31,7 @@
         },
         "des": "Combat Action:  When your active character is Diona, equip this card.\nAfter Diona equips this card, immediately use Icy Paws once.\nWhen your Diona, who has this card equipped, creates a Cat-Claw Shield, its Shield points +1.\n(You must have Diona in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Steady_Breathing_Card.png",
@@ -48,7 +48,7 @@
         },
         "des": "Combat Action:  When your active character is Chongyun, equip this card.\nAfter Chongyun equips this card, immediately use Chonghua's Layered Frost once.\nWhen your Chongyun, who has this card equipped, creates a Chonghua Frost Field, it will have the following effects: Starting Duration (Rounds) +1, will cause your Sword, Claymore, and Polearm-wielding characters' Normal Attacks to deal +1 DMG.\n(You must have Chongyun in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Kanten_Senmyou_Blessing_Card.png",
@@ -65,7 +65,7 @@
         },
         "des": "The Cryo Elemental Infusion created by your Kamisato Ayaka, who has this card equipped, allows the character to which it is attached to deal +1 Cryo DMG.\nWhen you switch to Kamisato Ayaka, who has this card equipped: Spend 1 less Elemental Die. (Once per Round)\n(You must have Kamisato Ayaka in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Glorious_Season_Card.png",
@@ -82,7 +82,7 @@
         },
         "des": "Combat Action:  When your active character is Barbara, equip this card.\nAfter Barbara equips this card, immediately use Let the Show Begin\u266a once.\nWhen your Barbara, who has this card equipped, is on the field, Melody Loop will allow you to spend 1 less Elemental Die the next time you use \"Switch Character.\" (Once per round)\n(You must have Barbara in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Crossfire_Card.png",
@@ -99,7 +99,7 @@
         },
         "des": "Combat Action:  When your active character is Xiangling, equip this card.\nAfter Xiangling equips this card, immediately use Guoba Attack once.\nWhen your Xiangling, who has this card equipped, uses Guoba Attack, she will also deal 1 Pyro DMG.\n(You must have Xiangling in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Grand_Expectation_Card.png",
@@ -116,7 +116,7 @@
         },
         "des": "Combat Action:  When your active character is Bennett, equip this card.\nAfter Bennett equips this card, immediately use Fantastic Voyage once.\nWhen your Bennett, who has this card equipped, creates an Inspiration Field, its DMG Bonus is now always active and will no longer have an HP restriction.\n(You must have Bennett in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Naganohara_Meteor_Swarm_Card.png",
@@ -133,7 +133,7 @@
         },
         "des": "Combat Action:  When your active character is Yoimiya, equip this card.\nAfter Yoimiya equips this card, immediately use Niwabi Fire-Dance once.\nAfter your Yoimiya, who has this card equipped, triggers Niwabi Enshou: Deal 1 additional Pyro DMG.\n(You must have Yoimiya in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Stellar_Predator_Card.png",
@@ -150,7 +150,7 @@
         },
         "des": "Combat Action:  When your active character is Fischl, equip this card.\nAfter Fischl equips this card, immediately use Nightrider once.\nWhen your Fischl, who has this card equipped, creates an Oz, and after Fischl uses a Normal Attack: Deal 2 Electro DMG. (Consumes Usage(s))\n(You must have Fischl in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Awakening_Card.png",
@@ -167,7 +167,7 @@
         },
         "des": "Combat Action:  When your active character is Razor, equip this card.\nAfter Razor equips this card, immediately use Claw and Thunder once.\nAfter your Razor, who has this card equipped, uses Claw and Thunder: 1 of your Electro characters gains 1 Energy. (Active Character prioritized)\n(You must have Razor in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Thundering_Penance_Card.png",
@@ -184,7 +184,7 @@
         },
         "des": "Combat Action:  When your active character is Keqing, equip this card.\nAfter Keqing equips this card, immediately use Stellar Restoration once.\nWhen your Keqing, who has this card equipped, creates an Electro Elemental Infusion, it will have the following effects:\nStarting Duration (Rounds) +1, Electro DMG dealt by the attached character +1.\n(You must have Keqing in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Featherfall_Judgement_Card.png",
@@ -201,7 +201,7 @@
         },
         "des": "Combat Action:  When your active character is Cyno, equip this card.\nAfter Cyno equips this card, immediately use Secret Rite: Chasmic Soulfarer once.\nWhen your Cyno, who has this card equipped, uses Secret Rite: Chasmic Soulfarer with 3 or 5 levels of Pactsworn Pathclearer's Indwelling effect, deal +1 additional DMG.\n(You must have Cyno in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Chaotic_Entropy_Card.png",
@@ -218,7 +218,7 @@
         },
         "des": "Combat Action:  When your active character is Sucrose, equip this card.\nAfter Sucrose equips this card, immediately use Forbidden Creation - Isomer 75 / Type II once.\nAfter the Large Wind Spirit created by your Sucrose, who had this card equipped, has converted to another Elemental Type: Deal +1 DMG of this Elemental Type.\n(You must have Sucrose in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Lands_of_Dandelion_Card.png",
@@ -235,7 +235,7 @@
         },
         "des": "Combat Action:  When your active character is Jean, equip this card.\nAfter Jean equips this card, immediately use Dandelion Breeze once.\nWhen your Jean, who has this card equipped, is on the field, Dandelion Field will cause you to deal +1 Anemo DMG.\n(You must have Jean in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Strategic_Reserve_Card.png",
@@ -252,7 +252,7 @@
         },
         "des": "Combat Action:  When your active character is Ningguang, equip this card.\nAfter Ningguang equips this card, immediately use Jade Screen once.\nWhen your Ningguang, who has this card equipped, is on the field, Jade Screen will cause you to deal +1 Geo DMG.\n(You must have Ningguang in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "I_Got_Your_Back_Card.png",
@@ -269,7 +269,7 @@
         },
         "des": "Combat Action:  When your active character is Noelle, equip this card.\nAfter Noelle equips this card, immediately use Breastplate once.\nWhen your Noelle, who has this card equipped, creates a Full Plate, it will heal all your characters for 1 HP after Noelle uses a Normal Attack. (Once per Round)\n(You must have Noelle in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Floral_Sidewinder_Card.png",
@@ -286,7 +286,7 @@
         },
         "des": "Combat Action:  When your active character is Collei, equip this card.\nAfter Collei equips this card, immediately use Floral Brush once.\nAfter your Collei, who has this card equipped, uses Floral Brush, during this Round, when your characters' Skills trigger Dendro-Related Reactions: Deal 1 Dendro DMG. (Once per Round)\n(You must have Collei in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Streaming_Surge_Card.png",
@@ -303,7 +303,7 @@
         },
         "des": "Combat Action:  When your active character is Rhodeia of Loch, equip this card.\nAfter Rhodeia of Loch equips this card, immediately use Tide and Torrent once.\nWhen your Rhodeia of Loch, who has this card equipped, uses Tide and Torrent, all of your Summon(s) gain +1 Usage(s).\n(You must have Rhodeia of Loch in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Mirror_Cage_Card.png",
@@ -320,7 +320,7 @@
         },
         "des": "Combat Action:  When your active character is Mirror Maiden, equip this card.\nAfter Mirror Maiden equips this card, immediately use Influx Blast once.\nWhen your Mirror Maiden, who has this card equipped, creates a Refraction, it will have the following effects:\nStarting Duration (Rounds) +1, will increase the Elemental Dice Cost of switching from the character to which this is attached to another character by 1.\n(You must have Mirror Maiden in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Paid_in_Full_Card.png",
@@ -337,7 +337,7 @@
         },
         "des": "Combat Action:  When your active character is Fatui Pyro Agent, equip this card.\nAfter Fatui Pyro Agent equips this card, immediately use Prowl once.\nWhen your Fatui Pyro Agent, who has this card equipped, creates a Stealth, it will have the following effects:\nStarting Usage(s) +1, the Physical DMG the attached character deals will be converted to Pyro DMG.\n(You must have Fatui Pyro Agent in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Transcendent_Automaton_Card.png",
@@ -354,7 +354,7 @@
         },
         "des": "Combat Action:  When your active character is Maguu Kenki, equip this card.\nAfter Maguu Kenki equips this card, immediately use Blustering Blade once.\nAfter your Maguu Kenki, who has this card equipped, uses Blustering Blade, you will switch to your next character. You will switch to your previous character when your Maguu Kenki, who has this card equipped, uses Frosty Assault.\n(You must have Maguu Kenki in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Stonehide_Reforged_Card.png",
@@ -371,7 +371,7 @@
         },
         "des": "Combat Action:  When your active character is Stonehide Lawachurl, equip this card.\nAfter Stonehide Lawachurl equips this card, immediately use Upa Shato once.\nWhen your Stonehide Lawachurl, who has this card equipped, defeats an opposing character: Stonehide Lawachurl will re-attach Stonehide and Stone Force.\n(You must have Stonehide Lawachurl in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Proliferating_Spores_Card.png",
@@ -388,133 +388,7 @@
         },
         "des": "Combat Action:  When your active character is Jadeplume Terrorshroom, equip this card.\nAfter Jadeplume Terrorshroom equips this card, immediately use Volatile Spore Cloud once.\nYour Jadeplume Terrorshroom, who has this card equipped, can accumulate 1 more stack of Radical Vitality.\n(You must have Jadeplume Terrorshroom in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
-    },
-    {
-        "img": "Adventurer's_Bandana_Card.png",
-        "name": "Adventurer's Bandana",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "After a character uses a Normal Attack: Heal self for 1 HP. (Max 3 times per Round)\n(A character can equip a maximum of 1 Artifact)",
-        "tags": [
-            "atrifact"
-        ],
-        "types": [
-            "equipment"
-        ]
-    },
-    {
-        "img": "Lucky_Dog's_Circlet_Card.png",
-        "name": "Lucky Dog's Silver Circlet",
-        "cost_raw": "2 Unaligned Dices",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "After the character uses an Elemental Skill: Heal self for 2 HP. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
-        "tags": [
-            "atrifact"
-        ],
-        "types": [
-            "equipment"
-        ]
-    },
-    {
-        "img": "Traveling_Doctor's_Handkerchief_Card.png",
-        "name": "Traveling Doctor's Handkerchief",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "After a character uses an Elemental Burst: Heal all your characters for 1 HP. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
-        "tags": [
-            "atrifact"
-        ],
-        "types": [
-            "equipment"
-        ]
-    },
-    {
-        "img": "Gambler's_Earrings_Card.png",
-        "name": "Gambler's Earrings",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "After an opposing character is defeated: If the character this card is attached to is the active character, create Omni Element \u00d72.\n(A character can equip a maximum of 1 Artifact)",
-        "tags": [
-            "atrifact"
-        ],
-        "types": [
-            "equipment"
-        ]
-    },
-    {
-        "img": "Instructor's_Cap_Card.png",
-        "name": "Instructor's Cap",
-        "cost_raw": "2 Unaligned Dices",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "After a character triggers an Elemental Reaction: Create 1 Elemental Die that matches this Character's Elemental Type. (Max 3 times per Round)\n(A character can equip a maximum of 1 Artifact)",
-        "tags": [
-            "atrifact"
-        ],
-        "types": [
-            "equipment"
-        ]
-    },
-    {
-        "img": "Exile's_Circlet_Card.png",
-        "name": "Exile's Circlet",
-        "cost_raw": "2 Unaligned Dices",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "After a character uses an Elemental Burst: All your characters on standby gain 1 Energy. (Once per Round)\n(A character can equip a maximum of 1 Artifact)",
-        "tags": [
-            "atrifact"
-        ],
-        "types": [
-            "equipment"
-        ]
+        "type": ""
     },
     {
         "img": "Broken_Rime's_Circlet_Card.png",
@@ -533,9 +407,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Blizzard_Strayer_Card.png",
@@ -554,9 +426,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Wine-Stained_Tricorne_Card.png",
@@ -575,9 +445,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Heart_of_Depth_Card.png",
@@ -596,9 +464,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Witch's_Scorching_Hat_Card.png",
@@ -617,9 +483,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Crimson_Witch_of_Flames_Card.png",
@@ -638,9 +502,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Thunder_Summoner's_Crown_Card.png",
@@ -659,9 +521,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Thundering_Fury_Card.png",
@@ -680,9 +540,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Viridescent_Venerer's_Diadem_Card.png",
@@ -701,9 +559,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Viridescent_Venerer_Card.png",
@@ -722,9 +578,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Mask_of_Solitude_Basalt_Card.png",
@@ -743,9 +597,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Archaic_Petra_Card.png",
@@ -764,9 +616,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Laurel_Coronet_Card.png",
@@ -785,9 +635,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Deepwood_Memories_Card.png",
@@ -806,9 +654,7 @@
         "tags": [
             "atrifact"
         ],
-        "types": [
-            "equipment"
-        ]
+        "type": "equipment"
     },
     {
         "img": "Liyue_Harbor_Wharf_Card.png",
@@ -825,7 +671,7 @@
         },
         "des": "End Phase: Draw 2 cards.\nUsage(s): 2",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Knights_of_Favonius_Library_Card.png",
@@ -842,7 +688,7 @@
         },
         "des": "When played: Select any Elemental Dice to reroll.\nRoll Phase: Gain another chance to reroll.",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Jade_Chamber_Card.png",
@@ -859,7 +705,7 @@
         },
         "des": "Roll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to match the Elemental Type of your active character.",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Dawn_Winery_Card.png",
@@ -876,7 +722,7 @@
         },
         "des": "When you perform \"Switch Character\": Spend 1 less Elemental Die. (Once per Round)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Wangshu_Inn_Card.png",
@@ -893,7 +739,7 @@
         },
         "des": "End Phase: Heal the most injured character on standby for 2 HP.\nUsage(s): 2",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Favonius_Cathedral_Card.png",
@@ -910,7 +756,7 @@
         },
         "des": "End Phase: Heal your active character for 2 HP.\nUsage(s): 2",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Paimon_Card.png",
@@ -925,9 +771,9 @@
             ],
             "p_num": 0
         },
-        "des": "When Action Phase begins: Create Omni Element \u00d72.\nUsage(s): 2",
+        "des": "When Action Phase begins: Create Omni Element Die.\nUsage(s): 2",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Katheryne_Card.png",
@@ -944,7 +790,7 @@
         },
         "des": "When you perform \"Switch Character\": This switch is considered a Fast Action instead of a Combat Action. (Once per Round)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Timaeus_Card.png",
@@ -961,7 +807,7 @@
         },
         "des": "Comes with 2 Transmutation Materials when played.\nEnd Phase: Gain 1 Transmutation Material.\nWhen playing an Artifact Card: If possible, spend Transmutation Materials equal to the total cost of the Artifact and equip this Artifact for free. (Once per Round)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Wagner_Card.png",
@@ -978,7 +824,7 @@
         },
         "des": "Comes with 2 Forging Billets when played.\nEnd Phase: Gain 1 Forging Billet.\nWhen playing a Weapon Card: If possible, spend Forging Billets equal to the total cost of the Weapon and equip this Weapon for free. (Once per Round)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Chef_Mao_Card.png",
@@ -995,7 +841,7 @@
         },
         "des": "After playing a Food Event Card: Create 1 random Elemental Die. (Once per Round)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Tubby_Card.png",
@@ -1012,7 +858,7 @@
         },
         "des": "When playing a Location Support Card: Spend 2 less Elemental Dice. (Once per Round)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Timmie_Card.png",
@@ -1029,7 +875,7 @@
         },
         "des": "Triggers automatically once per Round: This card gains 1 Pigeon.\nWhen this card gains 3 Pigeons, discard this card, then draw 1 card and create Omni Element \u00d71.",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Liben_Card.png",
@@ -1044,9 +890,9 @@
             ],
             "p_num": 0
         },
-        "des": "End Phase: Collect your unused Elemental Dice (Max 1 of each Elemental Type).\nWhen Action Phase begins: If this card has collected 3 Elemental Dice, draw 2 cards and create Omni Element \u00d72, then discard this card.",
+        "des": "End Phase: Collect your unused Elemental Dice (Max 1 of each Elemental Type).\nWhen Action Phase begins: If this card has collected 3 Elemental Dice, draw 2 cards and create Omni Element Die, then discard this card.",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Chang_the_Ninth_Card.png",
@@ -1063,7 +909,7 @@
         },
         "des": "When either side uses a Skill: If Physical DMG or Piercing DMG was dealt, or an Elemental Reaction was triggered, this card gains 1 Inspiration.\nWhen this card gains 3 Inspiration, discard this card, then draw 2 cards.",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Ellin_Card.png",
@@ -1080,7 +926,7 @@
         },
         "des": "When you use a Skill that has already been used in this Round: Spend 1 less Elemental Die. (Once per Round)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Iron_Tongue_Tian_Card.png",
@@ -1097,7 +943,7 @@
         },
         "des": "End Phase: One of your characters without maximum Energy gains 1 Energy. (Active Character prioritized)\nUsage(s): 2",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Liu_Su_Card.png",
@@ -1114,7 +960,7 @@
         },
         "des": "After you switch characters: If the character you switched to does not have Energy, they will gain 1 Energy. (Once per Round)\nUsage(s):",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Parametric_Transformer_Card.png",
@@ -1131,7 +977,7 @@
         },
         "des": "When either side uses a Skill: If Elemental DMG was dealt, this card gains 1 Qualitative Progress.\nWhen this card gains 3 Qualitative Progress, discard this card, then create 3 different Basic Elemental Dice.",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "NRE_Card.png",
@@ -1148,7 +994,7 @@
         },
         "des": "When played: Draw 1 Food Event Card from your deck.\nWhen you play a Food Event Card: Draw 1 Food Event Card from your deck. (Once per Round)",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Elemental_Resonance_Enduring_Rock.png",
@@ -1205,7 +1051,7 @@
         },
         "des": "Select any Elemental Die to reroll. Can reroll 2 times.",
         "tags": [],
-        "types": []
+        "type": ""
     },
     {
         "img": "Master_of_Weaponry.png",
@@ -1221,12 +1067,8 @@
             "p_num": 0
         },
         "des": "Shift 1 Weapon Equipment Card that has been equipped to one of your characters to another one of your characters of the same Weapon Type.",
-        "tags": [
-            "weapon"
-        ],
-        "types": [
-            "equipment"
-        ]
+        "tags": [],
+        "type": "event"
     },
     {
         "img": "Blessing_of_the_Divine_Relic's_Installation.png",
@@ -1242,12 +1084,8 @@
             "p_num": 0
         },
         "des": "Shift 1 Artifact Equipment Card that has been equipped to one of your characters to another one of your characters.",
-        "tags": [
-            "atrifact"
-        ],
-        "types": [
-            "equipment"
-        ]
+        "tags": [],
+        "type": "event"
     },
     {
         "img": "Abyssal_Summons.png",
@@ -1264,6 +1102,6 @@
         },
         "des": "Summon 1 Random Hilichurl Summon!\n(You must have at least 2 Monster characters in your deck to add this card to your deck.)",
         "tags": [],
-        "types": []
+        "type": "event"
     }
 ]

@@ -45,7 +45,7 @@ class Skill:
                     if 'dmg_up' in i:
                         dmg += res[i]
                         
-                enemy_char.take_dmg(dmg_type, dmg, self.code_name)
+                enemy_char.take_dmg(dmg_type, dmg, 'e_' + self.code_name)
                 """
                 if self.stype == "normal_attack":
                     dmg += my_char.take_pattern_buff("normal_attack_dmg_up")
@@ -65,7 +65,7 @@ class Skill:
             elif cmds[0] == 'energy':
                 energy_gain = int(cmds[1])
             elif cmds[0] == 'infusion':
-                my_char.take_dmg(cmds[1], 0, self.code_name)
+                my_char.take_dmg(cmds[1], 0, 'm_' + self.code_name)
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'summon':
@@ -88,8 +88,9 @@ class Skill:
                 my_deck.cost(my_char.element, -v) # generate dices
                 weapon.on_activated()
 
-        for buff in enemy_char.get_buff('on_enemy_skill_finished'):
-            enemy_char.engine_buff(buff)
+        my_char.proc_buff_event(f'on_{self.stype}_finished')
+
+        enemy_char.proc_buff_event('on_enemy_skill_finished')
 
         if my_char.query_buff('on_skill_finished'):
             if my_char.take_buff('switch_my_prev'):
@@ -155,19 +156,46 @@ class Character:
     def add_shield(self, source, strength):
         self.shield += strength
 
-    def engine_buff(self, buff):
+    
+    def proc_buff_event(self, keyword):
+        for buff in self.get_buff(keyword):
+            self._engine_buff(buff)
+
+    def _engine_buff(self, buff):
         activated = False
 
         res = buff.query('dmg')
         if isinstance(res, tuple) and res[1] > 0:
             activated = True
-            self.deck_ptr.get_enemy_current_character().take_dmg(res[0], res[1], buff.source)
+            self.deck_ptr.get_enemy_current_character().take_dmg(res[0], res[1], 'e_' + self.code_name)
 
         res = buff.query('heal')
         if res > 0:
             activated = True
             self.heal(res)
-            
+         
+        res = buff.query('gen_Omni')
+        if res > 0:
+            activated = True
+            self.deck_ptr.cost('Omni' , -res)
+
+        res = buff.query('gen_current')
+        if res > 0:
+            activated = True
+            self.deck_ptr.cost(self.element, -res)
+
+        res = buff.query('heal_all')
+        if res > 0:
+            activated = True
+            for c in self.deck_ptr.get_alive_characters():
+                c.heal(res)
+
+        res = buff.query('recharge_bg')
+        if res > 0:
+            activated = True
+            for c in self.deck_ptr.get_other_characters():
+                c.recharge(res)
+        
         if activated:
             buff.on_activated()
 
@@ -243,9 +271,8 @@ class Character:
         self.active = True
         self.buffs.extend(self.deck_ptr.transfer_buff)
         self.deck_ptr.transfer_buff = []
-        
-        for buff in self.get_buff('on_character_activated'):
-            self.engine_buff(buff)
+
+        self.proc_buff_event('on_character_activated')
 
     def deactivate(self):
         transfer_buff = []
@@ -256,7 +283,9 @@ class Character:
         # return transfer_buff
         self.deck_ptr.transfer_buff.extend(transfer_buff)
 
-    def on_dead(self):
+    def on_defeated(self):
+        self.proc_buff_event('on_defeated')
+        self.deck_ptr.defeated_this_round += 1
         self.weapon = None
         self.artifact = None
         self.equip = None
@@ -268,8 +297,7 @@ class Character:
         self.alive = False
 
     def on_round_finished(self):
-        for buff in self.get_buff('on_round_finished'):
-            self.engine_buff(buff)
+        self.proc_buff_event('on_round_finished')
         
         for i in self.skills:
             i.on_round_finished()
@@ -323,7 +351,7 @@ class Character:
         # dead
         if self.health == 0:
             self.deactivate()
-            self.on_dead()
+            self.on_defeated()
 
     def melt_or_vaporize(self, reaction):
         self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
@@ -333,7 +361,7 @@ class Character:
         if self.active:
             self.deck_ptr.activate_next()
     
-    def swirl(self, element):
+    def swirl(self, element, source):
         # print('\n\n swirl element ', element)
         for c in self.deck_ptr.get_other_characters():
             """
@@ -342,7 +370,7 @@ class Character:
             # attach new element and calculate dmg
             c.take_dmg(element, 0)
             """
-            c.take_dmg(element, 1, 'swirl')
+            c.take_dmg(element, 1, source)
         
         # swirl for the large wind spirit
         for i in self.deck_ptr.enemy_ptr.get_summon_buff('on_swirl'):
@@ -361,7 +389,13 @@ class Character:
             reaction = element_can_react(i, element)
             if reaction:
                 enemy_char = self.deck_ptr.get_enemy_current_character()
-                if 'Pyro' in [i, element] and source == enemy_char.code_name:
+
+                # if anyone triggers a reaction
+                self.proc_buff_event('on_reaction')
+                enemy_char.proc_buff_event('on_reaction')
+
+                # for card "Elemental Resonance: Fervent Flames"
+                if 'Pyro' in [i, element] and source == 'e_' + enemy_char.code_name:
                     val = enemy_char.take_buff(f'pyro_reaction_dmg_up')
                     if val > 0:
                         self.add_buff(f'reaction_{reaction}', f'vulnerable {val}')
@@ -373,7 +407,7 @@ class Character:
                 elif reaction == 'overloaded':
                     self.overloaded()
                 elif reaction == 'swirl':
-                    self.swirl(i)
+                    self.swirl(i, source)
                 else:
                     # TODO: add reaction later
                     raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')
@@ -381,6 +415,8 @@ class Character:
                     self.infusion_element = self.infusion_element[:t] + self.infusion_element[t + 1:]
                 except IndexError:
                     self.infusion_element = self.infusion_element[:t]
+                
+                
                 return
         if element not in ['Geo', 'Anemo']:
             self.infusion_element.append(element)
@@ -411,7 +447,7 @@ class Character:
     def __repr__(self):
         return f"{self.name} | H: {self.health} / {self.health_limit} | E: {self.energy} / {self.energy_limit} {'| <*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
-               f"T: {self.talent} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
+               f"T: {self.talent:<5} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
                f"E: {self.element:<5} | {' '.join(self.infusion_element)}"
         
     def get_skill(self, code_name):

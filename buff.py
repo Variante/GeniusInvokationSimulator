@@ -76,6 +76,17 @@ class Weapon(Buff):
     def on_round_finished(self):
         self.life = self.init_life
 
+
+class Artifact(Buff):
+    def __init__(self, source, code, char_ptr):
+        # Put life in the front so that it can be overrided, and remove head "artifact"
+        super(Artifact, self).__init__(source, 'life 1 0 1,' + code[9:], char_ptr)
+        self.name = source
+
+    # In weapon: use life as a counter, which means how many times we used the weapon
+    # When the round finished, reset the life of the weapon
+    def on_round_finished(self):
+        self.life = self.init_life
     
 
 class Summon(Buff):

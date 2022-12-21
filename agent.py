@@ -15,8 +15,8 @@ class Agent:
             for i in state['action_space'][::-1]:
                 # if 'diluc' in i:
                 #     return i
-                if 'kaeya' in i:
-                    return i
+                # if 'kaeya' in i:
+                #     return i
                 if i.startswith('equipment'):
                     return i
                 if i.startswith('skill'):

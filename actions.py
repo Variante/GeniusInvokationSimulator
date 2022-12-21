@@ -42,7 +42,8 @@ class Action:
                 return []
             elif 'weapon' in self.tags:
                 return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters() if to_code_name(cha.weapon_type) in self.tags]
-
+            elif 'artifact' in self.tags:
+                return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters()]
             return f'equipment {self.code_name}'
         else:
             if 'food' in self.tags:
@@ -57,7 +58,7 @@ class Action:
             if 'switch_my' in self.code:
                 return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_other_characters() if cha.alive]
                 
-            if 'when_knocked_out' in self.tags and deck.kocked_out_this_round == 0:
+            if 'when_defeated' in self.tags and deck.defeated_this_round == 0:
                 return []
                 
             if 'recharge_active' in self.tags and deck.get_current_character().get_energy_need() == 0:
