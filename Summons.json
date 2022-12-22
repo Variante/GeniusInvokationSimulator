@@ -24,9 +24,15 @@
 		"code": "life 2 1 0,dmg Pyro 1"
 	},
 	{
-        "img": "Hydro Samachurl_Summon.webp",
+        "img": "Hydro_Samachurl_Summon.webp",
         "name": "Hydro Samachurl",
 		"code_name": "hydro_samachurl",
 		"code": "life 2 1 0,dmg Hydro 1"
+	},
+	{
+        "img": "Oz_Summon.webp",
+        "name": "Oz",
+		"code_name": "oz",
+		"code": "life 2 1 0,dmg Electro 1"
 	}
 ]

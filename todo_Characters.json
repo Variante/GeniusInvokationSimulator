@@ -225,27 +225,6 @@
         ]
     },
     {
-        "img": "Fischl_Genius_Invokation_Card.png",
-        "name": "Fischl",
-        "skill": [
-            {
-                "name": "Bolts of Downfall",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Nightrider",
-                "type": "Elemental Skill",
-                "des": "Deals 1 Electro DMG, summons 1 Oz. Costs 3 Electro Dices."
-            },
-            {
-                "name": "Midnight Phantasmagoria",
-                "type": "Elemental Burst",
-                "des": "Deals 4 Electro DMG, deals 2 piercing DMG to all opposing characters on standby. Costs 3 Electro Dices and 3 Energy."
-            }
-        ]
-    },
-    {
         "img": "Razor_Genius_Invokation_Card.png",
         "name": "Razor",
         "skill": [

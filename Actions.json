@@ -700,6 +700,26 @@
         "code_name": "cold_blooded_strike"
     },
     {
+        "img": "Stellar_Predator_Card.png",
+        "name": "Stellar Predator",
+        "cost_raw": "3 Electro Dices",
+        "cost": {
+            "d_type": [
+                "Electro"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "code": "talent fischl;skill fischl nightrider",
+        "des": "Combat Action:  When your active character is Fischl, equip this card.\nAfter Fischl equips this card, immediately use Nightrider once.\nWhen your Fischl, who has this card equipped, creates an Oz, and after Fischl uses a Normal Attack: Deal 2 Electro DMG. (Consumes Usage(s))\n(You must have Fischl in your deck to add this card to your deck.)",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment"
+    },
+    {
         "img": "Magic_Guide_Card.png",
         "name": "Magic Guide",
         "cost_raw": "2 Matching Elemental Dices",

@@ -143,7 +143,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg Anemo 2",
+                "code": "dmg Anemo 1",
                 "des": "Deals 1 Anemo DMG. Costs 1 Anemo Dice and 2 Unaligned Dices.",
                 "code_name": "wind_spirit_creation"
             },
@@ -181,5 +181,66 @@
             }
         ],
         "code_name": "sucrose"
+    },
+    {
+        "img": "Fischl_Genius_Invokation_Card.png",
+        "name": "Fischl",
+        "energy_limit": 3,
+        "element": "Electro",
+        "weapon": "Bow",
+        "faction": "Mondstadt",
+        "skills": [
+            {
+                "name": "Bolts of Downfall",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices.",
+                "cost": {
+                    "d_type": [
+                        "Electro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "code_name": "bolts_of_downfall"
+            },
+            {
+                "name": "Nightrider",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Electro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Electro 1;summon oz",
+                "des": "Deals 1 Electro DMG, summons oz. Costs 3 Electro Dices.",
+                "code_name": "nightrider"
+            },
+            {
+                "name": "Midnight Phantasmagoria",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Electro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 3
+                },
+                "code": "dmg Electro 4;dmg_bg Piercing 2",
+                "des": "Deals 4 Electro DMG, deals 2 piercing DMG to all opposing characters on standby. Costs 3 Electro Dices and 3 Energy.",
+                "code_name": "midnight_phantasmagoria"
+            }
+        ],
+        "code_name": "fischl"
     }
 ]

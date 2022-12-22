@@ -32,6 +32,27 @@ class Skill:
         dealt_dmg = 0
         dmg_type = None
         reaction = False
+        dmg_mods = None
+
+        def dmg_buff_seq():
+            nonlocal dmg_mods
+            dmg_type = cmds[1]
+            dmg = int(cmds[2])
+            if dmg_mods is None:
+                dmg_mods = 0
+                if weapon is not None:
+                    dmg_mods += 1
+                    if enemy_char.health <= 6:
+                        dmg_mods += my_char.weapon.query('enemy_health_lower_than_six_dmg_up')
+                # query all buffs
+                res = my_char.take_pattern_buff(self.stype)
+                for i in res:
+                    if 'dmg_up' in i:
+                        dmg_mods += res[i]
+            # TODO: not sure whether it is correct
+            if dmg_type == 'Piercing':
+                return 'Physical', dmg_mods, dmg
+            return dmg_type, dmg, 0
 
         for code in self.code:
             cmds = code.split()
@@ -44,21 +65,16 @@ class Skill:
                 cmds = code.split()
                 
             if cmds[0] == 'dmg':
-                dmg_type = cmds[1]
-                dmg = int(cmds[2])
-                
-                if weapon is not None:
-                    dmg += 1
-                    if enemy_char.health <= 6:
-                        dmg += my_char.weapon.query('enemy_health_lower_than_six_dmg_up')
-                # query all buffs
-                res = my_char.take_pattern_buff(self.stype)
-                for i in res:
-                    if 'dmg_up' in i:
-                        dmg += res[i]
-                
-                dealt_dmg, reaction = enemy_char.take_dmg(dmg_type, dmg, 'e_' + self.code_name)
-
+                dmg_type, dmg, piercing = dmg_buff_seq()
+                ddmg, dreact = enemy_char.take_dmg(dmg_type, dmg + dmg_mods, 'e_' + self.code_name, piercing)
+                dealt_dmg += ddmg
+                reaction |= dreact
+            elif cmds[0] == 'dmg_bg':
+                dmg_type, dmg, piercing = dmg_buff_seq()
+                for cha in my_deck.enemy_ptr.get_alive_characters():
+                    ddmg, dreact = cha.take_dmg(dmg_type, dmg + dmg_mods, 'e_' + self.code_name, piercing)
+                    dealt_dmg += ddmg
+                    reaction |= dreact
             elif cmds[0] == 'heal':
                 h = int(cmds[1])
                 # query all buffs
@@ -140,7 +156,7 @@ class Skill:
                         continue
                 i += 1
         # parametric_transformer
-        if dmg_type is not None and dmg_type != 'Physical':
+        if dmg_type is not None and dmg_type not in ['Physical', 'Piercing']:
             calculate_parametric_transformer(my_deck)
             calculate_parametric_transformer(my_deck.enemy_ptr)
 
@@ -435,7 +451,7 @@ class Character:
     def heal(self, num):
         self.health = min(num + self.health, self.health_limit)
         
-    def take_dmg(self, dmg_type, dmg_num, source):
+    def take_dmg(self, dmg_type, dmg_num, source, dmg_piercing=0):
         if dmg_type in ['Physical', 'Pyro']:
             if self.take_buff('frozen'):
                 self.add_buff(f'reaction_unfrozen', 'vulnerable 2')
@@ -447,9 +463,9 @@ class Character:
         for i in self.deck_ptr.enemy_ptr.get_summon_buff(f'dmg_{dmg_type}_up'):
             self.add_buff(f'chaotic_entropy', f'vulnerable {i.query(f"dmg_{dmg_type}_up")}')
         
-        return self.dmg(dmg_num, 0), reaction
+        return self.dmg(dmg_num, dmg_piercing), reaction
         
-    def dmg(self, dmg_num, dmg_no_shield):
+    def dmg(self, dmg_num, piercing_dmg):
         v = self.take_buff('vulnerable')
         dmg_num += v
         # This video is about how to calculate the shield
@@ -488,13 +504,13 @@ class Character:
             self.shield -= dmg_num
         """
 
-        self.health = max(self.health - dmg_num - dmg_no_shield, 0)
+        self.health = max(self.health - dmg_num - piercing_dmg, 0)
         # dead
         if self.health == 0:
             self.deactivate()
             self.on_defeated()
         # return the total damage caused
-        return dmg_num + dmg_no_shield
+        return dmg_num + piercing_dmg
 
     def melt_or_vaporize(self, reaction):
         self.add_buff(f'reaction_{reaction}', 'vulnerable 2')

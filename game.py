@@ -169,7 +169,7 @@ class Game:
                 for _ in range(int(cmdw[1])):
                     my_deck.reroll()
             elif cmdw[0] == 'summon_rand':
-                my_deck.add_rand_summon(code_name, int(cmds[1]), cmds[2:])
+                my_deck.add_rand_summon(code_name, int(cmdw[1]), cmdw[2:])
             else:
                 raise NotImplementedError(f'[engine_event]{cmd}')
 

@@ -383,6 +383,9 @@ class Deck:
                     i += 1
             except IndexError:
                 break
+    
+    def refresh_summons(self):
+        self.summons = [i for i in self.summons if i.life > 0]
 
     def on_round_start(self):
         # draw 2 cards
