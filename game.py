@@ -134,42 +134,47 @@ class Game:
 
     def engine_event(self, action, target):
         code_name = action.code_name
-        cur_deck = self.get_current_deck()
-        target_char = cur_deck.get_character(target)
+        my_deck = self.get_current_deck()
+        target_char = my_deck.get_character(target)
         if target_char is None:
             # for buff without a specific target
-            target_char = cur_deck.get_current_character()
+            target_char = my_deck.get_current_character()
         cmds = action.code.split(';')
         for cmd in cmds:
             cmdw = cmd.split()
             if cmdw[0] == 'heal':
                 target_char.heal(int(cmdw[1]))
             elif cmdw[0] == 'heal_other':
-                for c in cur_deck.get_other_characters():
+                for c in my_deck.get_other_characters():
                     c.heal(int(cmdw[1]))
             elif cmdw[0] == 'heal_summon':
-                cur_deck.get_summon(target).heal(int(cmdw[1]))
+                my_deck.get_summon(target).heal(int(cmdw[1]))
             elif cmdw[0] == 'kill_summon':
-                cur_deck.enemy_ptr.get_summon(target)
+                my_deck.enemy_ptr.get_summon(target)
             elif cmdw[0] == 'kill_all_summons':
-                cur_deck.kill_all_summons()
-                cur_deck.enemy_ptr.kill_all_summons()
+                my_deck.kill_all_summons()
+                my_deck.enemy_ptr.kill_all_summons()
             elif cmdw[0] == 'recharge':
-                cur_deck.recharge(cmdw)
+                my_deck.recharge(cmdw)
             elif cmdw[0] == 'buff':
                 target_char.add_buff(code_name, cmd)
             elif cmdw[0] == 'gen':
                 self._gen_dice(cmdw)
             # use card to switch characters
             elif cmdw[0] == 'switch_my':
-                cur_deck.activate(target)
+                my_deck.activate(target)
             elif cmdw[0] == 'draw':
-                cur_deck.pull(int(cmdw[1]))
+                my_deck.pull(int(cmdw[1]))
+            elif cmdw[0] == 'reroll':
+                for _ in range(int(cmdw[1])):
+                    my_deck.reroll()
+            elif cmds[0] == 'summon_rand':
+                my_deck.add_rand_summon(code_name, int(cmds[1]), cmds[2:])
             else:
                 raise NotImplementedError(f'[engine_event]{cmd}')
 
         if 'food' in action.tags:
-            for s in cur_deck.supports:
+            for s in my_deck.supports:
                 # Chef Mao and nre
                 if s.query('on_food_event') == 0:
                     continue
@@ -221,6 +226,8 @@ class Game:
                 res = my_char.take_buff('switch_fast') + my_deck.take_support_buff('switch_fast')
                 self.switch_agent = res == 0
                 my_deck.activate(cmdw[1])
+            elif cmdw[0] == 'transfer':
+                my_deck.transfer_equip(cmdw[1], cmdw[2], cmdw[3])   
             else:
                 raise NotImplementedError(f'[parse_space_action]{cmd}')
                 

@@ -1851,5 +1851,83 @@
         "code": "life 1 0 1,refresh,stay,draw_food",
         "type": "support",
         "code_name": "nre"
+    },
+    {
+        "img": "Toss-Up.png",
+        "name": "Toss-Up",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Select any Elemental Die to reroll. Can reroll 2 times.",
+        "code": "reroll 2",
+        "tags": [],
+        "type": "event",
+        "code_name": "toss_up"
+    },
+    {
+        "img": "Master_of_Weaponry.png",
+        "name": "Master of Weaponry",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Shift 1 Weapon Equipment Card that has been equipped to one of your characters to another one of your characters of the same Weapon Type.",
+        "tags": [
+            "tranfer_weapon"
+        ],
+        "type": "event",
+        "code_name": "master_of_weaponry"
+    },
+    {
+        "img": "Blessing_of_the_Divine_Relic's_Installation.png",
+        "name": "Blessing of the Divine Relic's Installation",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Shift 1 Artifact Equipment Card that has been equipped to one of your characters to another one of your characters.",
+        "tags": [
+            "tranfer_artifact"
+        ],
+        "type": "event",
+        "code_name": "blessing_of_the_divine_relic_s_installation"
+    },
+    {
+        "img": "Abyssal_Summons.png",
+        "name": "Abysssal Summons",
+        "cost_raw": "2 Matching Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "Summon 1 Random Hilichurl Summon!\n(You must have at least 2 Monster characters in your deck to add this card to your deck.)",
+        "tags": [],
+        "code": "summon_rand 1 cryo_hilichurl_shooter electro_hilichurl_shooter pyro_hilichurl_shooter hydro_samachurl",
+        "type": "event",
+        "code_name": "abysssal_summons"
     }
 ]

@@ -61,6 +61,11 @@ class Action:
                 return [f'{i};reroll 1' for i in res]
             return res
         else:
+            if "tranfer_weapon" in self.tags:
+                return [f'transfer weapon {i.code_name} {j.code_name}' for i in deck.get_alive_characters() for j in deck.get_alive_characters() if i.artifact is not None and i.weapon_type == j.weapon_type and i.code_name != j.code_name]
+            if "tranfer_artifact" in self.tags:
+                return [f'transfer artifact {i.code_name} {j.code_name}' for i in deck.get_alive_characters() for j in deck.get_alive_characters() if i.artifact is not None and i.code_name != j.code_name]
+
             if 'food' in self.tags:
                 res = []
                 for cha in deck.get_alive_characters():

@@ -154,6 +154,11 @@ class Deck:
         else:
             self.summons.append(sobj)
 
+    def add_rand_summon(self, source, num, code_names):
+        np.random.shuffle(code_names)
+        for code_name in code_names[:num]:
+            self.add_summon(source, code_name)
+
     def kill_summon(self, code_name):
         for s in self.summons:
             if s.code_name == code_name:
@@ -163,6 +168,17 @@ class Deck:
     
     def kill_all_summons(self):
         self.summons = []
+
+    def transfer_equip(self, eq, src, dst):
+        s = self.get_character(src)
+        d = self.get_character(dst)
+
+        if eq == 'artifact':
+            s.artifact = d.artifact
+            d.artifact = None
+        elif eq == 'weapon':
+            s.weapon = d.weapon
+            d.weapon = None
 
     def get_summon_buff(self, keyword):
         return [i for i in self.summons if i.query(keyword)]
