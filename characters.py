@@ -13,6 +13,14 @@ class Skill:
         self.round_usage_with_talent = 0
         
     def exec(self, my_deck, my_char, enemy_char):
+
+        # special code for ellin
+        if self.round_usage == 1:
+            for s in my_deck.supports:
+                if s.code_name == 'ellin':
+                    s.on_activated()
+
+
         self.round_usage += 1
         if my_char.talent:
             self.round_usage_with_talent += 1
@@ -20,6 +28,10 @@ class Skill:
         energy_gain = 1 if self.stype != 'elemental_burst' else 0
 
         weapon =  my_char.weapon
+
+        dealt_dmg = 0
+        dmg_type = None
+        reaction = False
 
         for code in self.code:
             cmds = code.split()
@@ -45,7 +57,7 @@ class Skill:
                     if 'dmg_up' in i:
                         dmg += res[i]
                         
-                enemy_char.take_dmg(dmg_type, dmg, 'e_' + self.code_name)
+                dealt_dmg, reaction = enemy_char.take_dmg(dmg_type, dmg, 'e_' + self.code_name)
 
             elif cmds[0] == 'heal':
                 h = int(cmds[1])
@@ -59,7 +71,7 @@ class Skill:
             elif cmds[0] == 'energy':
                 energy_gain = int(cmds[1])
             elif cmds[0] == 'infusion':
-                my_char.take_dmg(cmds[1], 0, 'm_' + self.code_name)
+                dealt_dmg, reaction = my_char.take_dmg(cmds[1], 0, 'm_' + self.code_name)
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'summon':
@@ -91,9 +103,56 @@ class Skill:
                 my_deck.activate_prev()
 
 
-    def get_cost(self, my_char):
-        cost = self.cost 
-        return cost
+        def calculate_chang(deck):
+            i = 0
+            l = deck.supports
+            while True:
+                try:
+                    s = l[i]
+                except IndexError:
+                    break
+                if s.code_name == 'chang_the_ninth':
+                    s.on_activated()
+                    if s.life == 0:
+                        l.pop(i)
+                        deck.pull(2)
+                        continue
+                i += 1
+                    
+        # chang_the_ninth
+        if dealt_dmg > 0 or reaction:
+            calculate_chang(my_deck)
+            calculate_chang(my_deck.enemy_ptr)
+
+        def calculate_parametric_transformer(deck):
+            i = 0
+            l = deck.supports
+            while True:
+                try:
+                    s = l[i]
+                except IndexError:
+                    break
+                if s.code_name == 'parametric_transformer':
+                    s.on_activated()
+                    if s.life == 0:
+                        deck.get_current_character()._engine_buff(s)
+                        l.pop(i)
+                        continue
+                i += 1
+        # parametric_transformer
+        if dmg_type is not None and dmg_type != 'Physical':
+            calculate_parametric_transformer(my_deck)
+            calculate_parametric_transformer(my_deck.enemy_ptr)
+
+    def get_cost(self, deck, char):
+        mods = char.query_pattern_buff(self.stype)
+        if self.round_usage == 1:
+            for i in deck.supports:
+                if i.code_name == 'ellin':
+                    kw = f'{self.stype}_cost_{to_code_name(char.element)}_down'
+                    mods[kw] = mods.get(kw, 0) + 1
+
+        return modify_cost(self.cost, mods)
 
     def on_round_finished(self):
         self.round_usage = 0
@@ -212,6 +271,14 @@ class Character:
             for c in self.deck_ptr.get_alive_characters():
                 c.heal(res)
 
+        res = buff.query('recharge')
+        if res > 0:
+            activated = self.deck_ptr.recharge(['recharge', 'active', res])
+
+        res = buff.query('recharge_any')
+        if res > 0:
+            activated = self.deck_ptr.recharge(['recharge', 'any', res])
+
         res = buff.query('recharge_bg')
         if res > 0:
             activated = True
@@ -223,6 +290,11 @@ class Character:
             activated = True
             self.deck_ptr.pull(res)
 
+        res = buff.query('draw_food')
+        if res > 0:
+            activated = True
+            self.deck_ptr.pull_one_food(res)
+
         if activated:
             buff.on_activated()
 
@@ -230,9 +302,8 @@ class Character:
     def affordable_skills(self, dice):
         res = []
         for skill in self.skills:
-            mods = self.query_pattern_buff(skill.stype)
             res.extend(
-                generate_action_space(modify_cost(skill.get_cost(self), mods),
+                generate_action_space(skill.get_cost(self.deck_ptr, self),
                 dice, self, prefix=f'skill {self.code_name} {skill.code_name}'))
         return res
         
@@ -368,11 +439,12 @@ class Character:
         if dmg_type in ['Physical', 'Pyro']:
             if self.take_buff('frozen'):
                 self.add_buff(f'reaction_unfrozen', 'vulnerable 2')
-            
-        if dmg_type != 'Physical':
-            self.infusion(dmg_type, source)
         
-        self.dmg(dmg_num, 0)
+        reaction = False
+        if dmg_type != 'Physical':
+            reaction = self.infusion(dmg_type, source)
+        
+        return self.dmg(dmg_num, 0), reaction
         
     def dmg(self, dmg_num, dmg_no_shield):
         v = self.take_buff('vulnerable')
@@ -418,6 +490,8 @@ class Character:
         if self.health == 0:
             self.deactivate()
             self.on_defeated()
+        # return the total damage caused
+        return dmg_num + dmg_no_shield
 
     def melt_or_vaporize(self, reaction):
         self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
@@ -450,7 +524,7 @@ class Character:
 
     def infusion(self, element, source):
         if element in self.infusion_element:
-            return
+            return False
         for t, i in enumerate(self.infusion_element):
             reaction = element_can_react(i, element)
             if reaction:
@@ -481,11 +555,10 @@ class Character:
                     self.infusion_element = self.infusion_element[:t] + self.infusion_element[t + 1:]
                 except IndexError:
                     self.infusion_element = self.infusion_element[:t]
-                
-                
-                return
+                return True
         if element not in ['Geo', 'Anemo']:
             self.infusion_element.append(element)
+        return False
 
     def state(self):
         return {

@@ -1735,9 +1735,10 @@
         "des": "When either side uses a Skill: If Physical DMG or Piercing DMG was dealt, or an Elemental Reaction was triggered, this card gains 1 Inspiration.\nWhen this card gains 3 Inspiration, discard this card, then draw 2 cards.",
         "tags": [
             "companion",
-            "flip_life"
+            "flip_life",
+            "special_code"
         ],
-        "code": "life 3 0 0,collect_chang",
+        "code": "life 3 0 1",
         "type": "support",
         "code_name": "chang_the_ninth"
     },
@@ -1756,8 +1757,10 @@
         },
         "des": "When you use a Skill that has already been used in this Round: Spend 1 less Elemental Die. (Once per Round)",
         "tags": [
-            "companion"
+            "companion",
+            "special_code"
         ],
+        "code": "life 1 0 1,stay,refresh",
         "type": "support",
         "code_name": "ellin"
     },
@@ -1778,6 +1781,7 @@
         "tags": [
             "companion"
         ],
+        "code": "life 2 0 1,on_round_finished,recharge_any 1",
         "type": "support",
         "code_name": "iron_tongue_tian"
     },
@@ -1796,8 +1800,10 @@
         },
         "des": "After you switch characters: If the character you switched to does not have Energy, they will gain 1 Energy. (Once per Round)\nUsage(s):",
         "tags": [
-            "companion"
+            "companion",
+            "special_code"
         ],
+        "code": "life 1 0 1,renew 1,recharge 1,on_switch_finished",
         "type": "support",
         "code_name": "liu_su"
     },
@@ -1815,7 +1821,12 @@
             "p_num": 0
         },
         "des": "When either side uses a Skill: If Elemental DMG was dealt, this card gains 1 Qualitative Progress.\nWhen this card gains 3 Qualitative Progress, discard this card, then create 3 different Basic Elemental Dice.",
-        "tags": [],
+        "tags": [
+            "item",
+            "flip_life",
+            "special_code"
+        ],
+        "code": "life 3 0 1,gen_Rand 3",
         "type": "support",
         "code_name": "parametric_transformer"
     },
@@ -1833,7 +1844,11 @@
             "p_num": 0
         },
         "des": "When played: Draw 1 Food Event Card from your deck.\nWhen you play a Food Event Card: Draw 1 Food Event Card from your deck. (Once per Round)",
-        "tags": [],
+        "tags": [
+            "item",
+            "special_code"
+        ],
+        "code": "life 1 0 1,refresh,stay,draw_food",
         "type": "support",
         "code_name": "nre"
     }

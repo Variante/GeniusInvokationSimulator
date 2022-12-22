@@ -77,6 +77,17 @@ class Deck:
         keep = self.agent.get_keep_dice(self.state())
         self.current_dice = self.d.roll(total_num=total_num, keep=keep)
         
+    def pull_one_food(self):
+        for i, j in enumerate(self.to_pull_actions):
+            if 'food'in j.tags:
+                action = self.to_pull_actions.pop(i)
+                # current actions are full
+                if len(self.available_actions) >= 10:
+                    self.used_actions.append(action)
+                else:
+                    self.available_actions.append(action)
+
+
     def pull(self, pull_num):
         for _ in range(pull_num):
             try:
@@ -93,7 +104,12 @@ class Deck:
         if d_type == 'energy':
             self.get_current_character().energy -= d_num
         else:
-            self.current_dice[d_type] -= d_num
+            try:
+                self.current_dice[d_type] -= d_num
+            except KeyError:
+                # add dice
+                self.current_dice[d_type] = -d_num
+
    
     def pre_round_pull(self):
         pre_pull_num = 2
@@ -158,6 +174,10 @@ class Deck:
         else:
             self.supports[idx] = s
 
+        # special code for nre:
+        if s.code_name == 'nre':
+            self.pull_one_food()
+
         # activate location cost saving (trigger the counter)
         if 'location' in action.tags:
             kw = 'location_save'
@@ -185,9 +205,14 @@ class Deck:
         # when actively switch the character
         if self.game_ptr.current_agent == self.deck_id:
             self.take_support_buff('switch_cost_down')
+        
         self.character_order.remove(idx)
         self.character_order.insert(0, idx)
         self.characters[idx].activate()
+
+        self.proc_support_buffs('on_switch_finished')
+
+
 
     def activate_by_id(self, idx):
         self._deactivate()
@@ -327,22 +352,12 @@ class Deck:
                 i.on_activated()
         return val
 
-    def on_round_start(self):
-        # draw 2 cards
-        self.pre_round_pull()
-        
-        # get dices
-        self.roll()
-        self.reroll()
-        for _ in range(self.query_support_buff('query_support_buff')):
-            self.reroll()
-            
-        # process support
+    def proc_support_buffs(self, kw):
         i = 0
         while True:
             try:
                 s = self.supports[i]
-                if s.query('on_round_start'):
+                if s.query(kw):
                     # check the effect of this summon (buff)
                     # thanks paimon
                     self.get_current_character()._engine_buff(s)
@@ -352,6 +367,19 @@ class Deck:
                     i += 1
             except IndexError:
                 break
+
+    def on_round_start(self):
+        # draw 2 cards
+        self.pre_round_pull()
+        
+        # get dices
+        self.roll()
+        self.reroll()
+        for _ in range(self.query_support_buff('query_support_buff')):
+            self.reroll()
+
+        # process support
+        self.proc_support_buffs('on_round_start')
             
         # clear counter
         self.defeated_this_round = 0
@@ -385,11 +413,11 @@ class Deck:
                     self.get_current_character()._engine_buff(s)
                 s.on_round_finished()
 
-                if 'collect_liben' in s.attrib:
-                    st = s.attrib['collect_liben']
-                    for i, j in self.current_dice.items():
+                if 'collect_liben' in s.attribs:
+                    st = s.attribs['collect_liben']
+                    for k, j in self.current_dice.items():
                         if j > 0:
-                            st.attrib['collect_liben'].add(i)
+                            st[k] = 1
                     s.life = max(s.init_life - len(st), 0)
 
                 if s.should_leave():
@@ -399,16 +427,17 @@ class Deck:
             except IndexError:
                 break
 
-    
     def recharge(self, cmdw):
         if cmdw[1] == 'any':
             for i in self.character_order:
                 c = self.characters[i]
                 if c.get_energy_need() > 0:
                     c.recharge(int(cmdw[2]))
-                    break
+                    return True
+            return False
         elif cmdw[1] == 'active':
             self.get_current_character().recharge(int(cmdw[2]))
+            return True
         elif cmdw[1] == 'to_active':
             cur = self.get_current_character()
             v = int(cmdw[2])
@@ -417,6 +446,7 @@ class Deck:
                 if cur.get_energy_need() > 0 and c.energy >= v:
                     cur.recharge(v)
                     c.recharge(-v)
+            return True
                 
     def __repr__(self):
         return json.dumps(self.state())

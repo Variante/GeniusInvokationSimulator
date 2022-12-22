@@ -33,8 +33,8 @@ class Buff:
             elif len(cmdw) == 2:
                 self.attribs[cmdw[0]] = int(cmdw[1])
             else:
-                if cmdw.startswith('collect'):
-                    self.attribs[cmdw[0]] = set()
+                if cmd.startswith('collect'):
+                    self.attribs[cmdw[0]] = {}
                 else:
                     self.attribs[cmdw[0]] = 1
                 
@@ -130,17 +130,25 @@ class Support(Buff):
             f" from {self.source} ({self.life})"
 
     def on_round_finished(self):
-        if self.query('refresh'):
+        if 'refresh' in self.attribs:
             # Similar to weapon, we use this life counter to describe the interal state
+            # use in instead of query so that it will not be blocked
             self.life = self.init_life
         else:
             self.life -= self.rf_by_round
-        
+
         # For Timaeus and Wagner
         for i in ['artifact_save', 'weapon_save']:
             if i in self.attribs:
                 self.change_keyword(i, self.query(i) + 1)
 
-    def should_leave(self, is_round_finish):
+    def should_leave(self):
+        # For Liu Su
+        if 'renew' in self.attribs and self.life == 0:
+            self.life = self.init_life
+            self.attribs['renew'] -= 1
+            if self.attribs['renew'] < 1:
+                del self.attribs['renew']
+
         # for liben, when activated by on_round_start, life should go to -1, and it will override the stay tag
         return (self.life == 0 and self.query('stay') == 0) or self.life < 0

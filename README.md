@@ -11,7 +11,7 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 ```
 Progress
 [Characters] 3 / 27
-[Actions] 68 / 117
+[Actions] 88 / 117
 ```
 
 ## Dependence
@@ -29,7 +29,8 @@ python game.py
 ## TODO
 1. Elemental reactions: electro, hydro, dendro, geo
 2. More characters and more talent card
-3. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
+3. Deck check, not all cards can be included in a deck
+4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
 12/21/22:

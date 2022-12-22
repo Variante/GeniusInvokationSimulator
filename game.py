@@ -170,7 +170,8 @@ class Game:
 
         if 'food' in action.tags:
             for s in cur_deck.supports:
-                if s.query_support_buff('on_food_event') == 0:
+                # Chef Mao and nre
+                if s.query('on_food_event') == 0:
                     continue
                 target_char._engine_buff(s)
 
@@ -194,7 +195,8 @@ class Game:
                 self.engine_event(action, cmdw[2] if len(cmdw) > 2 else None)
             elif cmdw[0] == 'equipment':
                 action = my_deck.use_action_card(cmdw[1])
-                self.engine_equipment(action, cmdw[2])
+                # not all events have a target
+                self.engine_equipment(action, cmdw[2] if len(cmdw) > 2 else None)
             elif cmdw[0] == 'support':
                 action = my_deck.use_action_card(cmdw[1])
                 self.engine_support(action, int(cmdw[2])) # index of the support will be
@@ -321,7 +323,8 @@ class Game:
                 
                 tmp = self.current_agent
 
-                dump_js(f'states/R{self.round_num:02d}_{t:02d}_before', self.save())
+                if save_hist:
+                    dump_js(f'states/R{self.round_num:02d}_{t:02d}_before', self.save())
 
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state_for_action())
