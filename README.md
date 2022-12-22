@@ -28,14 +28,14 @@ python game.py
 
 ## TODO
 1. Elemental reactions: electro, hydro, dendro, geo
-2. Support card, Talent card
-3. More characters
-4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
+2. More characters and more talent card
+3. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
 12/21/22:
 1. Add all artifact cards, now Artifact sys is beta
 2. Add save function, now we can export all the states
+3. Start to build support cards
 
 12/20/22:
 1. Add some Elemental Resonance cards and some event cards

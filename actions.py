@@ -31,7 +31,9 @@ class Action:
             self.code = 'weapon ' + self.code
         elif 'artifact' in self.tags:
             self.code = 'artifact ' + self.code
-
+            
+        # only available for support card
+        self.on_leave = data.get('on_leave', '')
         # self.active_character = data.get('active_character', None)
     """
     def is_affordable(self, dice, character):
@@ -47,6 +49,17 @@ class Action:
             elif 'artifact' in self.tags:
                 return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters()]
             return f'equipment {self.code_name}'
+        elif self.atype == 'support':
+            idx = len(deck.supports) # add to the end or replace the original one
+            max_l = 4
+            if idx < max_l:
+                res = [f'support {self.code_name} {idx}']
+            else:
+                res = [f'support {self.code_name} {i}' for i in range(max_l)]
+            # this is for "knights_of_favonius_library"
+            if 'reroll' in self.tags:
+                return [f'{i};reroll 1' for i in res]
+            return res
         else:
             if 'food' in self.tags:
                 res = []

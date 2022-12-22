@@ -1,6 +1,6 @@
 from utils import *
 from dices import Dices
-from buff import Summon
+from buff import Summon, Support
 from characters import init_characters
 from actions import init_actions
 import random
@@ -33,6 +33,7 @@ class Deck:
         self.supports = []
         
         self.defeated_this_round = 0
+        self.deck_id = 0
 
     def save(self):
         res = self.state()
@@ -61,18 +62,19 @@ class Deck:
         
     def roll(self):
         keep = {}
-        # an ugly way to process artifact effect
-        for c in self.get_alive_characters():
-            if c.artifact is None:
-                continue
-            for i in c.artifact.show_all_attr():
+        # an ugly way to process artifact effect and support
+        for a in [c.artifact for c in self.get_alive_characters() if c.artifact is not None] + self.supports:
+            for i in a.show_all_attr():
                 if i.startswith('roll_'):
-                    keep[i[5:]] = c.artifact.query(i)
-                    break
+                    ele = i[5:]
+                    if ele == 'current_die':
+                        ele = self.get_current_character().element
+                    keep[ele] = a.query(i)
         self.current_dice = self.d.roll(keep=keep)
         
-    def reroll(self, keep, total_num=8):
+    def reroll(self, total_num=8):
         # self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))
+        keep = self.agent.get_keep_dice(self.state())
         self.current_dice = self.d.roll(total_num=total_num, keep=keep)
         
     def pull(self, pull_num):
@@ -149,8 +151,12 @@ class Deck:
     def get_summon_buff(self, keyword):
         return [i for i in self.summons if i.query(keyword)]
         
-    def add_support(self, source, code_name):
-        pass
+    def add_support(self, action, idx):
+        s = Support(action.code_name, action)
+        if len(self.supports) >= idx:
+            self.supports.append(s)
+        else:
+            self.supports[idx] = s
          
     def _deactivate(self):
         # transfer buffs if necessary
@@ -162,7 +168,15 @@ class Deck:
             # add back to the end
             self.character_order.append(idx)
         # print('[_deactivate]', idx, self.character_order)
-         
+
+    def _activate(self, idx):
+        # when actively switch the character
+        if self.game_ptr.current_agent == self.deck_id:
+            self.take_support_buff('switch_cost_down')
+        self.character_order.remove(idx)
+        self.character_order.insert(0, idx)
+        self.characters[idx].activate()
+
     def activate_by_id(self, idx):
         self._deactivate()
         # move to the first
@@ -177,19 +191,14 @@ class Deck:
             print('\n' * 5)
             """
             return
-        self.character_order.remove(idx)
-        self.character_order.insert(0, idx)
-        self.characters[idx].activate()
+        self._activate(idx)
             
     def activate(self, code_name):
         self._deactivate()
-        idx, c = self.get_character_idx(code_name)
+        idx = self.get_character_idx(code_name)
         if idx not in self.character_order:
             return
-        # move to the first
-        self.character_order.remove(idx)
-        self.character_order.insert(0, idx)
-        c.activate()
+        self._activate(idx)
 
     def activate_prev(self):
         try:
@@ -243,7 +252,7 @@ class Deck:
     def get_character_idx(self, code_name):
         for idx, i in enumerate(self.characters):
             if i.code_name == code_name:
-                return idx, i
+                return idx
     
     def get_action_space(self):
         char = self.get_current_character()
@@ -261,8 +270,8 @@ class Deck:
                 res.extend(i.get_action_space(self))
             visited_action.add(i.code_name)
         
-        # query switch character
-        c_mode = char.query_buff('switch_cost_down')
+        # query switch character, first calcualte action card
+        c_mode = char.query_buff('switch_cost_down') + self.query_support_buff('switch_cost_down')
         
         for char in self.characters:
             if char.alive and not char.active:
@@ -291,14 +300,30 @@ class Deck:
         self.used_actions.append(action)
         return action
     
-    def on_round_start(self,):
+    def query_support_buff(self, keyword):
+        val = 0
+        for i in self.supports:
+            val += i.query(keyword)
+        return val
+
+    def take_support_buff(self, keyword):
+        val = 0
+        for i in self.supports:
+            res = i.query(keyword)
+            if res > 0:
+                val += res
+                i.on_activated()
+        return val
+
+    def on_round_start(self):
         # draw 2 cards
         self.pre_round_pull()
         
         # get dices
         self.roll()
-        keep_dice = self.agent.get_keep_dice(self.state())
-        self.reroll(keep=keep_dice)
+        self.reroll()
+        for _ in range(self.query_support_buff('query_support_buff')):
+            self.reroll()
         
         # clear counter
         self.defeated_this_round = 0
@@ -320,6 +345,24 @@ class Deck:
                     i += 1
                 else:
                     self.summons.pop(i)
+            except IndexError:
+                break
+
+        # process support
+        i = 0
+        while True:
+            try:
+                s = self.supports[i]
+                if s.query('on_round_finished'):
+                    # check the effect of this summon (buff)
+                    self.get_current_character()._engine_buff(s)
+                s.on_round_finished()
+                if s.should_leave():
+                    if len(s.on_leave):
+                        eval(s.on_leave)
+                    self.supports.pop(i)
+                else:
+                    i += 1
             except IndexError:
                 break
 

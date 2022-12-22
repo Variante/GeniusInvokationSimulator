@@ -11,6 +11,7 @@ class Game:
         for i in range(2):
             self.decks[i].enemy_ptr = self.decks[1 - i]
             self.decks[i].game_ptr = self
+            self.decks[i].deck_id = i
         self.agents = [i.agent for i in decks]
         self.agent_num = len(decks)
         self.round_num = 0
@@ -91,7 +92,18 @@ class Game:
         if d_type == 'Rand':
             d_type = self.get_current_deck().d.random_type()
         self.get_current_deck().cost(d_type, -d_num)
-        
+ 
+    def _proc_skill(self, cmdw):
+        my_deck = self.get_current_deck()
+        my_char = my_deck.get_character(cmdw[1])
+        enemy_char = self.get_other_deck().get_current_character()
+        my_char.get_skill(cmdw[2]).exec(my_deck, my_char, enemy_char)
+        self.switch_agent = True
+
+    def engine_support(self, action, idx):
+        cur_deck = self.get_current_deck()
+        cur_deck.add_support(action, idx)
+
     def engine_equipment(self, action, target):
         code_name = action.code_name
         cur_deck = self.get_current_deck()
@@ -156,13 +168,6 @@ class Game:
             else:
                 raise NotImplementedError(f'[engine_event]{cmd}')
 
-    def _proc_skill(self, cmdw):
-        my_deck = self.get_current_deck()
-        my_char = my_deck.get_character(cmdw[1])
-        enemy_char = self.get_other_deck().get_current_character()
-        my_char.get_skill(cmdw[2]).exec(my_deck, my_char, enemy_char)
-        self.switch_agent = True
-
     def parse_space_action(self, action):
         self.action_history.append(f'Player {self.current_agent + 1}: {action}')
         if action in ['finish', '']:
@@ -183,6 +188,9 @@ class Game:
                 action = self.get_current_deck().use_action_card(cmdw[1])
                 # not all actions have a target
                 self.engine_equipment(action, cmdw[2] if len(cmdw) > 2 else None)
+            elif cmdw[0] == 'support':
+                action = self.get_current_deck().use_action_card(cmdw[1])
+                self.engine_support(action, int(cmdw[2])) # index of the support will be
             elif cmdw[0] == 'convert':
                 action = self.get_current_deck().use_action_card(cmdw[1])
             elif cmdw[0] == 'skill':
@@ -195,6 +203,9 @@ class Game:
             elif cmdw[0] == 'activate':
                 self.get_current_deck().activate(cmdw[1])
                 self.switch_agent = True
+            elif cmdw[0] == 'reroll':
+                for _ in range(int(cmdw[1])):
+                    self.get_current_deck().reroll()
             elif cmdw[0] == 'switch':
                 my_deck = self.get_current_deck()
                 my_char = my_deck.get_current_character()
@@ -261,7 +272,7 @@ class Game:
                 return
             
     
-    def game_loop(self, show=False, save_hist=True):
+    def game_loop(self, show=False, save_hist=False):
         # init the game
         for i in self.decks:
             # draw 5 init cards
@@ -350,6 +361,6 @@ class Game:
         
 if __name__ == '__main__':
     g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
-    ret = g.game_loop(show=True)
+    ret = g.game_loop(show=False)
     g.print_winner(ret)
     

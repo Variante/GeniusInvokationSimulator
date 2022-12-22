@@ -1421,5 +1421,408 @@
         "code": "roll_Dendro 2,normal_attack_cost_dendro_down,elemental_skill_cost_dendro_down,elemental_brust_cost_dendro_down,talent_cost_dendro_down",
         "type": "equipment",
         "code_name": "deepwood_memories"
+    },
+    {
+        "img": "Liyue_Harbor_Wharf_Card.png",
+        "name": "Liyue Harbor Wharf",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "End Phase: Draw 2 cards.\nUsage(s): 2",
+        "tags": [
+            "location"
+        ],
+        "code": "life 2 1 0,on_round_finished,draw 2",
+        "type": "support",
+        "code_name": "liyue_harbor_wharf"
+    },
+    {
+        "img": "Knights_of_Favonius_Library_Card.png",
+        "name": "Knights of Favonius Library",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "When played: Select any Elemental Dice to reroll.\nRoll Phase: Gain another chance to reroll.",
+        "tags": [
+            "location",
+            "reroll"
+        ],
+        "code": "life 1 0 0,reroll,stay",
+        "type": "support",
+        "code_name": "knights_of_favonius_library"
+    },
+    {
+        "img": "Jade_Chamber_Card.png",
+        "name": "Jade Chamber",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Roll Phase: 2 of the starting Elemental Dice you roll are always guaranteed to match the Elemental Type of your active character.",
+        "tags": [
+            "location"
+        ],
+        "code": "life 1 0 0,roll_current_die 2,stay",
+        "type": "support",
+        "code_name": "jade_chamber"
+    },
+    {
+        "img": "Dawn_Winery_Card.png",
+        "name": "Dawn Winery",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When you perform \"Switch Character\": Spend 1 less Elemental Die. (Once per Round)",
+        "tags": [
+            "location"
+        ],
+        "code": "life 1 0 1,switch_cost_down 1,stay,refresh",
+        "type": "support",
+        "code_name": "dawn_winery"
+    },
+    {
+        "img": "Wangshu_Inn_Card.png",
+        "name": "Wangshu Inn",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "End Phase: Heal the most injured character on standby for 2 HP.\nUsage(s): 2",
+        "tags": [
+            "location"
+        ],
+        "code": "life 2 0 1,heal_injured_bg_most 2,on_round_finished",
+        "type": "support",
+        "code_name": "wangshu_inn"
+    },
+    {
+        "img": "Favonius_Cathedral_Card.png",
+        "name": "Favonius Cathedral",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "End Phase: Heal your active character for 2 HP.\nUsage(s): 2",
+        "tags": [
+            "location"
+        ],
+        "code": "life 2 0 1,heal 2,on_round_finished",
+        "type": "support",
+        "code_name": "favonius_cathedral"
+    },
+    {
+        "img": "Paimon_Card.png",
+        "name": "Paimon",
+        "cost_raw": "3 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "des": "When Action Phase begins: Create Omni Element Die.\nUsage(s): 2",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "paimon"
+    },
+    {
+        "img": "Katheryne_Card.png",
+        "name": "Katheryne",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When you perform \"Switch Character\": This switch is considered a Fast Action instead of a Combat Action. (Once per Round)",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "katheryne"
+    },
+    {
+        "img": "Timaeus_Card.png",
+        "name": "Timaeus",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "Comes with 2 Transmutation Materials when played.\nEnd Phase: Gain 1 Transmutation Material.\nWhen playing an Artifact Card: If possible, spend Transmutation Materials equal to the total cost of the Artifact and equip this Artifact for free. (Once per Round)",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "timaeus"
+    },
+    {
+        "img": "Wagner_Card.png",
+        "name": "Wagner",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "Comes with 2 Forging Billets when played.\nEnd Phase: Gain 1 Forging Billet.\nWhen playing a Weapon Card: If possible, spend Forging Billets equal to the total cost of the Weapon and equip this Weapon for free. (Once per Round)",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "wagner"
+    },
+    {
+        "img": "Chef_Mao_Card.png",
+        "name": "Chef Mao",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "After playing a Food Event Card: Create 1 random Elemental Die. (Once per Round)",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "chef_mao"
+    },
+    {
+        "img": "Tubby_Card.png",
+        "name": "Tubby",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When playing a Location Support Card: Spend 2 less Elemental Dice. (Once per Round)",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "tubby"
+    },
+    {
+        "img": "Timmie_Card.png",
+        "name": "Timmie",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Triggers automatically once per Round: This card gains 1 Pigeon.\nWhen this card gains 3 Pigeons, discard this card, then draw 1 card and create Omni Element \u00d71.",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "timmie"
+    },
+    {
+        "img": "Liben_Card.png",
+        "name": "Liben",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "End Phase: Collect your unused Elemental Dice (Max 1 of each Elemental Type).\nWhen Action Phase begins: If this card has collected 3 Elemental Dice, draw 2 cards and create Omni Element Die, then discard this card.",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "liben"
+    },
+    {
+        "img": "Chang_the_Ninth_Card.png",
+        "name": "Chang the Ninth",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "When either side uses a Skill: If Physical DMG or Piercing DMG was dealt, or an Elemental Reaction was triggered, this card gains 1 Inspiration.\nWhen this card gains 3 Inspiration, discard this card, then draw 2 cards.",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "chang_the_ninth"
+    },
+    {
+        "img": "Ellin_Card.png",
+        "name": "Ellin",
+        "cost_raw": "2 Matching Elemental Dices",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When you use a Skill that has already been used in this Round: Spend 1 less Elemental Die. (Once per Round)",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "ellin"
+    },
+    {
+        "img": "Iron_Tongue_Tian_Card.png",
+        "name": "Iron Tongue Tian",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "End Phase: One of your characters without maximum Energy gains 1 Energy. (Active Character prioritized)\nUsage(s): 2",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "iron_tongue_tian"
+    },
+    {
+        "img": "Liu_Su_Card.png",
+        "name": "Liu Su",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "After you switch characters: If the character you switched to does not have Energy, they will gain 1 Energy. (Once per Round)\nUsage(s):",
+        "tags": [
+            "companion"
+        ],
+        "type": "support",
+        "code_name": "liu_su"
+    },
+    {
+        "img": "Parametric_Transformer_Card.png",
+        "name": "Parametric Transformer",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When either side uses a Skill: If Elemental DMG was dealt, this card gains 1 Qualitative Progress.\nWhen this card gains 3 Qualitative Progress, discard this card, then create 3 different Basic Elemental Dice.",
+        "tags": [],
+        "type": "support",
+        "code_name": "parametric_transformer"
+    },
+    {
+        "img": "NRE_Card.png",
+        "name": "NRE",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "When played: Draw 1 Food Event Card from your deck.\nWhen you play a Food Event Card: Draw 1 Food Event Card from your deck. (Once per Round)",
+        "tags": [],
+        "type": "support",
+        "code_name": "nre"
     }
 ]

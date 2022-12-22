@@ -1,8 +1,8 @@
 {
 	"characters": [
-		"Kaeya",
 		"Sucrose",
-		"Diluc"
+		"Diluc",
+		"Kaeya"
 	],
 	"actions": [
 		"Sweet Madame",
@@ -13,18 +13,6 @@
 		"Northern Smoked Chicken",
 		"Mushroom Pizza",
 		"Minty Meat Rolls",
-		"Elemental Resonance: Woven Ice",
-		"Elemental Resonance: Shattering Ice",
-		"Elemental Resonance: Woven Waters",
-		"Elemental Resonance: Soothing Water",
-		"Elemental Resonance: Woven Flames",
-		"Elemental Resonance: Fervent Flames",
-		"Elemental Resonance: Woven Thunder",
-		"Elemental Resonance: High Resonance",
-		"Elemental Resonance: Woven Winds",
-		"Elemental Resonance: Impetuous Winds",
-		"Elemental Resonance: Woven Stone",
-		"Elemental Resonance: Woven Weeds",
 		"The Bestest Travel Companion!",
 		"Changing Shifts",
 		"Strategize",
@@ -72,7 +60,12 @@
 		"Mask of Solitude Basalt",
 		"Archaic Petra",
 		"Laurel Coronet",
-		"Deepwood Memories"
+		"Deepwood Memories",
+		"Liyue Harbor Wharf",
+		"Knights of Favonius Library",
+		"Jade Chamber",
+		"Dawn Winery",
+		"Wangshu Inn",
+		"Favonius Cathedral"
 	]
-	
 }

@@ -101,15 +101,12 @@ class Artifact(Buff):
 
 class Summon(Buff):
     def __init__(self, source, data):
-        super(Summon, self).__init__(source, data['code']+',on_round_finished')
+        super(Summon, self).__init__(source, data['code'])
         self.name = data['name']
         self.code_name = data['code_name']
 
     def heal(self, num):
         self.life += num
-
-    def kill(self):
-        pass
         
     def __repr__(self):
         if self.life == 0:
@@ -118,11 +115,22 @@ class Summon(Buff):
             f" from {self.source} ({self.life})"
 
 class Support(Buff):
-    def __init__(self, source, data):
-        super(Support, self).__init__(source, data['code'])
-        self.name = data['name']
-        self.code_name = data['code_name']
+    def __init__(self, source, action):
+        super(Support, self).__init__(source, action.code)
+        self.name = action.name
+        self.code_name = action.code_name
+        self.on_leave = action.on_leave
         
     def __repr__(self):
         return f'{self.name}: ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
             f" from {self.source} ({self.life})"
+
+    def on_round_finished(self):
+        if self.query('refresh'):
+            # Similar to weapon, we use this life counter to describe the interal state
+            self.life = self.init_life
+        else:
+            self.life -= self.rf_by_round
+
+    def should_leave(self):
+        return self.life == 0 and self.query('stay') == 0

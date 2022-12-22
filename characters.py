@@ -167,6 +167,18 @@ class Character:
         if res > 0:
             activated = True
             self.heal(res)
+
+        res = buff.query('heal_injured_bg_most')
+        if res > 0:
+            activated = True
+            injured_val = -1
+            injured_char = None
+            for c in self.deck_ptr.get_other_characters():
+                if c.get_health_need() > injured_val:
+                    injured_val = c.get_health_need()
+                    injured_char = c
+            if injured_char is not None:
+                injured_char.heal(res)
          
         res = buff.query('gen_Omni')
         if res > 0:
@@ -190,6 +202,11 @@ class Character:
             for c in self.deck_ptr.get_other_characters():
                 c.recharge(res)
         
+        res = buff.query('draw')
+        if res > 0:
+            activated = True
+            self.deck_ptr.pull(res)
+
         if activated:
             buff.on_activated()
 
@@ -238,9 +255,22 @@ class Character:
     def take_buff(self, keyword):
         value = 0
         for i in self._get_buff_list():
-            if keyword in i.attribs:
+            res= i.query(keyword)
+            if res > 0:
+                value += res
                 i.on_activated()
-                value += i.query(keyword)
+        self.refresh_buffs()
+        return value
+
+    def take_buff_until(self, keyword, need):
+        value = 0
+        for i in self._get_buff_list():
+            res= i.query(keyword)
+            if res > 0:
+                value += res
+                i.on_activated()
+                if value >= need:
+                    break
         self.refresh_buffs()
         return value
 
@@ -249,7 +279,7 @@ class Character:
         for i in self._get_buff_list():
             activated = False
             for j in i.attribs:
-                if j.startswith(buff_head):
+                if j.startswith(buff_head) and i.query(j) > 0:
                     activated = True
                     res[j] = i.query(j)
             if activated:
