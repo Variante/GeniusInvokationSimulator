@@ -56,7 +56,7 @@ class Skill:
                 for i in res:
                     if 'dmg_up' in i:
                         dmg += res[i]
-                        
+                
                 dealt_dmg, reaction = enemy_char.take_dmg(dmg_type, dmg, 'e_' + self.code_name)
 
             elif cmds[0] == 'heal':
@@ -443,6 +443,9 @@ class Character:
         reaction = False
         if dmg_type != 'Physical':
             reaction = self.infusion(dmg_type, source)
+
+        for i in self.deck_ptr.enemy_ptr.get_summon_buff(f'dmg_{dmg_type}_up'):
+            self.add_buff(f'chaotic_entropy', f'vulnerable {i.query(f"dmg_{dmg_type}_up")}')
         
         return self.dmg(dmg_num, 0), reaction
         
@@ -518,6 +521,12 @@ class Character:
             dtype, dval = i.query('dmg')
             assert dtype == 'Anemo'
             i.change_keyword('dmg', (element, dval))
+
+            # for Chaotic Entropy card
+            for cha in self.deck_ptr.enemy_ptr.get_alive_characters():
+                if cha.code_name == 'sucrose' and cha.talent:
+                    i.change_keyword(f'dmg_{element}_up', 1)
+
     
     def frozen(self):
         self.add_buff('reaction_frozen', 'frozen')

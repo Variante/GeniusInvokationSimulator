@@ -33,6 +33,9 @@ python game.py
 4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
+12/22/22:
+1. Finished most of the event cards and all support cards
+
 12/21/22:
 1. Add all artifact cards, now Artifact sys is beta
 2. Add save function, now we can export all the states

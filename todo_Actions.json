@@ -204,23 +204,6 @@
         "type": ""
     },
     {
-        "img": "Chaotic_Entropy_Card.png",
-        "name": "Chaotic Entropy",
-        "cost_raw": "3 Anemo Dices and 2 Energy",
-        "cost": {
-            "d_type": [
-                "Anemo"
-            ],
-            "d_num": [
-                3
-            ],
-            "p_num": 2
-        },
-        "des": "Combat Action:  When your active character is Sucrose, equip this card.\nAfter Sucrose equips this card, immediately use Forbidden Creation - Isomer 75 / Type II once.\nAfter the Large Wind Spirit created by your Sucrose, who had this card equipped, has converted to another Elemental Type: Deal +1 DMG of this Elemental Type.\n(You must have Sucrose in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Lands_of_Dandelion_Card.png",
         "name": "Lands of Dandelion",
         "cost_raw": "4 Anemo Dices and 3 Energy",

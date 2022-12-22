@@ -657,6 +657,28 @@
         "code_name": "flowing_flame"
     },
     {
+        "img": "Chaotic_Entropy_Card.png",
+        "name": "Chaotic Entropy",
+        "cost_raw": "3 Anemo Dices and 2 Energy",
+        "cost": {
+            "d_type": [
+                "Anemo"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 2
+        },
+        "des": "Combat Action:  When your active character is Sucrose, equip this card.\nAfter Sucrose equips this card, immediately use Forbidden Creation - Isomer 75 / Type II once.\nAfter the Large Wind Spirit created by your Sucrose, who had this card equipped, has converted to another Elemental Type: Deal +1 DMG of this Elemental Type.\n(You must have Sucrose in your deck to add this card to your deck.)",
+        "code": "talent sucrose;skill sucrose forbidden_creation_isomer_74_type_ii",
+        "tags": [
+            "talent",
+            "special_code"
+        ],
+        "type": "equipment",
+        "code_name": "chaotic_entropy"
+    },
+    {
         "img": "Cold-Blooded_Strike_Card.png",
         "name": "Cold-Blooded Strike",
         "cost_raw": "4 Cryo Dices",
