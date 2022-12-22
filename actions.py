@@ -31,9 +31,9 @@ class Action:
             self.code = 'weapon ' + self.code
         elif 'artifact' in self.tags:
             self.code = 'artifact ' + self.code
-            
+
         # only available for support card
-        self.on_leave = data.get('on_leave', '')
+        # self.on_leave = data.get('on_leave', '')
         # self.active_character = data.get('active_character', None)
     """
     def is_affordable(self, dice, character):
@@ -114,6 +114,18 @@ class Action:
         if 'talent' in self.tags:
             mods = deck.get_current_character().query_pattern_buff('talent')
             return modify_cost(self.cost, mods)
+        elif 'weapon' in self.tags:
+            mods = deck.query_support_buff('weapon_save')
+            if mods >= self.cost["d_num"][0]:
+                return build_cost(0)
+        elif 'artifact' in self.tags:
+            mods = deck.query_support_buff('artifact_save')
+            if mods >= self.cost["d_num"][0]:
+                return build_cost(0)
+        elif 'location' in self.tags:
+            mods = deck.query_support_buff('location_save')
+            if mods:
+                return build_cost(self.cost["d_num"][0] - mods)
         return self.cost
 
     def get_action_space(self, deck):

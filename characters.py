@@ -142,11 +142,22 @@ class Character:
     def add_talent(self, talent):
         self.talent = True
 
-    def add_weapon(self, source, data):
-        self.weapon = Weapon(source, data, self, self.weapon_type)
+    def _update_save(self, cost, tp):
+        kw = f'{tp}_save'
+        for s in self.deck_ptr.supports:
+            res = s.query(kw)
+            if res >= cost:
+                s.on_activated()
+                s.change_keyword(kw, res - cost)
+                break
 
-    def add_artifact(self, source, data):
-        self.artifact = Artifact(source, data, self)
+    def add_weapon(self, action, data):
+        self.weapon = Weapon(action.code_name, data, self, self.weapon_type)
+        self._update_save(action.cost['d_num'][0], 'weapon')
+
+    def add_artifact(self, action, data):
+        self.artifact = Artifact(action.code_name, data, self)
+        self._update_save(action.cost['d_num'][0], 'artifact')
 
     def add_shield(self, source, strength):
         self.add_buff(source, f'shield {strength}')
@@ -184,6 +195,11 @@ class Character:
         if res > 0:
             activated = True
             self.deck_ptr.cost('Omni' , -res)
+
+        res = buff.query('gen_Rand')
+        if res > 0:
+            activated = True
+            self.deck_ptr.cost(self.deck_ptr.d.random_type() , -res)
 
         res = buff.query('gen_current')
         if res > 0:

@@ -59,7 +59,7 @@ def is_affordable(cost, dice, character):
 
 def build_cost(d_num):
     return {
-        'd_num': [d_num],
+        'd_num': [max(d_num, 0)],
         'p_num': 0,
         'd_type': ['Unaligned'],
     }

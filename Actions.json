@@ -716,7 +716,7 @@
             "weapon",
             "catalyst"
         ],
-        "code": "gen_current_die 1",
+        "code": "gen_current 1",
         "type": "equipment",
         "code_name": "sacrificial_fragments"
     },
@@ -782,7 +782,7 @@
             "weapon"
         ],
         "type": "equipment",
-        "code": "gen_current_die 1",
+        "code": "gen_current 1",
         "code_name": "sacrificial_bow"
     },
     {
@@ -846,7 +846,7 @@
             "claymore",
             "weapon"
         ],
-        "code": "gen_current_die 1",
+        "code": "gen_current 1",
         "type": "equipment",
         "code_name": "sacrificial_greatsword"
     },
@@ -977,7 +977,7 @@
             "weapon"
         ],
         "type": "equipment",
-        "code": "gen_current_die 1",
+        "code": "gen_current 1",
         "code_name": "sacrificial_sword"
     },
     {
@@ -1562,7 +1562,8 @@
             ],
             "p_num": 0
         },
-        "des": "When Action Phase begins: Create Omni Element Die.\nUsage(s): 2",
+        "des": "When Action Phase begins: Create Two Omni Element Dices.\nUsage(s): 2",
+        "code": "life 2 0 1,gen_Omni 2,on_round_start",
         "tags": [
             "companion"
         ],
@@ -1583,6 +1584,7 @@
             "p_num": 0
         },
         "des": "When you perform \"Switch Character\": This switch is considered a Fast Action instead of a Combat Action. (Once per Round)",
+        "code": "life 1 0 1,refresh,stay,switch_fast 1",
         "tags": [
             "companion"
         ],
@@ -1606,6 +1608,7 @@
         "tags": [
             "companion"
         ],
+        "code": "life 1 0 1,stay,refresh,artifact_save 2",
         "type": "support",
         "code_name": "timaeus"
     },
@@ -1626,6 +1629,7 @@
         "tags": [
             "companion"
         ],
+        "code": "life 1 0 1,stay,refresh,weapon_save 2",
         "type": "support",
         "code_name": "wagner"
     },
@@ -1646,6 +1650,7 @@
         "tags": [
             "companion"
         ],
+        "code": "life 1 0 1,stay,refresh,on_food_event,gen_Rand 1",
         "type": "support",
         "code_name": "chef_mao"
     },
@@ -1666,6 +1671,7 @@
         "tags": [
             "companion"
         ],
+        "code": "life 1 0 1,stay,refresh,location_save 2",
         "type": "support",
         "code_name": "tubby"
     },
@@ -1684,8 +1690,10 @@
         },
         "des": "Triggers automatically once per Round: This card gains 1 Pigeon.\nWhen this card gains 3 Pigeons, discard this card, then draw 1 card and create Omni Element \u00d71.",
         "tags": [
-            "companion"
+            "companion",
+            "flip_life"
         ],
+        "code": "life 3 0 1,on_round_start,draw 1,gen_Omni 1,until_leave",
         "type": "support",
         "code_name": "timmie"
     },
@@ -1704,8 +1712,10 @@
         },
         "des": "End Phase: Collect your unused Elemental Dice (Max 1 of each Elemental Type).\nWhen Action Phase begins: If this card has collected 3 Elemental Dice, draw 2 cards and create Omni Element Die, then discard this card.",
         "tags": [
-            "companion"
+            "companion",
+            "flip_life"
         ],
+        "code": "life 3 1 0,on_round_start,draw 2,gen_Omni 2,until_leave,collect_liben,stay",
         "type": "support",
         "code_name": "liben"
     },
@@ -1724,8 +1734,10 @@
         },
         "des": "When either side uses a Skill: If Physical DMG or Piercing DMG was dealt, or an Elemental Reaction was triggered, this card gains 1 Inspiration.\nWhen this card gains 3 Inspiration, discard this card, then draw 2 cards.",
         "tags": [
-            "companion"
+            "companion",
+            "flip_life"
         ],
+        "code": "life 3 0 0,collect_chang",
         "type": "support",
         "code_name": "chang_the_ninth"
     },

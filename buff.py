@@ -33,12 +33,16 @@ class Buff:
             elif len(cmdw) == 2:
                 self.attribs[cmdw[0]] = int(cmdw[1])
             else:
-                self.attribs[cmdw[0]] = 1
+                if cmdw.startswith('collect'):
+                    self.attribs[cmdw[0]] = set()
+                else:
+                    self.attribs[cmdw[0]] = 1
                 
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
         disabled = self.life <= 0
         disabled |= 'starts_since_next_round' in self.attribs and self.life == self.init_life
+        disabled |= 'until_leave' in self.attribs and self.life <= 0
         if self.condition is not None:
             disabled |= not eval(self.condition)
         if disabled:
@@ -119,7 +123,7 @@ class Support(Buff):
         super(Support, self).__init__(source, action.code)
         self.name = action.name
         self.code_name = action.code_name
-        self.on_leave = action.on_leave
+        # self.on_leave = action.on_leave
         
     def __repr__(self):
         return f'{self.name}: ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
@@ -131,6 +135,12 @@ class Support(Buff):
             self.life = self.init_life
         else:
             self.life -= self.rf_by_round
+        
+        # For Timaeus and Wagner
+        for i in ['artifact_save', 'weapon_save']:
+            if i in self.attribs:
+                self.change_keyword(i, self.query(i) + 1)
 
-    def should_leave(self):
-        return self.life == 0 and self.query('stay') == 0
+    def should_leave(self, is_round_finish):
+        # for liben, when activated by on_round_start, life should go to -1, and it will override the stay tag
+        return (self.life == 0 and self.query('stay') == 0) or self.life < 0

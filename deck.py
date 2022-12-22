@@ -157,6 +157,18 @@ class Deck:
             self.supports.append(s)
         else:
             self.supports[idx] = s
+
+        # activate location cost saving (trigger the counter)
+        if 'location' in action.tags:
+            kw = 'location_save'
+            cost = action.cost['d_num'][0]
+            for s in self.supports:
+                res = s.query(kw)
+                if cost > 0:
+                    s.on_activated()
+                    cost -= res
+                else:
+                    break
          
     def _deactivate(self):
         # transfer buffs if necessary
@@ -324,10 +336,25 @@ class Deck:
         self.reroll()
         for _ in range(self.query_support_buff('query_support_buff')):
             self.reroll()
-        
+            
+        # process support
+        i = 0
+        while True:
+            try:
+                s = self.supports[i]
+                if s.query('on_round_start'):
+                    # check the effect of this summon (buff)
+                    # thanks paimon
+                    self.get_current_character()._engine_buff(s)
+                if s.should_leave():
+                    self.supports.pop(i)
+                else:
+                    i += 1
+            except IndexError:
+                break
+            
         # clear counter
         self.defeated_this_round = 0
-        
 
     def on_round_finished(self):
         for cha in self.characters:
@@ -357,9 +384,15 @@ class Deck:
                     # check the effect of this summon (buff)
                     self.get_current_character()._engine_buff(s)
                 s.on_round_finished()
+
+                if 'collect_liben' in s.attrib:
+                    st = s.attrib['collect_liben']
+                    for i, j in self.current_dice.items():
+                        if j > 0:
+                            st.attrib['collect_liben'].add(i)
+                    s.life = max(s.init_life - len(st), 0)
+
                 if s.should_leave():
-                    if len(s.on_leave):
-                        eval(s.on_leave)
                     self.supports.pop(i)
                 else:
                     i += 1
