@@ -35,31 +35,117 @@ class Deck:
         self.defeated_this_round = 0
         self.deck_id = 0
 
+    """
+    Save, load, states and prints
+    """
     def save(self):
         res = self.state()
         res['last_alive'] = self.last_alive
         res['defeated_this_round'] = self.defeated_this_round
         return res
+
+    def state_for_enemy(self):
+        return {
+            'current_dice_num': count_total_dice(self.current_dice),
+            'characters': [i.state() for i in self.characters],
+            'summons': [i.state() for i in self.summons],
+            'supports': [i.state() for i in self.supports]
+        }
+
+    def state(self):
+        res = self.state_for_enemy()
+        res['current_dice'] = self.current_dice
+        res['to_pull_actions'] = [i.state() for i in self.to_pull_actions]
+        res['used_actions'] = [i.state() for i in self.used_actions]
+        res['available_actions'] = [i.state() for i in self.available_actions]
+        res['action_space'] = self.get_action_space()
+        return res
+
+    def __repr__(self):
+        return json.dumps(self.state())
+        
+    def print_deck(self):
+        print_dice(self.current_dice)
+        print('-' * 40)
+        print('Characters: ', self.character_order)
+        for c in self.characters:
+            print(' ')
+            print(c)
+        print('-' * 40)
+        print('Supports: ')
+        for s in self.supports:
+            print(' ')
+            print(s)
+        print('-' * 40)
+        print('Summons: ')
+        for s in self.summons:
+            print(' ')
+            print(s)
+        print('-' * 40)
+        print('Cards:')
+        for a in self.available_actions:
+            print(a)
+        print('-' * 40)
+         
+    def print_actions(self):
+        print(*['- ' + i for i in self.get_action_space()], sep='\n')
+
+    def get_action_space(self):
+        char = self.get_current_character()
+        # query character skill
+        if char.alive:
+            res = char.get_action_space(self)
+        else:
+            # activate character due to death (free switch)
+            return [f"activate {i.code_name}" for i in self.characters if i.alive]
+        
+        # query action cards
+        visited_action = set()
+        for i in self.available_actions:
+            if i.code_name not in visited_action:
+                res.extend(i.get_action_space(self))
+            visited_action.add(i.code_name)
+        
+        # query switch character, first calcualte action card
+        c_mode = char.query_buff('switch_cost_down') + self.query_support_buff('switch_cost_down')
+        
+        for char in self.characters:
+            if char.alive and not char.active:
+                sw_cost = max(char.activate_cost - c_mode, 0)
+                res.extend(
+                generate_action_space(build_cost(sw_cost),
+                self.current_dice, char, 
+                prefix=f'switch {char.code_name}'))
+        res.append('finish')
+        return res
+
+    """
+    Get status
+    """
     
     def has_alive_changed(self):
         changed = False
-        for i in self.character_order:
-            c = self.characters[i].alive
-            if self.last_alive[i] ^ c:
-                self.last_alive[i] = c
+        for i, c in enumerate(self.characters):
+            if self.last_alive[i] ^ c.alive:
+                self.last_alive[i] = c.alive
                 changed = True
         return changed
-        
     
+    def has_active_character(self):
+        res = False
+        for  c in self.characters:
+            res |= c.active
+        return res
+
     def is_alive(self):
         res = False
-        for i in self.character_order:
-            res |= self.characters[i].alive
+        for c in self.characters:
+            res |= c.alive
         return res
     
-    def shuffle(self):
-        random.shuffle(self.to_pull_actions)
-        
+    """
+    Roll phase
+    """
     def roll(self):
         keep = {}
         # an ugly way to process artifact effect and support
@@ -76,30 +162,7 @@ class Deck:
         # self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))
         keep = self.agent.get_keep_dice(self.state())
         self.current_dice = self.d.roll(total_num=total_num, keep=keep)
-        
-    def pull_one_food(self):
-        for i, j in enumerate(self.to_pull_actions):
-            if 'food'in j.tags:
-                action = self.to_pull_actions.pop(i)
-                # current actions are full
-                if len(self.available_actions) >= 10:
-                    self.used_actions.append(action)
-                else:
-                    self.available_actions.append(action)
 
-
-    def pull(self, pull_num):
-        for _ in range(pull_num):
-            try:
-                action = self.to_pull_actions.pop()
-            except IndexError:
-                return
-            # current actions are full
-            if len(self.available_actions) >= 10:
-                self.used_actions.append(action)
-            else:
-                self.available_actions.append(action)
-   
     def cost(self, d_type, d_num):
         if d_type == 'energy':
             self.get_current_character().energy -= d_num
@@ -109,43 +172,69 @@ class Deck:
             except KeyError:
                 # add dice
                 self.current_dice[d_type] = -d_num
-
-   
-    def pre_round_pull(self):
-        pre_pull_num = 2
-        return self.pull(pre_pull_num)
         
+    """
+    Draw card phase
+    """
+    def shuffle(self):
+        random.shuffle(self.to_pull_actions)
 
-    def state_for_enemy(self):
-        return {
-            'current_dice_num': count_total_dice(self.current_dice),
-            'characters': [i.state() for i in self.characters],
-            'summons': [i.state() for i in self.summons],
-            'supports': [i.state() for i in self.supports]
-        }
+    def _pull_card(self, action):
+        # current actions are full
+        if len(self.available_actions) >= 10:
+            self.used_actions.append(action)
+        else:
+            self.available_actions.append(action)
+
+    def pull_one_food(self):
+        for i, j in enumerate(self.to_pull_actions):
+            if 'food'in j.tags:
+                action = self.to_pull_actions.pop(i)
+                self._pull_card(action)
+                
+    def pull(self, pull_num):
+        for _ in range(pull_num):
+            try:
+                action = self.to_pull_actions.pop()
+            except IndexError:
+                return
+            self._pull_card(action)
+
+    def swap_card(self, keep_card):
+        assert len(self.available_actions) == len(keep_card)
+        c = 0
+        for i in range(len(keep_card) - 1, -1, -1):
+            if keep_card[i] == 0:
+                self.to_pull_actions.append(self.available_actions.pop(i))
+                c += 1
+        self.pull(c)
+
+    def use_card(self, code_name):
+        for idx, i in enumerate(self.available_actions):
+            if i.code_name == code_name:
+                break
+        action = self.available_actions.pop(idx)
+        self.used_actions.append(action)
+        return action
         
-
-    def state(self):
-        res = self.state_for_enemy()
-        res['current_dice'] = self.current_dice
-        res['to_pull_actions'] = [i.state() for i in self.to_pull_actions]
-        res['used_actions'] = [i.state() for i in self.used_actions]
-        res['available_actions'] = [i.state() for i in self.available_actions]
-        res['action_space'] = self.get_action_space()
-        return res
-
+    """
+    Summons
+    """
     def add_summon(self, source, code_name):
+        # fetch summon profile
         for i in self.summon_pool:
             if i['code_name'] == code_name:
                 summon_data = i
                 break
         
+        # check existing summons
         sobj = Summon(source, summon_data)
         for i, s in enumerate(self.summons):
             if s.code_name == code_name:
                 self.summons[i] = sobj
                 return
-                
+        
+        # if we have too many summons
         if len(self.summons) >= 4:
             s = self.game_ptr.state()
             s['action_space'] = [f'replace {i.code_name}' for i in self.summons ]
@@ -162,27 +251,18 @@ class Deck:
     def kill_summon(self, code_name):
         for s in self.summons:
             if s.code_name == code_name:
-                s.kill()
                 self.summons.remove(s)
                 return
     
     def kill_all_summons(self):
         self.summons = []
 
-    def transfer_equip(self, eq, src, dst):
-        s = self.get_character(src)
-        d = self.get_character(dst)
-
-        if eq == 'artifact':
-            s.artifact = d.artifact
-            d.artifact = None
-        elif eq == 'weapon':
-            s.weapon = d.weapon
-            d.weapon = None
-
     def get_summon_buff(self, keyword):
         return [i for i in self.summons if i.query(keyword)]
-        
+
+    """
+    Supports
+    """
     def add_support(self, action, idx):
         s = Support(action.code_name, action)
         if len(self.supports) >= idx:
@@ -205,14 +285,87 @@ class Deck:
                     cost -= res
                 else:
                     break
-         
+                
+    def query_support_buff(self, keyword):
+        val = 0
+        for i in self.supports:
+            val += i.query(keyword)
+        return val
+
+    def take_support_buff(self, keyword):
+        val = 0
+        for i in self.supports:
+            res = i.query(keyword)
+            if res > 0:
+                val += res
+                i.on_activated()
+        return val
+
+    def proc_support_buffs(self, kw):
+        i = 0
+        while True:
+            try:
+                s = self.supports[i]
+                if s.query(kw):
+                    # check the effect of this summon (buff)
+                    # thanks paimon
+                    self.get_current_character()._engine_buff(s)
+                if s.should_leave():
+                    self.supports.pop(i)
+                else:
+                    i += 1
+            except IndexError:
+                break
+    
+    def refresh_summons(self):
+        self.summons = [i for i in self.summons if i.life > 0]
+
+    """
+    Modify characters
+    """
+    def transfer_equip(self, eq, src, dst):
+        s = self.get_character(src)
+        d = self.get_character(dst)
+
+        if eq == 'artifact':
+            s.artifact = d.artifact
+            d.artifact = None
+        elif eq == 'weapon':
+            s.weapon = d.weapon
+            d.weapon = None
+
+    def recharge(self, cmdw):
+        if cmdw[1] == 'any':
+            for i in self.character_order:
+                c = self.characters[i]
+                if c.get_energy_need() > 0:
+                    c.recharge(int(cmdw[2]))
+                    return True
+            return False
+        elif cmdw[1] == 'active':
+            self.get_current_character().recharge(int(cmdw[2]))
+            return True
+        elif cmdw[1] == 'to_active':
+            cur = self.get_current_character()
+            v = int(cmdw[2])
+            for i in self.character_order[1:]:
+                c = self.characters[i]
+                if cur.get_energy_need() > 0 and c.energy >= v:
+                    cur.recharge(v)
+                    c.recharge(-v)
+            return True
+
+    
+    """
+    Switch characters
+    """
     def _deactivate(self):
         # transfer buffs if necessary
         current_char = self.get_current_character()
         idx = self.character_order.pop(0)
         if current_char.alive:
             # manually deactivate
-            buffs = current_char.deactivate()
+            current_char.deactivate()
             # add back to the end
             self.character_order.append(idx)
         # print('[_deactivate]', idx, self.character_order)
@@ -227,8 +380,6 @@ class Deck:
         self.characters[idx].activate()
 
         self.proc_support_buffs('on_switch_finished')
-
-
 
     def activate_by_id(self, idx):
         self._deactivate()
@@ -267,6 +418,9 @@ class Deck:
             return
         self.activate_by_id(idx)
 
+    """
+    Methods to fetch information
+    """
     def count_character_by_faction(self, s):
         res = 0
         for c in self.get_alive_characters():
@@ -306,90 +460,14 @@ class Deck:
         for idx, i in enumerate(self.characters):
             if i.code_name == code_name:
                 return idx
-    
-    def get_action_space(self):
-        char = self.get_current_character()
-        # query character skill
-        if char.alive:
-            res = char.get_action_space(self)
-        else:
-            # activate character due to death (free switch)
-            return [f"activate {i.code_name}" for i in self.characters if i.alive]
-        
-        # query action cards
-        visited_action = set()
-        for i in self.available_actions:
-            if i.code_name not in visited_action:
-                res.extend(i.get_action_space(self))
-            visited_action.add(i.code_name)
-        
-        # query switch character, first calcualte action card
-        c_mode = char.query_buff('switch_cost_down') + self.query_support_buff('switch_cost_down')
-        
-        for char in self.characters:
-            if char.alive and not char.active:
-                sw_cost = max(char.activate_cost - c_mode, 0)
-                res.extend(
-                generate_action_space(build_cost(sw_cost),
-                self.current_dice, char, 
-                prefix=f'switch {char.code_name}'))
-        res.append('finish')
-        return res
-    
-    def keep_action(self, keep_card):
-        assert len(self.available_actions) == len(keep_card)
-        c = 0
-        for i in range(len(keep_card) - 1, -1, -1):
-            if keep_card[i] == 0:
-                self.to_pull_actions.append(self.available_actions.pop(i))
-                c += 1
-        self.pull(c)
-    
-    def use_action_card(self, code_name):
-        for idx, i in enumerate(self.available_actions):
-            if i.code_name == code_name:
-                break
-        action = self.available_actions.pop(idx)
-        self.used_actions.append(action)
-        return action
-    
-    def query_support_buff(self, keyword):
-        val = 0
-        for i in self.supports:
-            val += i.query(keyword)
-        return val
 
-    def take_support_buff(self, keyword):
-        val = 0
-        for i in self.supports:
-            res = i.query(keyword)
-            if res > 0:
-                val += res
-                i.on_activated()
-        return val
-
-    def proc_support_buffs(self, kw):
-        i = 0
-        while True:
-            try:
-                s = self.supports[i]
-                if s.query(kw):
-                    # check the effect of this summon (buff)
-                    # thanks paimon
-                    self.get_current_character()._engine_buff(s)
-                if s.should_leave():
-                    self.supports.pop(i)
-                else:
-                    i += 1
-            except IndexError:
-                break
-    
-    def refresh_summons(self):
-        self.summons = [i for i in self.summons if i.life > 0]
+    """
+    Round events
+    """
 
     def on_round_start(self):
         # draw 2 cards
-        self.pre_round_pull()
+        self.pull(2)
         
         # get dices
         self.roll()
@@ -446,61 +524,11 @@ class Deck:
             except IndexError:
                 break
 
-    def recharge(self, cmdw):
-        if cmdw[1] == 'any':
-            for i in self.character_order:
-                c = self.characters[i]
-                if c.get_energy_need() > 0:
-                    c.recharge(int(cmdw[2]))
-                    return True
-            return False
-        elif cmdw[1] == 'active':
-            self.get_current_character().recharge(int(cmdw[2]))
-            return True
-        elif cmdw[1] == 'to_active':
-            cur = self.get_current_character()
-            v = int(cmdw[2])
-            for i in self.character_order[1:]:
-                c = self.characters[i]
-                if cur.get_energy_need() > 0 and c.energy >= v:
-                    cur.recharge(v)
-                    c.recharge(-v)
-            return True
-                
-    def __repr__(self):
-        return json.dumps(self.state())
-        
-    def print_deck(self):
-        print_dice(self.current_dice)
-        print('-' * 40)
-        print('Characters: ', self.character_order)
-        for c in self.characters:
-            print(' ')
-            print(c)
-        print('-' * 40)
-        print('Supports: ')
-        for s in self.supports:
-            print(' ')
-            print(s)
-        print('-' * 40)
-        print('Summons: ')
-        for s in self.summons:
-            print(' ')
-            print(s)
-        print('-' * 40)
-        print('Cards:')
-        for a in self.available_actions:
-            print(a)
-        print('-' * 40)
-         
-    def print_actions(self):
-        print(*['- ' + i for i in self.get_action_space()], sep='\n')
-        
-        
+
 if __name__ == '__main__':
     d = Deck('p1', None)
     d.reroll(keep=[0, 2, 0, 0, 0, 0, 0, 0], total_num=2)
-    d.pre_round_pull()
+    d.pull(2)
     print('Current dices: ', d.current_dice, sep = "\n")
     print('Action space: ')
     print(*d.get_action_space(), sep = "\n")

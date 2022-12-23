@@ -22,6 +22,9 @@ class Game:
         self.switch_agent = False
         self.action_history = []
 
+    """
+    Save, load, states and prints
+    """
     def save(self):
         game_state = {
             'round_num': self.round_num,
@@ -34,6 +37,55 @@ class Game:
         game_state['decks'] = [d.save() for d in self.decks]
         return game_state
             
+    def state(self):
+        return {
+                'my_state': self.get_current_deck().state(),
+                'other_state': self.get_other_deck().state_for_enemy()
+            }
+            
+    def state_for_action(self):
+        res = self.state()
+        res['action_space'] = self.get_current_deck().get_action_space()
+        return res
+
+    def state_only_mine(self):
+        return  {
+            'my_state': self.get_current_deck().state(),
+            'other_state': None,
+        }
+
+    def print_desk(self, event=''):
+        # print(self.state())
+        print('\n' * 3 + '=' * 50)
+        print(f"[Round {self.round_num:02d}] {event}")
+        print('-' * 50)
+        for i, d in enumerate(self.decks):
+            print(f'Player {i + 1} ' + ('[√]' if self.finish_round[i] else '[ ]') + (' <*>' if self.current_agent == i else ''))
+            d.print_deck()
+            print('-' * 50)
+   
+    def print_full_desk(self, event=''):
+        print('\n' * 3 + '=' * 50)
+        print(f"[Round {self.round_num:02d}] {event}")
+        print('-' * 50)
+        for i, d in enumerate(self.decks):
+            print(f'Player {i + 1} ' + ('[√]' if self.finish_round[i] else '[ ]') + (' <*>' if self.current_agent == i else ''))
+            d.print_deck()
+            print('Available actions:')
+            d.print_actions()
+            print('-' * 50)
+
+    def print_winner(self, ret):
+        print('\n' * 3 + '=' * 20)
+        if ret > 0:
+            print(f'Game finished. The winner is Player {ret}')
+        else:
+            print('Game finished. It is a draw')
+        print('=' * 20)
+
+    """
+    Get status
+    """
 
     def next_agent(self):
         idx = self.current_agent
@@ -61,23 +113,7 @@ class Game:
         else:
             return 2
 
-    def state(self):
-        return {
-                'my_state': self.get_current_deck().state(),
-                'other_state': self.get_other_deck().state_for_enemy()
-            }
-            
-    def state_for_action(self):
-        res = self.state()
-        res['action_space'] = self.get_current_deck().get_action_space()
-        return res
-
-    def state_only_mine(self):
-        return  {
-            'my_state': self.get_current_deck().state(),
-            'other_state': None,
-        }
-
+    
     def get_current_deck(self):
         return self.decks[self.current_agent]
         
@@ -86,6 +122,10 @@ class Game:
             if i != self.current_agent:
                 return j
         
+    """
+    Engine pipeline
+    """
+
     def _gen_dice(self, cmdw):
         d_num = int(cmdw[1])
         d_type = cmdw[2]
@@ -195,18 +235,18 @@ class Game:
         for cmd in cmds:
             cmdw = cmd.split()
             if cmdw[0] == 'event':
-                action = my_deck.use_action_card(cmdw[1])
+                action = my_deck.use_card(cmdw[1])
                 # not all events have a target
                 self.engine_event(action, cmdw[2] if len(cmdw) > 2 else None)
             elif cmdw[0] == 'equipment':
-                action = my_deck.use_action_card(cmdw[1])
+                action = my_deck.use_card(cmdw[1])
                 # not all events have a target
                 self.engine_equipment(action, cmdw[2] if len(cmdw) > 2 else None)
             elif cmdw[0] == 'support':
-                action = my_deck.use_action_card(cmdw[1])
+                action = my_deck.use_card(cmdw[1])
                 self.engine_support(action, int(cmdw[2])) # index of the support will be
             elif cmdw[0] == 'convert':
-                action = my_deck.use_action_card(cmdw[1])
+                action = my_deck.use_card(cmdw[1])
             elif cmdw[0] == 'skill':
                 self._proc_skill(cmdw)
             elif cmdw[0] == 'cost':
@@ -231,7 +271,10 @@ class Game:
             else:
                 raise NotImplementedError(f'[parse_space_action]{cmd}')
                 
-   
+    """
+    Round events
+    """
+
     def on_round_start(self):
         # clear states
         self.finish_round = [False] * self.agent_num
@@ -250,42 +293,18 @@ class Game:
         self.current_agent = self.agent_moves_first
         self.agent_moves_first = None
         
-            
-    def print_desk(self, event=''):
-        # print(self.state())
-        print('\n' * 3 + '=' * 50)
-        print(f"[Round {self.round_num:02d}] {event}")
-        print('-' * 50)
-        for i, d in enumerate(self.decks):
-            print(f'Player {i + 1} ' + ('[√]' if self.finish_round[i] else '[ ]') + (' <*>' if self.current_agent == i else ''))
-            d.print_deck()
-            print('-' * 50)
-   
-    def print_full_desk(self, event=''):
-        print('\n' * 3 + '=' * 50)
-        print(f"[Round {self.round_num:02d}] {event}")
-        print('-' * 50)
-        for i, d in enumerate(self.decks):
-            print(f'Player {i + 1} ' + ('[√]' if self.finish_round[i] else '[ ]') + (' <*>' if self.current_agent == i else ''))
-            d.print_deck()
-            print('Available actions:')
-            d.print_actions()
-            print('-' * 50)
-            
     def has_alive_changed(self):
-        for i, d in enumerate(self.decks):
-            if d.has_alive_changed():
-                tmp = self.current_agent
-                self.current_agent = i
+        for t in range(2):
+            i = t - abs(self.current_agent)  # start from the current_agent first
+            d = self.decks[i]
+            # If need to switch character (someone is defeated and no one is active)
+            if d.has_alive_changed() and not d.has_active_character():
                 print(f'\n\nPlayer {i + 1} needs to switch character')
                 d.print_actions()
                 # ask user to activate a new character
-                agent = self.agents[self.current_agent]
+                agent = self.agents[i]
                 action = agent.get_action(self.state_for_action())
                 self.parse_space_action(action)
-                self.switch_agent = True
-                self.current_agent = tmp
-                return
             
     
     def game_loop(self, show=False, save_hist=False):
@@ -302,7 +321,7 @@ class Game:
                 dump_js(f'states/R{self.round_num:02d}_00_draw_card', self.save())
                 
             keep_card = i.agent.get_keep_card(self.state_only_mine())
-            i.keep_action(keep_card)
+            i.swap_card(keep_card)
 
             if save_hist:
                 dump_js(f'states/R{self.round_num:02d}_01_swap_card', self.save())
@@ -366,14 +385,6 @@ class Game:
 
         return self.check_win()
         
-        
-    def print_winner(self, ret):
-        print('\n' * 3 + '=' * 20)
-        if ret > 0:
-            print(f'Game finished. The winner is Player {ret}')
-        else:
-            print('Game finished. It is a draw')
-        print('=' * 20)
         
         
 if __name__ == '__main__':
