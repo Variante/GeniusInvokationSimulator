@@ -322,7 +322,7 @@ class Game:
                 if show:
                     self.print_full_desk(f'Player {self.current_agent + 1} exec: ' + action)
                 if save_hist:
-                    dump_js(f'states/R{self.round_num:02d}_{t:02d}_done', self.save())
+                    dump_js(f'states/R{self.round_num:02d}_{self.step_num:02d}_done', self.save())
 
                 # check round finished
                 if self.is_round_finished():
@@ -347,7 +347,7 @@ class Game:
             if show:
                 self.print_desk('round finished')
             if save_hist:
-                dump_js(f'states/R{self.round_num:02d}_{t:02d}_round_finished', self.save())
+                dump_js(f'states/R{self.round_num:02d}_{self.step_num:02d}_round_finished', self.save())
         return ret
         
         
