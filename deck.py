@@ -263,7 +263,7 @@ class Deck:
             except IndexError:
                 break
 
-    def add_summon(self, source, code_name):
+    def add_summon(self, source, code_name, talent=False):
         # fetch summon profile
         for i in self.summon_pool:
             if i['code_name'] == code_name:
@@ -271,7 +271,7 @@ class Deck:
                 break
         
         # check existing summons
-        sobj = Summon(source, summon_data)
+        sobj = Summon(source, summon_data, talent)
         for i, s in enumerate(self.summons):
             if s.code_name == code_name:
                 self.summons[i] = sobj

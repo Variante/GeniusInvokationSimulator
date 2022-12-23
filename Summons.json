@@ -33,6 +33,7 @@
         "img": "Oz_Summon.webp",
         "name": "Oz",
 		"code_name": "oz",
-		"code": "life 2 0 1,dmg Electro 1"
+		"code": "life 2 0 1,dmg Electro 1",
+		"code_talent": "life 2 0 1,dmg Electro 2,on_fischl_normal_attack_finished"
 	}
 ]

@@ -78,7 +78,7 @@ class Skill:
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'summon':
-                my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1])
+                my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1], my_char.talent)
             elif cmds[0] == 'switch_enemy':
                 my_deck.enemy_ptr.switch_next(cmds[1] == 'prev')
             else:
@@ -94,6 +94,7 @@ class Skill:
                 weapon.on_activated()
 
         my_char.proc_buff_event(f'on_{self.stype}_finished')
+        my_char.proc_buff_event(f'on_{my_char.code_name}_{self.stype}_finished') # for Fischl talent
         enemy_char.proc_buff_event('on_enemy_skill_finished')
         my_char.proc_buff_event('on_skill_finished')
 

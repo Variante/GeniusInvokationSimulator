@@ -102,8 +102,11 @@ class Artifact(Buff):
     
 
 class Summon(Buff):
-    def __init__(self, source, data):
-        super(Summon, self).__init__(source, data['code'])
+    def __init__(self, source, data, talent):
+        code = data['code']
+        if talent:
+            code = data.get('code_talent', code)
+        super(Summon, self).__init__(source, code)
         self.name = data['name']
         self.code_name = data['code_name']
 
