@@ -48,12 +48,6 @@ class Game:
         res['action_space'] = self.get_current_deck().get_action_space()
         return res
 
-    def state_only_mine(self):
-        return  {
-            'my_state': self.get_current_deck().state(),
-            'other_state': None,
-        }
-
     def print_desk(self, event=''):
         # print(self.state())
         print('\n' * 3 + '=' * 50)
@@ -76,7 +70,7 @@ class Game:
             print('-' * 50)
 
     def print_winner(self, ret):
-        print('\n' * 3 + '=' * 20)
+        print('=' * 20)
         if ret >= 0:
             print(f'Game finished. The winner is Player {ret + 1}')
         else:
@@ -132,54 +126,6 @@ class Game:
         my_char.get_skill(cmdw[2]).exec(my_deck, my_char, enemy_char)
         self.switch_agent = True
 
-    """
-    def engine_support(self, action, idx):
-        cur_deck = self.get_current_deck()
-        cur_deck.add_support(action, idx)
-
-
-    def engine_event(self, action, target):
-        code_name = action.code_name
-        my_deck = self.get_current_deck()
-        target_char = my_deck.get_character(target)
-        if target_char is None:
-            # for buff without a specific target
-            target_char = my_deck.get_current_character()
-        cmds = action.code.split(';')
-        for cmd in cmds:
-            cmdw = cmd.split()
-            if cmdw[0] == 'heal':
-                target_char.heal(int(cmdw[1]))
-            elif cmdw[0] == 'heal_other':
-                for c in my_deck.get_other_characters():
-                    c.heal(int(cmdw[1]))
-            elif cmdw[0] == 'heal_summon':
-                my_deck.get_summon(target).heal(int(cmdw[1]))
-            elif cmdw[0] == 'kill_summon':
-                my_deck.enemy_ptr.get_summon(target)
-            elif cmdw[0] == 'kill_all_summons':
-                my_deck.kill_all_summons()
-                my_deck.enemy_ptr.kill_all_summons()
-            elif cmdw[0] == 'recharge':
-                my_deck.recharge(cmdw)
-            elif cmdw[0] == 'buff':
-                target_char.add_buff(code_name, cmd)
-            elif cmdw[0] == 'gen':
-                my_deck.gen(cmdw[2], int(cmd[1]))
-            # use card to switch characters
-            elif cmdw[0] == 'switch_my':
-                my_deck.activate(target)
-            elif cmdw[0] == 'draw':
-                my_deck.pull(int(cmdw[1]))
-            elif cmdw[0] == 'reroll':
-                for _ in range(int(cmdw[1])):
-                    my_deck.reroll()
-            elif cmdw[0] == 'summon_rand':
-                my_deck.add_rand_summon(code_name, int(cmdw[1]), cmdw[2:])
-            else:
-                raise NotImplementedError(f'[engine_event]{cmd}')
-
-    """
     def card_engine(self, action, params):
         code_name = action.code_name
         my_deck = self.get_current_deck()
@@ -210,7 +156,7 @@ class Game:
                 my_deck.gen(int(cmd[1]), cmdw[2])
             # use card to switch characters
             elif cmdw[0] == 'switch_my':
-                my_deck.activate(target)
+                my_deck.switch(target)
             elif cmdw[0] == 'draw':
                 my_deck.pull(int(cmdw[1]))
             elif cmdw[0] == 'draw_food':
@@ -280,7 +226,7 @@ class Game:
                 my_char.take_buff('switch_cost_down') + my_deck.take_support_buff('switch_cost_down')
                 res = my_char.take_buff('switch_fast') + my_deck.take_support_buff('switch_fast')
                 self.switch_agent = res == 0
-                my_deck.activate(cmdw[1]) 
+                my_deck.switch(cmdw[1]) 
             else:
                 raise NotImplementedError(f'[parse_space_action]{cmd}')
                 
@@ -323,8 +269,7 @@ class Game:
             if save_hist:
                 dump_js(f'states/R{self.round_num:02d}_00_draw_card', self.save())
                 
-            keep_card = i.agent.get_keep_card(self.state_only_mine())
-            i.swap_card(keep_card)
+            i.swap_card()
 
             if save_hist:
                 dump_js(f'states/R{self.round_num:02d}_01_swap_card', self.save())
@@ -333,7 +278,7 @@ class Game:
             self.has_active_character()
             
             if show:
-                self.print_full_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
+                self.print_full_desk(f'Player {self.current_agent + 1} activate')
             if save_hist:
                 dump_js(f'states/R{self.round_num:02d}_02_activate', self.save())
             self.next_agent()
@@ -351,18 +296,17 @@ class Game:
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state_for_action())
                 self.parse_space_action(action)
-                
-                if show:
-                    self.print_full_desk(f'Player {self.current_agent + 1} exec: ' + action)
-                if save_hist:
-                    dump_js(f'states/R{self.round_num:02d}_{t:02d}_done', self.save())
 
                 # check game finished
                 ret = self.check_win()
                 if ret >= 0:
                     return ret
-                
+
                 self.has_active_character()
+                if show:
+                    self.print_full_desk(f'Player {self.current_agent + 1} exec: ' + action)
+                if save_hist:
+                    dump_js(f'states/R{self.round_num:02d}_{t:02d}_done', self.save())
 
                 # check round finished
                 if self.is_round_finished():

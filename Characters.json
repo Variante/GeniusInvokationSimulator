@@ -54,7 +54,7 @@
                     ],
                     "p_num": 3
                 },
-                "code": "dmg Pyro 8;infusion Pyro",
+                "code": "dmg Pyro 8;buff infusion_Pyro,life 2 1 0",
                 "code_name": "dawn"
             }
         ],

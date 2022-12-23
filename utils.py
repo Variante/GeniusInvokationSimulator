@@ -70,7 +70,7 @@ def _generate_action_space(cost, dice, character):
     if cost['p_num'] > character.energy:
         return []
     elif cost['p_num'] > 0:
-        res = f"cost {cost['p_num']} energy"
+        res = f"cost energy {cost['p_num']}"
     if sum(cost['d_num']) == 0:
         return ['cost Omni 0;' + res] if len(res) else ['cost Omni 0']
     if sum(cost['d_num']) > count_total_dice(dice):
@@ -200,7 +200,7 @@ def buff_engine(buff, my_deck, enemy_deck):
     res = buff.query('dmg')
     if isinstance(res, tuple) and res[1] > 0:
         activated = True
-        enemy_deck.get_current_character().take_dmg(res[0], res[1], buff.code_name)
+        enemy_deck.get_current_character().take_dmg(res[0], res[1], buff.source)
 
 
     res = buff.query('gen')

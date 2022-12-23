@@ -18,34 +18,9 @@ class Skill:
             self.round_usage_with_talent += 1
 
         energy_gain = 1 if self.cost['p_num'] == 0 else 0
-
         weapon =  my_char.weapon
-
-        dealt_dmg = 0
-        dmg_type = None
         reaction = False
-        dmg_mods = None
-
-        def dmg_buff_seq():
-            if dmg_type == 'Piercing':
-                return 'Physical', 0, dmg
-            nonlocal dmg_mods
-            dmg = int(cmds[2])
-            dmg_type = cmds[1]
-            if dmg_mods is None:
-                dmg_mods = 0
-                if weapon is not None:
-                    dmg_mods += 1
-                    if enemy_char.health <= 6:
-                        dmg_mods += my_char.weapon.query('enemy_health_lower_than_six_dmg_up')
-                # query all buffs
-                res = my_char.take_pattern_buff(self.stype)
-                for i in res:
-                    if 'dmg_up' in i:
-                        dmg_mods += res[i]
-            # TODO: not sure whether it is correct
-            
-            return dmg_type, dmg, 0
+        dealt_dmg = 0
 
         for code in self.code:
             cmds = code.split()
@@ -56,16 +31,34 @@ class Skill:
                 else:
                     code = conds[2]
                 cmds = code.split()
-                
+
             if cmds[0] == 'dmg':
-                dmg_type, dmg, piercing = dmg_buff_seq()
-                ddmg, dreact = enemy_char.take_dmg(dmg_type, dmg + dmg_mods, 'e_' + self.code_name, piercing)
+                dmg_type = cmds[1]
+                dmg = int(cmds[2])
+                dmg_mods = 0
+                if weapon is not None:
+                    dmg_mods += 1
+                    if enemy_char.health <= 6:
+                        dmg_mods += my_char.weapon.query('enemy_health_lower_than_six_dmg_up')
+
+                # query all buffs
+                for i in my_char.take_pattern_buff(self.stype):
+                    if 'dmg_up' in i:
+                        dmg_mods += res[i]
+
+                # query infusion
+                if dmg_type == 'Physical':
+                    for i in  my_char.take_pattern_buff('infusion'):
+                        dmg_type = i.split('_')[-1]
+                        break
+                    
+                ddmg, dreact = enemy_char.take_dmg(dmg_type, dmg + dmg_mods, f'e-{my_char.code_name}-{self.code_name}')
                 dealt_dmg += ddmg
                 reaction |= dreact
             elif cmds[0] == 'dmg_bg':
-                dmg_type, dmg, piercing = dmg_buff_seq()
+                # all dmg to bg is Piercing
                 for cha in my_deck.enemy_ptr.get_alive_characters():
-                    ddmg, dreact = cha.take_dmg(dmg_type, dmg + dmg_mods, 'e_' + self.code_name, piercing)
+                    ddmg, dreact = cha.take_dmg('Piercing', int(cmds[2]), f'e-{my_char.code_name}-{self.code_name}')
                     dealt_dmg += ddmg
                     reaction |= dreact
             elif cmds[0] == 'heal':
@@ -79,18 +72,12 @@ class Skill:
 
             elif cmds[0] == 'energy':
                 energy_gain = int(cmds[1])
-            elif cmds[0] == 'infusion':
-                dealt_dmg, reaction = my_char.take_dmg(cmds[1], 0, 'm_' + self.code_name)
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'summon':
                 my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1])
             elif cmds[0] == 'switch_enemy':
-                deck = my_deck.enemy_ptr
-                if cmds[1] == 'prev':
-                    deck.activate_prev()
-                else:
-                    deck.activate_next()
+                my_deck.enemy_ptr.switch_next(cmds[1] == 'prev')
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
                 
@@ -292,7 +279,6 @@ class Character:
     """
     Get action space
     """
-
     def affordable_skills(self, dice):
         res = []
         for skill in self.skills:
@@ -313,21 +299,11 @@ class Character:
     """
     
     def activate(self):
-        # self.buffs.extend(buffs)
         self.active = True
-        self.buffs.extend(self.deck_ptr.transfer_buff)
-        self.deck_ptr.transfer_buff = []
-
         self.proc_buff_event('on_character_activated')
 
     def deactivate(self):
-        transfer_buff = []
-        for i in range(len(self.buffs) - 1, -1, -1):
-            if self.buffs[i].query('transfer'):
-                transfer_buff.append(self.buffs.pop(i))
         self.active = False
-        # return transfer_buff
-        self.deck_ptr.transfer_buff.extend(transfer_buff)
 
     """
     Events
@@ -348,10 +324,9 @@ class Character:
 
     def on_round_finished(self):
         self.proc_buff_event('on_round_finished')
-        
+
         for i in self.skills:
             i.on_round_finished()
-        
         for i in self.buffs:
             i.on_round_finished()
         self.refresh_buffs()
@@ -442,17 +417,16 @@ class Character:
     def overloaded(self):
         self.add_buff(f'reaction_overloaded', 'vulnerable 2')
         if self.active:
-            self.deck_ptr.activate_next()
+            self.deck_ptr.switch_next()
+
+    def superconduct(self):
+        self.add_buff(f'reaction_superconduct', 'vulnerable 2')
+        for c in self.deck_ptr.get_other_characters():
+            c.take_dmg('Piercing', 1, 'reaction_superconduct')
     
     def swirl(self, element, source):
         # print('\n\n swirl element ', element)
         for c in self.deck_ptr.get_other_characters():
-            """
-            # add swirl dmg to buff
-            c.add_buff(f'reaction_swirl_{element}', 'vulnerable 1')
-            # attach new element and calculate dmg
-            c.take_dmg(element, 0)
-            """
             c.take_dmg(element, 1, source)
         
         # swirl for the large wind spirit
@@ -473,7 +447,7 @@ class Character:
 
     def attach_element(self, element, source):
         # return whether there is an reaction or not
-        if element == 'Physical':
+        if element in ['Physical', 'Piercing']:
             return False
         if element in self.attached_element:
             return False
@@ -500,6 +474,8 @@ class Character:
                     self.overloaded()
                 elif reaction == 'swirl':
                     self.swirl(i, source)
+                elif reaction == 'superconduct':
+                    self.superconduct()
                 else:
                     # TODO: add reaction later
                     raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')
