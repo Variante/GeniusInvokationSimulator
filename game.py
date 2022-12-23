@@ -15,6 +15,7 @@ class Game:
         self.agents = [i.agent for i in decks]
         self.agent_num = len(decks)
         self.round_num = 0
+        self.step_num = 0
         self.agent_moves_first = None
         self.current_agent = 0
         self.finish_round = [False] * self.agent_num
@@ -25,6 +26,18 @@ class Game:
     """
     Save, load, states and prints
     """
+    def reset(self):
+        self.round_num = 0
+        self.step_num = 0
+        self.agent_moves_first = None
+        self.current_agent = 0
+        self.finish_round = [False] * self.agent_num
+
+        self.switch_agent = False
+        self.action_history = []
+        for i in self.decks:
+            i.reset()
+
     def save(self):
         game_state = {
             'round_num': self.round_num,
@@ -138,11 +151,15 @@ class Game:
             cmdw = cmd.split()
             if cmdw[0] == 'heal':
                 target.heal(int(cmdw[1]))
-            elif cmdw[0] == 'heal_other':
-                for c in my_deck.get_other_characters():
+            elif cmdw[0] == 'heal_bg':
+                for c in my_deck.get_bg_characters():
                     c.heal(int(cmdw[1]))
             elif cmdw[0] == 'heal_summon':
                 my_deck.get_summon(target).heal(int(cmdw[1]))
+            elif cmdw[0] == 'heal_dendro':
+                pass
+            elif cmdw[0] == 'summon_rand':
+                my_deck.add_rand_summon(code_name, int(cmdw[1]), cmdw[2:])
             elif cmdw[0] == 'kill_summon':
                 my_deck.enemy_ptr.get_summon(target)
             elif cmdw[0] == 'kill_all_summons':
@@ -153,10 +170,12 @@ class Game:
             elif cmdw[0] == 'buff':
                 target.add_buff(code_name, cmd)
             elif cmdw[0] == 'gen':
-                my_deck.gen(int(cmd[1]), cmdw[2])
+                my_deck.gen(cmdw[1], int(cmdw[2]))
             # use card to switch characters
             elif cmdw[0] == 'switch_my':
-                my_deck.switch(target)
+                my_deck.switch(params[0])
+                # dont need to switch agent
+                # https://www.bilibili.com/video/BV1P84y1t7K6
             elif cmdw[0] == 'draw':
                 my_deck.pull(int(cmdw[1]))
             elif cmdw[0] == 'draw_food':
@@ -177,11 +196,7 @@ class Game:
             elif cmdw[0] == 'artifact':
                 target.add_artifact(action, cmd)
             elif cmdw[0] == 'shield':
-                try:
-                    target.add_shield(code_name, int(cmdw[1]))
-                except ValueError:
-                    value = my_deck.count_character_by_faction(cmdw[1])
-                    target.add_shield(code_name, value)
+                target.add_shield(action, cmd)
             elif cmdw[0] == 'support':
                 my_deck.add_support(action, target)
             elif cmdw[0] == 'transfer':
@@ -285,12 +300,13 @@ class Game:
 
         ret = -1
         # round start
-        while self.round_num < 15:
+        while self.round_num < 15 and self.check_win() < 0:
+            self.step_num += 1
             # start a new round
             self.round_num += 1
             self.on_round_start()
-            t = 0
-            while True:
+            self.step_num = 0
+            while self.check_win() < 0:
                 self.switch_agent = False
 
                 agent = self.agents[self.current_agent]
@@ -314,7 +330,10 @@ class Game:
                 # move to the next agent
                 if self.switch_agent:
                     self.next_agent()
-                t += 1
+
+            ret = self.check_win()
+            if ret >= 0:
+                return ret
 
             # one round finished
             self.on_round_finished()
@@ -324,7 +343,7 @@ class Game:
 
             # check if character defeated
             self.has_active_character()
-            
+
             if show:
                 self.print_desk('round finished')
             if save_hist:
@@ -335,6 +354,8 @@ class Game:
         
 if __name__ == '__main__':
     g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
-    ret = g.game_loop(show=False)
-    g.print_winner(ret)
+    for _ in range(500):
+        ret = g.game_loop(show=False)
+        g.print_winner(ret)
+        g.reset()
     

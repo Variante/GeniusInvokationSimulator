@@ -1252,174 +1252,6 @@
         "code_name": "nre"
     },
     {
-        "img": "Sweet_Madame.png",
-        "name": "Sweet Madame",
-        "code_name": "sweet_madame",
-        "code": "heal 1",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Heal the target character for 1 HP.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event"
-    },
-    {
-        "img": "Mondstadt_Hash_Brown.png",
-        "name": "Mondstadt Hash Brown",
-        "cost_raw": "1 Elemental Dice",
-        "code": "heal 2",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Heal the target character for 2 HP.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "mondstadt_hash_brown"
-    },
-    {
-        "img": "Jueyun_Guoba.png",
-        "name": "Jueyun Guoba",
-        "cost_raw": "No Cost",
-        "code": "buff normal_attack_dmg_up 1",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, the target character's next Normal Attack deals +1 DMG.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "jueyun_guoba"
-    },
-    {
-        "img": "Adeptus'_Temptation.png",
-        "name": "Adeptus' Temptation",
-        "cost_raw": "2 Unaligned Dices",
-        "code": "buff elemental_burst_dmg_up 3",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, the target character's next Elemental Burst deals +3 DMG.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "adeptus_temptation"
-    },
-    {
-        "img": "Lotus_Flower_Crisp.png",
-        "name": "Lotus Flower Crisp",
-        "cost_raw": "1 Elemental Dice",
-        "code": "buff dmg_down 3",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, the target character takes -3 DMG the next time.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "lotus_flower_crisp"
-    },
-    {
-        "img": "Northern_Smoked_Chicken.png",
-        "name": "Northern Smoked Chicken",
-        "cost_raw": "No Cost",
-        "code": "buff normal_attack_cost_unaligned_down 1",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, the target character's next Normal Attack costs 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "northern_smoked_chicken"
-    },
-    {
-        "img": "Mushroom_Pizza.png",
-        "name": "Mushroom Pizza",
-        "cost_raw": "1 Elemental Dice",
-        "code": "heal 1;buff on_round_finished,heal 1,life 2 1 0",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Heal the target character for 1 HP. For the next two Rounds, heal this character for 1 HP again at the End Phase.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "mushroom_pizza"
-    },
-    {
-        "img": "Minty_Meat_Rolls.png",
-        "name": "Minty Meat Rolls",
-        "cost_raw": "1 Elemental Dice",
-        "code": "buff normal_attack_cost_unaligned_down 1,life 1 1 0",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Before this Round ends, the target character's Normal Attacks cost 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "minty_meat_rolls"
-    },
-    {
         "img": "Elemental_Resonance_Woven_Ice_Card.png",
         "name": "Elemental Resonance: Woven Ice",
         "cost_raw": "No Cost",
@@ -1496,7 +1328,7 @@
             "p_num": 0
         },
         "des": "Heal your active character for 2 HP and all your characters on standby for 1 HP.\n(You must have at least 2 Hydro characters in your deck to add this card to your deck.)",
-        "code": "heal 2;heal_other 1",
+        "code": "heal 2;heal_bg 1",
         "tags": [
             "elemental_resonance"
         ],
@@ -1626,7 +1458,7 @@
         "tags": [
             "elemental_resonance"
         ],
-        "code": "gen Omni 1;switch_my target",
+        "code": "gen Omni 1;switch_my",
         "type": "event",
         "code_name": "elemental_resonance_impetuous_winds"
     },
@@ -1652,6 +1484,28 @@
         "code_name": "elemental_resonance_woven_stone"
     },
     {
+        "img": "Elemental_Resonance_Enduring_Rock.png",
+        "name": "Elemental Resonance: Enduring Rock",
+        "cost_raw": "1 Geo Dice",
+        "cost": {
+            "d_type": [
+                "Geo"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this round, after your character deals Geo DMG next time: Should there be any Combat Status on your side that provides Shield, grant one such Status with 3 Shield points.\n(You must have at least 2 Geo characters in your deck to add this card to your deck.)",
+        "tags": [
+            "elemental_resonance",
+            "TODO"
+        ],
+        "type": "event",
+        "code": "buff geo_dmg_shield_up 3,team",
+        "code_name": "elemental_resonance_enduring_rock"
+    },
+    {
         "img": "Elemental_Resonance_Woven_Weeds.png",
         "name": "Elemental Resonance: Woven Weeds",
         "cost_raw": "No Cost",
@@ -1671,6 +1525,28 @@
         "code": "gen Dendro 1",
         "type": "event",
         "code_name": "elemental_resonance_woven_weeds"
+    },
+    {
+        "img": "Elemental_Resonance_Sprawling_Greenery.png",
+        "name": "Elemental Resonance: Sprawling Greenery",
+        "cost_raw": "1 Dendro Dice",
+        "cost": {
+            "d_type": [
+                "Dendro"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this round, the next Elemental Reaction your active character triggers deals +2 DMG.\nYour Burning Flame, Dendro Core, and Catalyzing Field gain +1 Usage(s).\n(You must have at least 2 Dendro characters in your deck to add this card to your deck.)",
+        "tags": [
+            "elemental_resonance",
+            "TODO"
+        ],
+        "type": "event",
+        "code": "buff on_reaction_dmg_up 2,team;heal_dendro",
+        "code_name": "elemental_resonance_sprawling_greenery"
     },
     {
         "img": "The_Bestest_Travel_Companion!.png",
@@ -1709,6 +1585,25 @@
         "tags": [],
         "type": "event",
         "code_name": "changing_shifts"
+    },
+    {
+        "img": "Toss-Up.png",
+        "name": "Toss-Up",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Select any Elemental Die to reroll. Can reroll 2 times.",
+        "code": "reroll 2",
+        "tags": [],
+        "type": "event",
+        "code_name": "toss_up"
     },
     {
         "img": "Strategize.png",
@@ -1770,6 +1665,25 @@
         "code_name": "leave_it_to_me"
     },
     {
+        "img": "When_the_Crane_Returned.png",
+        "name": "When the Crane Returned",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "The next time you use a Skill: Switch your next character in to be the active character.",
+        "code": "buff on_skill_finished,life 1 0 1,switch_my_next,team",
+        "tags": [],
+        "type": "event",
+        "code_name": "when_the_crane_returned"
+    },
+    {
         "img": "Starsigns.png",
         "name": "Starsigns",
         "cost_raw": "2 Unaligned Dices",
@@ -1812,23 +1726,46 @@
         "code_name": "calx_s_arts"
     },
     {
-        "img": "When_the_Crane_Returned.png",
-        "name": "When the Crane Returned",
-        "cost_raw": "1 Elemental Dice",
+        "img": "Master_of_Weaponry.png",
+        "name": "Master of Weaponry",
+        "cost_raw": "No Cost",
         "cost": {
             "d_type": [
                 "Unaligned"
             ],
             "d_num": [
-                1
+                0
             ],
             "p_num": 0
         },
-        "des": "The next time you use a Skill: Switch your next character in to be the active character.",
-        "code": "buff on_skill_finished,life 1 0 1,switch_my_prev",
-        "tags": [],
+        "des": "Shift 1 Weapon Equipment Card that has been equipped to one of your characters to another one of your characters of the same Weapon Type.",
+        "code": "transfer weapon",
+        "tags": [
+            "tranfer_weapon"
+        ],
         "type": "event",
-        "code_name": "when_the_crane_returned"
+        "code_name": "master_of_weaponry"
+    },
+    {
+        "img": "Blessing_of_the_Divine_Relic's_Installation.png",
+        "name": "Blessing of the Divine Relic's Installation",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Shift 1 Artifact Equipment Card that has been equipped to one of your characters to another one of your characters.",
+        "code": "transfer artifact",
+        "tags": [
+            "tranfer_artifact"
+        ],
+        "type": "event",
+        "code_name": "blessing_of_the_divine_relic_s_installation"
     },
     {
         "img": "Quick_Knit.png",
@@ -1887,69 +1824,6 @@
         "type": "event",
         "code_name": "guardian_s_oath"
     },
-    
-    
-    {
-        "img": "Toss-Up.png",
-        "name": "Toss-Up",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Select any Elemental Die to reroll. Can reroll 2 times.",
-        "code": "reroll 2",
-        "tags": [],
-        "type": "event",
-        "code_name": "toss_up"
-    },
-    {
-        "img": "Master_of_Weaponry.png",
-        "name": "Master of Weaponry",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Shift 1 Weapon Equipment Card that has been equipped to one of your characters to another one of your characters of the same Weapon Type.",
-        "code": "transfer weapon",
-        "tags": [
-            "tranfer_weapon"
-        ],
-        "type": "event",
-        "code_name": "master_of_weaponry"
-    },
-    {
-        "img": "Blessing_of_the_Divine_Relic's_Installation.png",
-        "name": "Blessing of the Divine Relic's Installation",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Shift 1 Artifact Equipment Card that has been equipped to one of your characters to another one of your characters.",
-        "code": "transfer artifact",
-        "tags": [
-            "tranfer_artifact"
-        ],
-        "type": "event",
-        "code_name": "blessing_of_the_divine_relic_s_installation"
-    },
     {
         "img": "Abyssal_Summons.png",
         "name": "Abysssal Summons",
@@ -1968,5 +1842,173 @@
         "code": "summon_rand 1 cryo_hilichurl_shooter electro_hilichurl_shooter pyro_hilichurl_shooter hydro_samachurl",
         "type": "event",
         "code_name": "abysssal_summons"
+    },
+    {
+        "img": "Jueyun_Guoba.png",
+        "name": "Jueyun Guoba",
+        "cost_raw": "No Cost",
+        "code": "buff normal_attack_dmg_up 1",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Normal Attack deals +1 DMG.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "jueyun_guoba"
+    },
+    {
+        "img": "Adeptus'_Temptation.png",
+        "name": "Adeptus' Temptation",
+        "cost_raw": "2 Unaligned Dices",
+        "code": "buff elemental_burst_dmg_up 3",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Elemental Burst deals +3 DMG.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "adeptus_temptation"
+    },
+    {
+        "img": "Lotus_Flower_Crisp.png",
+        "name": "Lotus Flower Crisp",
+        "cost_raw": "1 Elemental Dice",
+        "code": "shield 3",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character takes -3 DMG the next time.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "lotus_flower_crisp"
+    },
+    {
+        "img": "Northern_Smoked_Chicken.png",
+        "name": "Northern Smoked Chicken",
+        "cost_raw": "No Cost",
+        "code": "buff normal_attack_cost_unaligned_down 1",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Normal Attack costs 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "northern_smoked_chicken"
+    },
+    {
+        "img": "Sweet_Madame.png",
+        "name": "Sweet Madame",
+        "code_name": "sweet_madame",
+        "code": "heal 1",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Heal the target character for 1 HP.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event"
+    },
+    {
+        "img": "Mondstadt_Hash_Brown.png",
+        "name": "Mondstadt Hash Brown",
+        "cost_raw": "1 Elemental Dice",
+        "code": "heal 2",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Heal the target character for 2 HP.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "mondstadt_hash_brown"
+    },
+    {
+        "img": "Mushroom_Pizza.png",
+        "name": "Mushroom Pizza",
+        "cost_raw": "1 Elemental Dice",
+        "code": "heal 1;buff on_round_finished,heal 1,life 2 1 0",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Heal the target character for 1 HP. For the next two Rounds, heal this character for 1 HP again at the End Phase.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "mushroom_pizza"
+    },
+    {
+        "img": "Minty_Meat_Rolls.png",
+        "name": "Minty Meat Rolls",
+        "cost_raw": "1 Elemental Dice",
+        "code": "buff normal_attack_cost_unaligned_down 1,life 1 1 0",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Before this Round ends, the target character's Normal Attacks cost 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "minty_meat_rolls"
     }
 ]

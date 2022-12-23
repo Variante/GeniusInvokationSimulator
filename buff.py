@@ -33,10 +33,7 @@ class Buff:
             elif len(cmdw) == 2:
                 self.attribs[cmdw[0]] = int(cmdw[1])
             else:
-                if cmd.startswith('collect'):
-                    self.attribs[cmdw[0]] = {}
-                else:
-                    self.attribs[cmdw[0]] = 1
+                self.attribs[cmdw[0]] = 1
                 
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)

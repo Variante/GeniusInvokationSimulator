@@ -68,7 +68,7 @@ class Action:
                 return res
 
             if 'switch_my' in self.code:
-                return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_other_characters() if cha.alive]
+                return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_bg_characters() if cha.alive]
                 
             if 'when_defeated' in self.tags and deck.defeated_this_round == 0:
                 return []
@@ -85,7 +85,7 @@ class Action:
                     
             if 'recharge_to_active' in self.tags:
                 to_move = 0
-                for cha in deck.get_other_characters():
+                for cha in deck.get_bg_characters():
                     to_move += cha.energy
                 if to_move == 0:
                     return []

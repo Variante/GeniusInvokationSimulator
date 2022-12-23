@@ -42,9 +42,9 @@ class Skill:
                         dmg_mods += my_char.weapon.query('enemy_health_lower_than_six_dmg_up')
 
                 # query all buffs
-                for i in my_char.take_pattern_buff(self.stype):
+                for i, j in my_char.take_pattern_buff(self.stype).items():
                     if 'dmg_up' in i:
-                        dmg_mods += res[i]
+                        dmg_mods += j
 
                 # query infusion
                 if dmg_type == 'Physical':
@@ -92,10 +92,7 @@ class Skill:
 
         my_char.proc_buff_event(f'on_{self.stype}_finished')
         enemy_char.proc_buff_event('on_enemy_skill_finished')
-
-        if my_char.query_buff('on_skill_finished'):
-            if my_char.take_buff('switch_my_prev'):
-                my_deck.activate_prev()
+        my_char.proc_buff_event('on_skill_finished')
 
         def move_progress(deck, kw):
             deck.activate_support_buffs(kw)
@@ -196,8 +193,25 @@ class Character:
         self.artifact = Artifact(action.code_name, data, self)
         self._update_save(action.cost['d_num'][0], 'artifact')
 
-    def add_shield(self, source, strength):
-        self.add_buff(source, f'shield {strength}')
+    def add_shield(self, action, data):
+        # for card "lithic_spear"
+        faction = 'liyue'
+        data = data.replace(faction, str(self.deck_ptr.count_character_by_faction(faction)))
+
+        if 'team' in data:
+            bl = self.deck_ptr.buffs
+        else:
+            bl = self.buffs
+
+        for i, b in enumerate(bl):
+            # refresh the shield
+            if b.source == action.code_name:
+                # TODO: might be add
+                bl[i] = Buff(action.code_name, data, self)
+                break
+        else:
+            bl.append(Buff(action.code_name, data, self))
+
 
     """
     process buff
@@ -212,7 +226,11 @@ class Character:
 
     def add_buff(self, source, code):
         if isinstance(code, str):
-            self.buffs.append(Buff(source, code, self))
+            b = Buff(source, code, self)
+            if 'team' in code:
+                self.deck_ptr.buffs.append(b)
+            else:
+                self.buffs.append(b)
         else:
             raise NotImplementedError('Unknown buff code format')
 
@@ -367,48 +385,35 @@ class Character:
     def dmg(self, dmg_num, piercing_dmg):
         v = self.take_buff('vulnerable')
         dmg_num += v
+
         # This video is about how to calculate the shield
         # https://www.bilibili.com/video/BV1384y1t7cE/
-
-        # move transfer buffs to the end
-        self.buffs.sort(key=lambda x: x.query('transfer'))
-        i = 0
-        while dmg_num > 0 and i < len(self.buffs):
-            buff = self.buffs[i]
-            res = buff.query('dmg_down')
+        for buff in self.buffs + self.deck_ptr.buffs:
+            res = buff.query('dmg_down') # purple buffs
             if res > 0:
-                dmg_num -= res
+                dmg_num -= 1
                 buff.on_activated()
 
             if dmg_num <= 0:
                 break
 
-            res = buff.query('shield')
+            res = buff.query('shield') # yellow buffs
             if res > 0:
                 if dmg_num >= res:
-                    buff.change_keyword('shield', 0)
+                    # remove this shield
+                    dmg_num -= res
+                    buff.on_activated()
                 else:
                     buff.change_keyword('shield', res - dmg_num)
-                    break                
-            i += 1
-        """
-        if dmg_num > 0:
-            d = self.take_buff('dmg_down')
-            dmg_num = max(dmg_num - d, 0)
         
-        if dmg_num >= self.shield:
-            dmg_num -= self.shield
-            self.shield = 0
-        else:
-            self.shield -= dmg_num
-        """
+            if dmg_num <= 0:
+                break       
 
         self.health = max(self.health - dmg_num - piercing_dmg, 0)
         # dead
         if self.health == 0:
-            self.deactivate()
             self.on_defeated()
-        # return the total damage caused
+        # return the total damage
         return dmg_num + piercing_dmg
 
     def melt_or_vaporize(self, reaction):
@@ -421,12 +426,12 @@ class Character:
 
     def superconduct(self):
         self.add_buff(f'reaction_superconduct', 'vulnerable 2')
-        for c in self.deck_ptr.get_other_characters():
+        for c in self.deck_ptr.get_bg_characters():
             c.take_dmg('Piercing', 1, 'reaction_superconduct')
     
     def swirl(self, element, source):
         # print('\n\n swirl element ', element)
-        for c in self.deck_ptr.get_other_characters():
+        for c in self.deck_ptr.get_bg_characters():
             c.take_dmg(element, 1, source)
         
         # swirl for the large wind spirit
@@ -461,13 +466,13 @@ class Character:
                 enemy_char.proc_buff_event('on_reaction')
 
                 # for card "Elemental Resonance: Fervent Flames"
-                if 'Pyro' in [i, element] and source == 'e_' + enemy_char.code_name:
+                if 'Pyro' in [i, element] and source.startswith('e-' + enemy_char.code_name):
                     val = enemy_char.take_buff(f'pyro_reaction_dmg_up')
                     if val > 0:
                         self.add_buff(f'reaction_{reaction}', f'vulnerable {val}')
                         # TODO: not sure about this, should be good according to this video:
                         # https://www.bilibili.com/video/BV13P4y1X74c/
-                    
+
                 if reaction in ['melt' or 'vaporize']:
                     self.melt_or_vaporize(reaction)
                 elif reaction == 'overloaded':
@@ -491,6 +496,22 @@ class Character:
     """
     States and print
     """
+
+    def reset(self):
+        self.health = self.health_limit
+        self.energy = 0
+
+        self.weapon = None
+        self.artifact = None
+        self.talent = False
+        self.buffs = []
+        
+        self.attached_element = []
+        self.active = False
+        self.activate_cost = 1    
+        self.alive = True
+
+
     def state(self):
         return {
             'name': self.name,

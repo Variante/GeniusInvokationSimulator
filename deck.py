@@ -35,6 +35,22 @@ class Deck:
     """
     Save, load, states and prints
     """
+    def reset(self):
+        for c in self.characters:
+            c.reset()
+        self.characters[0].active = True
+
+        self.to_pull_actions = self.to_pull_actions + self.used_actions + self.available_actions
+        self.used_actions = []
+        self.available_actions = []
+        self.current_dice = self.d.roll()
+
+        self.summons = []
+        self.supports = []
+        # team buff
+        self.buffs = []
+        self.defeated_this_round = 0
+
     def save(self):
         res = self.state()
         res['defeated_this_round'] = self.defeated_this_round
@@ -120,15 +136,17 @@ class Deck:
             res |= c.active
         if res:
             return
-        print(f'Player {self.deck_id + 1} needs to switch character')
+        print(f'[R{self.game_ptr.round_num:02d}-S{self.game_ptr.step_num:02d}] Player {self.deck_id + 1} needs to switch character')
         res = self.game_ptr.state()
         res['action_space'] = [f'activate {i.code_name}' for i in self.characters if i.alive]
         print(res['action_space'])
         print('-' * 10)
+        if len(res['action_space']) == 0:
+            return
         # ask user to activate a new character
         action = self.agent.get_action(res)
         self.game_ptr.action_history.append(f'Player {self.deck_id + 1}: {action}')
-        self.switch(action.split()[-1])
+        self.get_character(action.split()[-1]).activate()
 
     def has_alive(self):
         res = False
@@ -371,7 +389,7 @@ class Deck:
         elif cmdw[1] == 'to_active':
             cur = self.get_current_character()
             v = int(cmdw[2])
-            for c in self.get_other_characters():
+            for c in self.get_bg_characters():
                 if cur.get_energy_need() > 0 and c.energy >= v:
                     cur.recharge(v)
                     c.recharge(-v)
@@ -393,6 +411,9 @@ class Deck:
 
     def switch_next(self, reversed=False):
         idx = self.get_current_character_idx()
+        if idx is None:
+            # no one is alive
+            return
         l = len(self.characters)
         for i in range(1, l + l):
             c = self.characters[(idx + (i if reversed else -i)) % l]
@@ -417,16 +438,19 @@ class Deck:
         return [c for c in self.characters if c.alive]
                 
     def get_current_character(self):
+        self.has_active_character()
         for c in self.characters:
             if c.active:
                 return c
+        
 
     def get_current_character_idx(self):
+        self.has_active_character()
         for i, c in enumerate(self.characters):
             if c.active:
                 return i
         
-    def get_other_characters(self):
+    def get_bg_characters(self):
         return [c for c in self.characters if c.alive and not c.active]
     
     def get_enemy_current_character(self):

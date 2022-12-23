@@ -219,7 +219,7 @@ def buff_engine(buff, my_deck, enemy_deck):
     res = buff.query('recharge_bg')
     if res > 0:
         activated = True
-        for c in my_deck.get_other_characters():
+        for c in my_deck.get_bg_characters():
             c.recharge(res)
 
     # TODO: when the health of a character is full, can this buff be activated or not?
@@ -240,7 +240,7 @@ def buff_engine(buff, my_deck, enemy_deck):
         activated = True
         injured_val = -1
         injured_char = None
-        for c in my_deck.get_other_characters():
+        for c in my_deck.get_bg_characters():
             if c.get_health_need() > injured_val:
                 injured_val = c.get_health_need()
                 injured_char = c
@@ -257,6 +257,11 @@ def buff_engine(buff, my_deck, enemy_deck):
     if res > 0:
         activated = True
         my_deck.pull_food(res)
+
+    res = buff.query('switch_my_next')
+    if res > 0:
+        activated = True
+        my_deck.switch_next()
 
     if activated:
         buff.on_activated()
