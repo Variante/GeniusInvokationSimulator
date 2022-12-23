@@ -1,6 +1,6 @@
 from utils import *
 from dices import Dices
-from buff import Summon, Support
+from buff import *
 from characters import init_characters
 from actions import init_actions
 import random
@@ -163,10 +163,15 @@ class Deck:
         self.current_dice = self.d.roll(total_num=total_num, keep=keep)
 
     def gen(self, d_type, d_num):
-        if d_type == 'Rand':
-            d_type = self.d.random_type()
-        # the max num of dices is 16
         gen_num = min(16 - count_total_dice(self.current_dice), d_num)
+        if d_type == 'Rand':
+            for _ in range(gen_num):
+                d_type = self.d.random_type()
+                self.cost(d_type, -1)
+            return
+        elif d_type == 'Current':
+            d_type = self.get_current_element()
+        # the max num of dices is 16
         self.cost(d_type, -gen_num)
 
     def cost(self, d_type, d_num):
@@ -231,6 +236,20 @@ class Deck:
     """
     Summons
     """
+    def _proc_buffs(self, list_ptr, kw):
+        i = 0
+        while True:
+            try:
+                s = list_ptr[i]
+                if s.query(kw):
+                    buff_engine(s, self, self.enemy_ptr)
+                    if s.should_leave():
+                        list_ptr.pop(i)
+                        continue                    
+                i += 1
+            except IndexError:
+                break
+
     def add_summon(self, source, code_name):
         # fetch summon profile
         for i in self.summon_pool:
@@ -271,11 +290,20 @@ class Deck:
     def get_summon_buff(self, keyword):
         return [i for i in self.summons if i.query(keyword)]
 
+    def proc_summon_buffs(self, kw):
+        self._proc_buffs(self.summons, kw)
+
+
     """
     Supports
     """
     def add_support(self, action, idx):
-        s = Support(action.code_name, action)
+        # special support unit
+        if "self-class" in action.tags:
+            eval(f's = {action.code_name}(action.code_name, action)')
+        else:
+            s = Support(action.code_name, action)
+
         if len(self.supports) >= idx:
             self.supports.append(s)
         else:
@@ -283,6 +311,10 @@ class Deck:
 
         # activate location cost saving (trigger the counter)
         if 'location' in action.tags:
+            # TODO not sure about this
+            self.proc_support_buffs('location_save')
+
+            """
             kw = 'location_save'
             cost = action.cost['d_num'][0]
             for s in self.supports:
@@ -292,6 +324,7 @@ class Deck:
                     cost -= res
                 else:
                     break
+            """
                 
     def query_support_buff(self, keyword):
         val = 0
@@ -309,23 +342,12 @@ class Deck:
         return val
 
     def proc_support_buffs(self, kw):
-        i = 0
-        while True:
-            try:
-                s = self.supports[i]
-                if s.query(kw):
-                    # check the effect of this summon (buff)
-                    # thanks paimon
-                    self.get_current_character()._engine_buff(s)
-                if s.should_leave():
-                    self.supports.pop(i)
-                else:
-                    i += 1
-            except IndexError:
-                break
-    
-    def refresh_summons(self):
-        self.summons = [i for i in self.summons if i.life > 0]
+        self._proc_buffs(self.supports, kw)
+
+    def activate_support_buffs(self, code_name):
+        for s in self.supports:
+            if s.code_name == code_name:
+                s.on_activated()
 
     """
     Modify characters
@@ -383,6 +405,7 @@ class Deck:
         self.character_order.insert(0, idx)
         self.characters[idx].activate()
 
+        # Liu Su
         self.proc_support_buffs('on_switch_finished')
             
     def activate(self, code_name):
@@ -488,45 +511,19 @@ class Deck:
     def on_round_finished(self):
         for cha in self.characters:
             cha.on_round_finished()
-            
+        
+        """
+        for s in self.summons:
+            s.on_round_finished()
+            # this actually does nothing, we rely on on_activated
+        """
         # process summons
-        i = 0
-        while True:
-            try:
-                s = self.summons[i]
-                # check the effect of this summon (buff)
-                self.get_current_character()._engine_buff(s)
-                s.on_round_finished()
-                if s.life > 0:
-                    i += 1
-                else:
-                    self.summons.pop(i)
-            except IndexError:
-                break
+        self.proc_summon_buffs('on_round_finished')
 
+        for s in self.supports:
+            s.on_round_finished(self)
         # process support
-        i = 0
-        while True:
-            try:
-                s = self.supports[i]
-                if s.query('on_round_finished'):
-                    # check the effect of this summon (buff)
-                    self.get_current_character()._engine_buff(s)
-                s.on_round_finished()
-
-                if 'collect_liben' in s.attribs:
-                    st = s.attribs['collect_liben']
-                    for k, j in self.current_dice.items():
-                        if j > 0:
-                            st[k] = 1
-                    s.life = max(s.init_life - len(st), 0)
-
-                if s.should_leave():
-                    self.supports.pop(i)
-                else:
-                    i += 1
-            except IndexError:
-                break
+        self.proc_support_buffs('on_round_finished')
 
 
 if __name__ == '__main__':

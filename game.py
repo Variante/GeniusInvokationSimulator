@@ -179,12 +179,6 @@ class Game:
             else:
                 raise NotImplementedError(f'[engine_event]{cmd}')
 
-        if 'food' in action.tags:
-            for s in my_deck.supports:
-                # Chef Mao and nre
-                if s.query('on_food_event') == 0:
-                    continue
-                target_char._engine_buff(s)
     """
     def card_engine(self, action, params):
         code_name = action.code_name
@@ -248,13 +242,11 @@ class Game:
                 my_deck.transfer_equip(cmdw[1], params[0], params[1])
             else:
                 raise NotImplementedError(f'[card_engine]{cmd}')
-
+        
+        # chef_mao and that item
         if 'food' in action.tags:
-            for s in my_deck.supports:
-                # Chef Mao and nre
-                if s.query('on_food_event') == 0:
-                    continue
-                target._engine_buff(s)
+            my_deck.proc_support_buffs('on_food_event')
+
 
     def parse_space_action(self, action):
         self.action_history.append(f'Player {self.current_agent + 1}: {action}')

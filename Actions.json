@@ -123,7 +123,7 @@
             "weapon",
             "catalyst"
         ],
-        "code": "gen_current 1",
+        "code": "gen Current 1",
         "type": "equipment",
         "code_name": "sacrificial_fragments"
     },
@@ -189,7 +189,7 @@
             "weapon"
         ],
         "type": "equipment",
-        "code": "gen_current 1",
+        "code": "gen Current 1",
         "code_name": "sacrificial_bow"
     },
     {
@@ -253,7 +253,7 @@
             "claymore",
             "weapon"
         ],
-        "code": "gen_current 1",
+        "code": "gen Current 1",
         "type": "equipment",
         "code_name": "sacrificial_greatsword"
     },
@@ -384,7 +384,7 @@
             "weapon"
         ],
         "type": "equipment",
-        "code": "gen_current 1",
+        "code": "gen Current 1",
         "code_name": "sacrificial_sword"
     },
     {
@@ -489,7 +489,7 @@
         "tags": [
             "artifact"
         ],
-        "code": "gen_Omni 2,on_defeated",
+        "code": "gen Omni 2,on_defeated",
         "type": "equipment",
         "code_name": "gambler_s_earrings"
     },
@@ -510,7 +510,7 @@
         "tags": [
             "artifact"
         ],
-        "code": "gen_current 1,life 3 0 1,on_reaction",
+        "code": "gen Current 1,life 3 0 1,on_reaction",
         "type": "equipment",
         "code_name": "instructor_s_cap"
     },
@@ -846,7 +846,7 @@
         "tags": [
             "location"
         ],
-        "code": "life 2 1 0,on_round_finished,draw 2",
+        "code": "life 2 0 1,on_round_finished,draw 2",
         "type": "support",
         "code_name": "liyue_harbor_wharf"
     },
@@ -867,7 +867,7 @@
         "tags": [
             "location"
         ],
-        "code": "life 1 0 0,reroll,stay;reroll 1",
+        "code": "life 1 0 0,reroll;reroll 1",
         "type": "support",
         "code_name": "knights_of_favonius_library"
     },
@@ -888,7 +888,7 @@
         "tags": [
             "location"
         ],
-        "code": "life 1 0 0,roll_current 2,stay",
+        "code": "life 1 0 0,roll_current 2",
         "type": "support",
         "code_name": "jade_chamber"
     },
@@ -969,7 +969,7 @@
             "p_num": 0
         },
         "des": "When Action Phase begins: Create Two Omni Element Dices.\nUsage(s): 2",
-        "code": "life 2 0 1,gen_Omni 2,on_round_start",
+        "code": "life 2 0 1,gen Omni 2,on_round_start",
         "tags": [
             "companion"
         ],
@@ -1056,7 +1056,7 @@
         "tags": [
             "companion"
         ],
-        "code": "life 1 0 1,stay,refresh,on_food_event,gen_Rand 1",
+        "code": "life 1 0 1,stay,refresh,on_food_event,gen Rand 1",
         "type": "support",
         "code_name": "chef_mao"
     },
@@ -1096,10 +1096,9 @@
         },
         "des": "Triggers automatically once per Round: This card gains 1 Pigeon.\nWhen this card gains 3 Pigeons, discard this card, then draw 1 card and create Omni Element \u00d71.",
         "tags": [
-            "companion",
-            "flip_life"
+            "companion"
         ],
-        "code": "life 3 0 1,on_round_start,draw 1,gen_Omni 1,until_leave",
+        "code": "life 3 0 1,on_round_start,draw 1,gen Omni 1,until_leave",
         "type": "support",
         "code_name": "timmie"
     },
@@ -1119,9 +1118,9 @@
         "des": "End Phase: Collect your unused Elemental Dice (Max 1 of each Elemental Type).\nWhen Action Phase begins: If this card has collected 3 Elemental Dice, draw 2 cards and create Omni Element Die, then discard this card.",
         "tags": [
             "companion",
-            "flip_life"
+            "self-class"
         ],
-        "code": "life 3 1 0,on_round_start,draw 2,gen_Omni 2,until_leave,collect_liben,stay",
+        "code": "life 3 0 0,on_round_start,draw 2,gen Omni 2,until_leave",
         "type": "support",
         "code_name": "liben"
     },
@@ -1140,11 +1139,9 @@
         },
         "des": "When either side uses a Skill: If Physical DMG or Piercing DMG was dealt, or an Elemental Reaction was triggered, this card gains 1 Inspiration.\nWhen this card gains 3 Inspiration, discard this card, then draw 2 cards.",
         "tags": [
-            "companion",
-            "flip_life",
-            "special_code"
+            "companion"
         ],
-        "code": "life 3 0 1",
+        "code": "life 3 0 1,chang_the_ninth,until_leave,draw 2",
         "type": "support",
         "code_name": "chang_the_ninth"
     },
@@ -1163,10 +1160,9 @@
         },
         "des": "When you use a Skill that has already been used in this Round: Spend 1 less Elemental Die. (Once per Round)",
         "tags": [
-            "companion",
-            "special_code"
+            "companion"
         ],
-        "code": "life 1 0 1,stay,refresh",
+        "code": "life 1 0 1,stay,refresh,ellin",
         "type": "support",
         "code_name": "ellin"
     },
@@ -1207,7 +1203,7 @@
         "des": "After you switch characters: If the character you switched to does not have Energy, they will gain 1 Energy. (Once per Round)\nUsage(s):",
         "tags": [
             "companion",
-            "special_code"
+            "self-class"
         ],
         "code": "life 1 0 1,renew 1,recharge 1,on_switch_finished",
         "type": "support",
@@ -1228,11 +1224,9 @@
         },
         "des": "When either side uses a Skill: If Elemental DMG was dealt, this card gains 1 Qualitative Progress.\nWhen this card gains 3 Qualitative Progress, discard this card, then create 3 different Basic Elemental Dice.",
         "tags": [
-            "item",
-            "flip_life",
-            "special_code"
+            "item"
         ],
-        "code": "life 3 0 1,gen_Rand 3",
+        "code": "life 3 0 1,gen Rand 3,until_leave,parametric_transformer",
         "type": "support",
         "code_name": "parametric_transformer"
     },
@@ -1251,8 +1245,7 @@
         },
         "des": "When played: Draw 1 Food Event Card from your deck.\nWhen you play a Food Event Card: Draw 1 Food Event Card from your deck. (Once per Round)",
         "tags": [
-            "item",
-            "special_code"
+            "item"
         ],
         "code": "life 1 0 1,refresh,stay,draw_food",
         "type": "support",

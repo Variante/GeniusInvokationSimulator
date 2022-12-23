@@ -194,8 +194,73 @@ def element_can_react(e1, e2):
         return reaction_table[e1][e2]
     return None
 
-def buff_engine(self, my_deck, enemy_deck):
-    pass
+def buff_engine(buff, my_deck, enemy_deck):
+    activated = False
+
+    res = buff.query('dmg')
+    if isinstance(res, tuple) and res[1] > 0:
+        activated = True
+        enemy_deck.get_current_character().take_dmg(res[0], res[1], buff.code_name)
+
+
+    res = buff.query('gen')
+    if isinstance(res, tuple) and res[1] > 0:
+        activated = True
+        my_deck.gen(res[0], res[1])
+
+    res = buff.query('recharge')
+    if res > 0:
+        activated = my_deck.recharge(['recharge', 'active', res])
+
+    res = buff.query('recharge_any')
+    if res > 0:
+        activated = my_deck.recharge(['recharge', 'any', res])
+
+    res = buff.query('recharge_bg')
+    if res > 0:
+        activated = True
+        for c in my_deck.get_other_characters():
+            c.recharge(res)
+
+    # TODO: when the health of a character is full, can this buff be activated or not?
+    # current behavior: yes
+    res = buff.query('heal')
+    if res > 0:
+        activated = True
+        my_deck.get_current_character().heal(res)
+        
+    res = buff.query('heal_all')
+    if res > 0:
+        activated = True
+        for c in my_deck.get_alive_characters():
+            c.heal(res)
+
+    res = buff.query('heal_injured_bg_most')
+    if res > 0:
+        activated = True
+        injured_val = -1
+        injured_char = None
+        for c in my_deck.get_other_characters():
+            if c.get_health_need() > injured_val:
+                injured_val = c.get_health_need()
+                injured_char = c
+        if injured_char is not None:
+            injured_char.heal(res)
+            activated = True
+
+    res = buff.query('draw')
+    if res > 0:
+        activated = True
+        my_deck.pull(res)
+
+    res = buff.query('draw_food')
+    if res > 0:
+        activated = True
+        my_deck.pull_food(res)
+
+    if activated:
+        buff.on_activated()
+
  
 if __name__ == '__main__':
     get_project_progress()
