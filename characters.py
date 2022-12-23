@@ -9,6 +9,7 @@ class Skill:
         self.cost = data['cost']
         self.des = data['des']
         self.code = data['code'].split(';')
+        self.energy_gain = data['energy_gain']
         # if one has talent
         self.code_talent = data.get('code_talent', data['code']).split(';')
 
@@ -72,9 +73,6 @@ class Skill:
                     if 'heal_up' in i:
                         h += res[i]
                 my_char.heal(h)
-
-            elif cmds[0] == 'energy':
-                energy_gain = int(cmds[1])
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'summon':
