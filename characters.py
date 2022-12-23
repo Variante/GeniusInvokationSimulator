@@ -160,7 +160,7 @@ class Character:
         self.weapon_type = to_code_name(data['weapon'])
         self.weapon = None
         self.artifact = None
-        self.talent = False
+        self.talent = True # False
         self.buffs = []
         
         self.attached_element = []
@@ -370,7 +370,7 @@ class Character:
         reaction = self.attach_element(dmg_type, source)
 
         for i in self.deck_ptr.enemy_ptr.get_summon_buff(f'dmg_{dmg_type}_up'):
-            self.add_buff(f'chaotic_entropy', f'vulnerable {i.query(f"dmg_{dmg_type}_up")}')
+            self.add_buff(f'{i.source}-chaotic_entropy', f'vulnerable {i.query(f"dmg_{dmg_type}_up")}')
         
         return self.dmg(dmg_num, dmg_piercing), reaction
         
@@ -408,23 +408,23 @@ class Character:
         # return the total damage
         return dmg_num + piercing_dmg
 
-    def melt_or_vaporize(self, reaction):
-        self.add_buff(f'reaction_{reaction}', 'vulnerable 2')
+    def melt_or_vaporize(self, source, reaction):
+        self.add_buff(f'{source}-{reaction}', 'vulnerable 2')
         
-    def overloaded(self):
-        self.add_buff(f'reaction_overloaded', 'vulnerable 2')
+    def overloaded(self, source):
+        self.add_buff(f'{source}-overloaded', 'vulnerable 2')
         if self.active:
             self.deck_ptr.switch_next()
 
-    def superconduct(self):
-        self.add_buff(f'reaction_superconduct', 'vulnerable 2')
+    def superconduct(self, source):
+        self.add_buff(f'{source}-superconduct', 'vulnerable 2')
         for c in self.deck_ptr.get_bg_characters():
-            c.take_dmg('Piercing', 1, 'reaction_superconduct')
+            c.take_dmg('Piercing', 1, '{source}-superconduct-piercing')
     
-    def swirl(self, element, source):
+    def swirl(self, source, element):
         # print('\n\n swirl element ', element)
         for c in self.deck_ptr.get_bg_characters():
-            c.take_dmg(element, 1, source)
+            c.take_dmg(element, 1, source + '-swirl')
         
         # swirl for the large wind spirit
         for i in self.deck_ptr.enemy_ptr.get_summon_buff('on_swirl'):
@@ -437,6 +437,7 @@ class Character:
             for cha in self.deck_ptr.enemy_ptr.get_alive_characters():
                 if cha.code_name == 'sucrose' and cha.talent:
                     i.change_keyword(f'dmg_{element}_up', 1)
+                    break
 
     
     def frozen(self):
@@ -466,13 +467,13 @@ class Character:
                         # https://www.bilibili.com/video/BV13P4y1X74c/
 
                 if reaction in ['melt' or 'vaporize']:
-                    self.melt_or_vaporize(reaction)
+                    self.melt_or_vaporize(source, reaction)
                 elif reaction == 'overloaded':
-                    self.overloaded()
+                    self.overloaded(source)
                 elif reaction == 'swirl':
-                    self.swirl(i, source)
+                    self.swirl(source, i)
                 elif reaction == 'superconduct':
-                    self.superconduct()
+                    self.superconduct(source)
                 else:
                     # TODO: add reaction later
                     raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')
@@ -495,7 +496,7 @@ class Character:
 
         self.weapon = None
         self.artifact = None
-        self.talent = False
+        self.talent = True # False
         self.buffs = []
         
         self.attached_element = []

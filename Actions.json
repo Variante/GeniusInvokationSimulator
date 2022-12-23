@@ -1,5 +1,26 @@
 [
     {
+        "img": "Cold-Blooded_Strike_Card.png",
+        "name": "Cold-Blooded Strike",
+        "cost_raw": "4 Cryo Dices",
+        "cost": {
+            "d_type": [
+                "Cryo"
+            ],
+            "d_num": [
+                4
+            ],
+            "p_num": 0
+        },
+        "des": "Combat Action:  When your active character is Kaeya, equip this card.\nAfter Kaeya equips this card, immediately use Frostgnaw once.\nAfter your Kaeya, who has this card equipped, uses Frostgnaw, he heals himself for 2 HP. (Once per Round)\n(You must have Kaeya in your deck to add this card to your deck.)",
+        "code": "talent kaeya;buff elemental_skill_heal_up 2,life 1 0 0,when self.char_ptr.skills[1].round_usage_with_talent==1;skill kaeya frostgnaw",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "cold_blooded_strike"
+    },
+    {
         "img": "Flowing_Flame_Card.png",
         "name": "Flowing Flame",
         "cost_raw": "3 Pyro Dices",
@@ -41,27 +62,6 @@
         ],
         "type": "equipment",
         "code_name": "chaotic_entropy"
-    },
-    {
-        "img": "Cold-Blooded_Strike_Card.png",
-        "name": "Cold-Blooded Strike",
-        "cost_raw": "4 Cryo Dices",
-        "cost": {
-            "d_type": [
-                "Cryo"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Kaeya, equip this card.\nAfter Kaeya equips this card, immediately use Frostgnaw once.\nAfter your Kaeya, who has this card equipped, uses Frostgnaw, he heals himself for 2 HP. (Once per Round)\n(You must have Kaeya in your deck to add this card to your deck.)",
-        "code": "talent kaeya;buff elemental_skill_heal_up 2,life 1 0 0,when self.char_ptr.skills[1].round_usage_with_talent==1;skill kaeya frostgnaw",
-        "tags": [
-            "talent"
-        ],
-        "type": "equipment",
-        "code_name": "cold_blooded_strike"
     },
     {
         "img": "Stellar_Predator_Card.png",
