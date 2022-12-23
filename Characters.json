@@ -115,7 +115,7 @@
                     ],
                     "p_num": 2
                 },
-                "code": "dmg Cryo 1;buff on_character_activated,dmg Cryo 2,life 3 0 1,transfer",
+                "code": "dmg Cryo 1;buff on_character_activated,dmg Cryo 2,life 3 0 1,team",
                 "code_name": "glacial_waltz"
             }
         ],

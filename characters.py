@@ -20,7 +20,6 @@ class Skill:
                 if s.code_name == 'ellin':
                     s.on_activated()
 
-
         self.round_usage += 1
         if my_char.talent:
             self.round_usage_with_talent += 1
@@ -200,8 +199,8 @@ class Character:
         self.energy = 0
         self.element = data['element']
         
-        self.faction = data['faction']
-        self.weapon_type = data['weapon']
+        self.faction = to_code_name(data['faction'])
+        self.weapon_type = to_code_name(data['weapon'])
         self.weapon = None
         self.artifact = None
         self.talent = False
@@ -213,6 +212,12 @@ class Character:
         self.alive = True
         
         self.deck_ptr = None
+
+
+    """
+    Add equips
+    
+    """
 
     def add_talent(self, talent):
         self.talent = True
@@ -236,6 +241,78 @@ class Character:
 
     def add_shield(self, source, strength):
         self.add_buff(source, f'shield {strength}')
+
+    """
+    process buff
+    """
+    def _get_buff_list(self):
+        res = []
+        if self.weapon:
+            res.append(self.weapon)
+        if self.artifact:
+            res.append(self.artifact)
+        return self.buffs + res
+
+    def add_buff(self, source, code):
+        if isinstance(code, str):
+            self.buffs.append(Buff(source, code, self))
+        else:
+            raise NotImplementedError('Unknown buff code format')
+
+    def get_buff(self, keyword):
+        return [i for i in self._get_buff_list() if i.query(keyword)]
+        
+    def query_buff(self, keyword):
+        value = 0
+        for i in self._get_buff_list():
+            value += i.query(keyword)
+        return value
+    
+    def query_pattern_buff(self, buff_head):
+        res = {}
+        for i in self._get_buff_list():
+            for j in i.attribs:
+                if j.startswith(buff_head):
+                    res[j] = i.query(j)
+        return res
+
+    def take_buff(self, keyword):
+        value = 0
+        for i in self._get_buff_list():
+            res= i.query(keyword)
+            if res > 0:
+                value += res
+                i.on_activated()
+        self.refresh_buffs()
+        return value
+
+    def take_buff_until(self, keyword, need):
+        value = 0
+        for i in self._get_buff_list():
+            res= i.query(keyword)
+            if res > 0:
+                value += res
+                i.on_activated()
+                if value >= need:
+                    break
+        self.refresh_buffs()
+        return value
+
+    def take_pattern_buff(self, buff_head):
+        res = {}
+        for i in self._get_buff_list():
+            activated = False
+            for j in i.attribs:
+                if j.startswith(buff_head) and i.query(j) > 0:
+                    activated = True
+                    res[j] = i.query(j)
+            if activated:
+                i.on_activated()
+        self.refresh_buffs()
+        return res
+    
+    def refresh_buffs(self):
+        self.buffs = [buff for buff in self.buffs if buff.life > 0]
     
     def proc_buff_event(self, keyword):
         for buff in self.get_buff(keyword):
@@ -314,6 +391,9 @@ class Character:
         if activated:
             buff.on_activated()
 
+    """
+    Get action space
+    """
 
     def affordable_skills(self, dice):
         res = []
@@ -330,68 +410,9 @@ class Character:
             return []
         return self.affordable_skills(deck.current_dice)
     
-    def _get_buff_list(self):
-        res = []
-        if self.weapon:
-            res.append(self.weapon)
-        if self.artifact:
-            res.append(self.artifact)
-        return self.buffs + res
-
-    def get_buff(self, keyword):
-        return [i for i in self._get_buff_list() if i.query(keyword)]
-        
-    def query_buff(self, keyword):
-        value = 0
-        for i in self._get_buff_list():
-            value += i.query(keyword)
-        return value
-    
-    def query_pattern_buff(self, buff_head):
-        res = {}
-        for i in self._get_buff_list():
-            for j in i.attribs:
-                if j.startswith(buff_head):
-                    res[j] = i.query(j)
-        return res
-
-    def take_buff(self, keyword):
-        value = 0
-        for i in self._get_buff_list():
-            res= i.query(keyword)
-            if res > 0:
-                value += res
-                i.on_activated()
-        self.refresh_buffs()
-        return value
-
-    def take_buff_until(self, keyword, need):
-        value = 0
-        for i in self._get_buff_list():
-            res= i.query(keyword)
-            if res > 0:
-                value += res
-                i.on_activated()
-                if value >= need:
-                    break
-        self.refresh_buffs()
-        return value
-
-    def take_pattern_buff(self, buff_head):
-        res = {}
-        for i in self._get_buff_list():
-            activated = False
-            for j in i.attribs:
-                if j.startswith(buff_head) and i.query(j) > 0:
-                    activated = True
-                    res[j] = i.query(j)
-            if activated:
-                i.on_activated()
-        self.refresh_buffs()
-        return res
-    
-    def refresh_buffs(self):
-        self.buffs = [buff for buff in self.buffs if buff.life > 0]
+    """
+    Switch character
+    """
     
     def activate(self):
         # self.buffs.extend(buffs)
@@ -409,6 +430,10 @@ class Character:
         self.active = False
         # return transfer_buff
         self.deck_ptr.transfer_buff.extend(transfer_buff)
+
+    """
+    Events
+    """
 
     def on_defeated(self):
         self.proc_buff_event('on_defeated')
@@ -433,12 +458,15 @@ class Character:
             i.on_round_finished()
         self.refresh_buffs()
 
-    def add_buff(self, source, code):
-        if isinstance(code, str):
-            self.buffs.append(Buff(source, code, self))
-        else:
-            raise NotImplementedError('Unknown buff code format')
+    """
+    Get information and actions
+    """
     
+    def get_skill(self, code_name):
+        for i in self.skills:
+            if i.code_name == code_name:
+                return i
+
     def get_health_need(self):
         return self.health_limit - self.health
 
@@ -585,6 +613,9 @@ class Character:
             self.infusion_element.append(element)
         return False
 
+    """
+    States and print
+    """
     def state(self):
         return {
             'name': self.name,
@@ -616,10 +647,7 @@ class Character:
                f"T: {self.talent:<5} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
                f"E: {self.element:<5} | {' '.join(self.infusion_element)}"
         
-    def get_skill(self, code_name):
-        for i in self.skills:
-            if i.code_name == code_name:
-                return i
+
                 
 def init_characters(names):
     # assert len(set(names)) == 3

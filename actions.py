@@ -32,20 +32,13 @@ class Action:
         elif 'artifact' in self.tags:
             self.code = 'artifact ' + self.code
 
-        # only available for support card
-        # self.on_leave = data.get('on_leave', '')
-        # self.active_character = data.get('active_character', None)
-    """
-    def is_affordable(self, dice, character):
-        return is_affordable(self.cost, dice, character)
-    """
-    
+    # Check whether we can use this card
     def _get_action_prefix(self, deck):
         if self.atype == 'equipment':
             if 'talent' in self.tags and deck.get_current_character().code_name not in self.code:
                 return []
             elif 'weapon' in self.tags:
-                return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters() if to_code_name(cha.weapon_type) in self.tags]
+                return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters() if cha.weapon_type in self.tags]
             elif 'artifact' in self.tags:
                 return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters()]
             return f'equipment {self.code_name}'
@@ -135,9 +128,10 @@ class Action:
 
     def get_action_space(self, deck):
         res = generate_action_space(self.get_cost(deck), deck.current_dice, deck.get_current_character(), prefix=self._get_action_prefix(deck))
+        # Use this card to generate 1 dice
         if count_total_dice(deck.current_dice) > 0:
-            for i in deck.current_dice:
-                if deck.current_dice[i] > 0:
+            for i, j in deck.current_dice.items():
+                if j > 0 and i not in [deck.get_current_element(), 'Omni']:
                     res.append(f'convert {self.code_name};cost 1 {i};gen 1 {deck.get_current_element()}')
         return res
     

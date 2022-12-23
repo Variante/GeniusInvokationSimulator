@@ -573,7 +573,7 @@
             "p_num": 0
         },
         "des": "The next time you use a Skill: Switch your next character in to be the active character.",
-        "code": "buff on_skill_finished,life 1 0 1,switch_my_prev,transfer",
+        "code": "buff on_skill_finished,life 1 0 1,switch_my_prev",
         "tags": [],
         "type": "event",
         "code_name": "when_the_crane_returned"
@@ -717,7 +717,8 @@
         "tags": [
             "talent"
         ],
-        "type": "equipment"
+        "type": "equipment",
+        "code_name": "stellar_predator"
     },
     {
         "img": "Magic_Guide_Card.png",

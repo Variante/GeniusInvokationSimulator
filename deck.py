@@ -31,6 +31,8 @@ class Deck:
         self.summon_pool = load_js('Summons')
         self.summons = []
         self.supports = []
+        # team buff
+        self.buffs = []
         
         self.defeated_this_round = 0
         self.deck_id = 0
