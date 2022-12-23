@@ -41,7 +41,6 @@ class Buff:
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
         disabled = self.life <= 0
-        disabled |= 'starts_since_next_round' in self.attribs and self.life == self.init_life
         disabled |= 'until_leave' in self.attribs and self.life <= 0
         if self.condition is not None:
             disabled |= not eval(self.condition)

@@ -35,8 +35,8 @@ class Skill:
 
         def dmg_buff_seq():
             nonlocal dmg_mods
-            dmg_type = cmds[1]
-            dmg = int(cmds[2])
+            dmg = int(cmds[1])
+            dmg_type = cmds[2]
             if dmg_mods is None:
                 dmg_mods = 0
                 if weapon is not None:

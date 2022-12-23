@@ -49,10 +49,6 @@ class Action:
                 res = [f'support {self.code_name} {idx}']
             else:
                 res = [f'support {self.code_name} {i}' for i in range(max_l)]
-            # this is for "knights_of_favonius_library"
-            if 'reroll' in self.tags:
-                return [f'{i};reroll 1' for i in res]
-            return res
         else:
             if "tranfer_weapon" in self.tags:
                 return [f'transfer weapon {i.code_name} {j.code_name}' for i in deck.get_alive_characters() for j in deck.get_alive_characters() if i.artifact is not None and i.weapon_type == j.weapon_type and i.code_name != j.code_name]
@@ -103,7 +99,7 @@ class Action:
                     return [f'event {self.code_name} {s.code_name}' for s in deck.enemy_ptr.summons]
                 return []
 
-            if 'kill_all_summons' in self.code and len(deck.summons) + len(deck.enemy_ptr.summons) == 0:
+            if 'kill_all_summons' in self.code and (len(deck.summons) + len(deck.enemy_ptr.summons)) == 0:
                 return []
 
             return f'event {self.code_name}'

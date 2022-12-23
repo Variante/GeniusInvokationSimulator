@@ -124,15 +124,7 @@ class Game:
         
     """
     Engine pipeline
-    """
-
-    def _gen_dice(self, cmdw):
-        d_num = int(cmdw[1])
-        d_type = cmdw[2]
-        if d_type == 'Rand':
-            d_type = self.get_current_deck().d.random_type()
-        self.get_current_deck().cost(d_type, -d_num)
- 
+    """ 
     def _proc_skill(self, cmdw):
         my_deck = self.get_current_deck()
         my_char = my_deck.get_character(cmdw[1])
@@ -199,7 +191,7 @@ class Game:
             elif cmdw[0] == 'buff':
                 target_char.add_buff(code_name, cmd)
             elif cmdw[0] == 'gen':
-                self._gen_dice(cmdw)
+                my_deck.gen(cmdw[2], int(cmd[1]))
             # use card to switch characters
             elif cmdw[0] == 'switch_my':
                 my_deck.activate(target)
@@ -250,10 +242,9 @@ class Game:
             elif cmdw[0] == 'skill':
                 self._proc_skill(cmdw)
             elif cmdw[0] == 'cost':
-                d_num = int(cmdw[1])
-                my_deck.cost(cmdw[2], d_num)
+                my_deck.cost(cmdw[2], int(cmdw[1]))
             elif cmdw[0] == 'gen':
-                self._gen_dice(cmdw)
+                my_deck.gen(cmdw[2], int(cmd[1]))
             elif cmdw[0] == 'activate':
                 # this is only used when a character is defeated
                 my_deck.activate(cmdw[1])
