@@ -77,8 +77,8 @@ class Game:
 
     def print_winner(self, ret):
         print('\n' * 3 + '=' * 20)
-        if ret > 0:
-            print(f'Game finished. The winner is Player {ret}')
+        if ret >= 0:
+            print(f'Game finished. The winner is Player {ret + 1}')
         else:
             print('Game finished. It is a draw')
         print('=' * 20)
@@ -104,14 +104,14 @@ class Game:
         return res
         
     def check_win(self):
-        res = [i.is_alive() for i in self.decks]
+        res = [i.has_alive() for i in self.decks]
         if res[0] and res[1]:
             # ongoing
             return -1
         elif res[0] and not res[1]:
-            return 1
+            return 0
         else:
-            return 2
+            return 1
 
     
     def get_current_deck(self):
@@ -189,7 +189,7 @@ class Game:
     def card_engine(self, action, params):
         code_name = action.code_name
         my_deck = self.get_current_deck()
-        # by default the target is a character, however in some cases it can be summons
+        # by default the target is a character, however in some cases it can be summons/idx of support
         target = my_deck.get_character(params[0])
         if target is None:
             target = params[0]
@@ -219,6 +219,8 @@ class Game:
                 my_deck.activate(target)
             elif cmdw[0] == 'draw':
                 my_deck.pull(int(cmdw[1]))
+            elif cmdw[0] == 'draw_food':
+                my_deck.pull_food(int(cmdw[1]))
             elif cmdw[0] == 'reroll':
                 for _ in range(int(cmdw[1])):
                     my_deck.reroll()
@@ -240,6 +242,10 @@ class Game:
                 except ValueError:
                     value = my_deck.count_character_by_faction(cmdw[1])
                     target.add_shield(code_name, value)
+            elif cmdw[0] == 'support':
+                my_deck.add_support(action, target)
+            elif cmdw[0] == 'transfer':
+                my_deck.transfer_equip(cmdw[1], params[0], params[1])
             else:
                 raise NotImplementedError(f'[card_engine]{cmd}')
 
@@ -273,14 +279,13 @@ class Game:
             elif cmdw[0] == 'skill':
                 self._proc_skill(cmdw)
             elif cmdw[0] == 'cost':
-                my_deck.cost(cmdw[2], int(cmdw[1]))
+                my_deck.cost(cmdw[1], int(cmdw[2]))
             elif cmdw[0] == 'gen':
-                my_deck.gen(cmdw[2], int(cmd[1]))
-            elif cmdw[0] == 'activate':
-                # this is only used when an active character is defeated
-                my_deck.activate(cmdw[1])
+                my_deck.gen(cmdw[1], int(cmdw[2]))
             elif cmdw[0] == 'switch':
                 my_char = my_deck.get_current_character()
+                # clear buffs
+                my_char.take_buff('switch_cost_down') + my_deck.take_support_buff('switch_cost_down')
                 res = my_char.take_buff('switch_fast') + my_deck.take_support_buff('switch_fast')
                 self.switch_agent = res == 0
                 my_deck.activate(cmdw[1]) 
@@ -303,26 +308,16 @@ class Game:
         # update all states
         for deck in self.decks:
             deck.on_round_finished()
-        
-        # check if character dead
-        self.has_alive_changed()
+
         self.current_agent = self.agent_moves_first
         self.agent_moves_first = None
         
-    def has_alive_changed(self):
-        for t in range(2):
-            i = t - abs(self.current_agent)  # start from the current_agent first
-            d = self.decks[i]
-            # If need to switch character (someone is defeated and no one is active)
-            if d.has_alive_changed() and not d.has_active_character():
-                print(f'\n\nPlayer {i + 1} needs to switch character')
-                d.print_actions()
-                # ask user to activate a new character
-                agent = self.agents[i]
-                action = agent.get_action(self.state_for_action())
-                self.parse_space_action(action)
+    def has_active_character(self):
+        # start from the oppsite
+        self.decks[1 - self.current_agent].has_active_character()
+        self.decks[self.current_agent].has_active_character()
+        
             
-    
     def game_loop(self, show=False, save_hist=False):
         # init the game
         for i in self.decks:
@@ -343,10 +338,7 @@ class Game:
                 dump_js(f'states/R{self.round_num:02d}_01_swap_card', self.save())
 
             # select the first character
-            s = self.state_only_mine()
-            s['action_space'] = [f"activate {i.code_name}" for i in i.characters]
-            action = i.agent.get_action(s)
-            self.parse_space_action(action)
+            self.has_active_character()
             
             if show:
                 self.print_full_desk(f'Player {self.current_agent + 1} swap cards ' + ','.join([str(i) for i in keep_card]))
@@ -354,52 +346,54 @@ class Game:
                 dump_js(f'states/R{self.round_num:02d}_02_activate', self.save())
             self.next_agent()
 
+        ret = -1
         # round start
-        while self.check_win() < 0 and self.round_num < 15:
+        while self.round_num < 15:
             # start a new round
             self.round_num += 1
             self.on_round_start()
             t = 0
             while True:
                 self.switch_agent = False
-                
-                tmp = self.current_agent
-
-                if save_hist:
-                    dump_js(f'states/R{self.round_num:02d}_{t:02d}_before', self.save())
 
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state_for_action())
                 self.parse_space_action(action)
                 
-                ret = self.check_win()
-                if ret >= 0:
-                    if show:
-                        self.print_desk(f'Player {tmp + 1} exec: ' + action)
-                    if save_hist:
-                        dump_js(f'states/R{self.round_num:02d}_{t:02d}_done', self.save())
-                    return ret
-                    
-                self.has_alive_changed()
-                if self.is_round_finished():
-                    break
-                if self.switch_agent:
-                    self.next_agent()
-                    
                 if show:
-                    self.print_full_desk(f'Player {tmp + 1} exec: ' + action)
+                    self.print_full_desk(f'Player {self.current_agent + 1} exec: ' + action)
                 if save_hist:
                     dump_js(f'states/R{self.round_num:02d}_{t:02d}_done', self.save())
+
+                # check game finished
+                ret = self.check_win()
+                if ret >= 0:
+                    return ret
+                
+                self.has_active_character()
+
+                # check round finished
+                if self.is_round_finished():
+                    break
+                # move to the next agent
+                if self.switch_agent:
+                    self.next_agent()
                 t += 1
 
             # one round finished
             self.on_round_finished()
+            ret = self.check_win()
+            if ret >= 0:
+                return ret
+
+            # check if character defeated
+            self.has_active_character()
+            
             if show:
                 self.print_desk('round finished')
             if save_hist:
                 dump_js(f'states/R{self.round_num:02d}_{t:02d}_round_finished', self.save())
-
-        return self.check_win()
+        return ret
         
         
         

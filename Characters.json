@@ -22,7 +22,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg 2 Physical",
+                "code": "dmg Physical 2",
                 "code_name": "tempered_sword"
             },
             {
@@ -38,7 +38,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "if_else self.round_usage==3:dmg 5 Pyro:dmg 3 Pyro",
+                "code": "if_else self.round_usage==3:dmg Pyro 5:dmg Pyro 3",
                 "code_name": "searing_onslaught"
             },
             {
@@ -54,7 +54,7 @@
                     ],
                     "p_num": 3
                 },
-                "code": "dmg 8 Pyro;infusion Pyro",
+                "code": "dmg Pyro 8;infusion Pyro",
                 "code_name": "dawn"
             }
         ],
@@ -83,7 +83,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg 2 Physical",
+                "code": "dmg Physical 2",
                 "code_name": "ceremonial_bladework"
             },
             {
@@ -99,7 +99,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg 3 Cryo",
+                "code": "dmg Cryo 3;heal 0",
                 "code_name": "frostgnaw"
             },
             {
@@ -115,7 +115,7 @@
                     ],
                     "p_num": 2
                 },
-                "code": "dmg 1 Cryo;buff on_character_activated,dmg 2 Cryo,life 3 0 1,team",
+                "code": "dmg Cryo 1;buff on_character_activated,dmg Cryo 2,life 3 0 1,transfer",
                 "code_name": "glacial_waltz"
             }
         ],
@@ -143,7 +143,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg 1 Anemo",
+                "code": "dmg Anemo 1",
                 "des": "Deals 1 Anemo DMG. Costs 1 Anemo Dice and 2 Unaligned Dices.",
                 "code_name": "wind_spirit_creation"
             },
@@ -159,7 +159,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg 3 Anemo;switch_enemy prev",
+                "code": "dmg Anemo 3;switch_enemy prev",
                 "des": "Deals 3 Anemo DMG, the target is forcibly switched to the previous character. Costs 3 Anemo Dices.",
                 "code_name": "astable_anemohypostasis_creation_6308"
             },
@@ -175,7 +175,7 @@
                     ],
                     "p_num": 2
                 },
-                "code": "dmg 1 Anemo;summon large_wind_spirit",
+                "code": "dmg Anemo 1;summon large_wind_spirit",
                 "des": "Deals 1 Anemo DMG, summons 1 Large Wind Spirit. Costs 3 Anemo Dices and 2 Energy.",
                 "code_name": "forbidden_creation_isomer_74_type_ii"
             }
@@ -205,7 +205,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg 2 Physical",
+                "code": "dmg Physical 2",
                 "code_name": "bolts_of_downfall"
             },
             {
@@ -220,7 +220,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg 1 Electro;summon oz",
+                "code": "dmg Electro 1;summon oz",
                 "des": "Deals 1 Electro DMG, summons oz. Costs 3 Electro Dices.",
                 "code_name": "nightrider"
             },
@@ -236,7 +236,7 @@
                     ],
                     "p_num": 3
                 },
-                "code": "dmg 4 Electro;dmg_bg 2 Piercing",
+                "code": "dmg Electro 4;dmg_bg Piercing 2",
                 "des": "Deals 4 Electro DMG, deals 2 piercing DMG to all opposing characters on standby. Costs 3 Electro Dices and 3 Energy.",
                 "code_name": "midnight_phantasmagoria"
             }

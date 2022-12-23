@@ -134,7 +134,7 @@ class Action:
         if count_total_dice(deck.current_dice) > 0:
             for i, j in deck.current_dice.items():
                 if j > 0 and i not in [deck.get_current_element(), 'Omni']:
-                    res.append(f'convert {self.code_name};cost 1 {i};gen 1 {deck.get_current_element()}')
+                    res.append(f'convert {self.code_name};cost {i} 1;gen {deck.get_current_element()} 1')
         return res
     
     def state(self):

@@ -72,7 +72,7 @@ def _generate_action_space(cost, dice, character):
     elif cost['p_num'] > 0:
         res = f"cost {cost['p_num']} energy"
     if sum(cost['d_num']) == 0:
-        return ['cost 0 Omni;' + res] if len(res) else ['cost 0 Omni']
+        return ['cost Omni 0;' + res] if len(res) else ['cost Omni 0']
     if sum(cost['d_num']) > count_total_dice(dice):
         return []
 
@@ -146,7 +146,7 @@ def _generate_action_space(cost, dice, character):
             global_solutions = temp_solutions
         # print('Global',len(global_solutions), global_solutions)
     return [
-        ';'.join(([res] if len(res) else []) + [f"cost {g[i]} {i}" for i in g if g[i] > 0])
+        ';'.join(([res] if len(res) else []) + [f"cost {i} {g[i]}" for i in g if g[i] > 0])
         for g in global_solutions
         ]
 
@@ -193,6 +193,9 @@ def element_can_react(e1, e2):
     if e2 in reaction_table[e1]:
         return reaction_table[e1][e2]
     return None
+
+def buff_engine(self, my_deck, enemy_deck):
+    pass
  
 if __name__ == '__main__':
     get_project_progress()

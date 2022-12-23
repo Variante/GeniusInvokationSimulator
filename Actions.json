@@ -888,7 +888,7 @@
         "tags": [
             "location"
         ],
-        "code": "life 1 0 0,roll_current_die 2,stay",
+        "code": "life 1 0 0,roll_current 2,stay",
         "type": "support",
         "code_name": "jade_chamber"
     },
@@ -1440,7 +1440,7 @@
             "p_num": 0
         },
         "des": "Create 1 Cryo Die.\n(You must have at least 2 Cryo characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Cryo",
+        "code": "gen Cryo 1",
         "tags": [
             "elemental_resonance"
         ],
@@ -1482,7 +1482,7 @@
             "p_num": 0
         },
         "des": "Create 1 Hydro Die.\n(You must have at least 2 Hydro characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Hydro",
+        "code": "gen Hydro 1",
         "tags": [
             "elemental_resonance"
         ],
@@ -1524,7 +1524,7 @@
             "p_num": 0
         },
         "des": "Create 1 Pyro Die.\n(You must have at least 2 Pyro characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Pyro",
+        "code": "gen Pyro 1",
         "tags": [
             "elemental_resonance"
         ],
@@ -1566,7 +1566,7 @@
             "p_num": 0
         },
         "des": "Create 1 Electro Die.\n(You must have at least 2 Electro characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Electro",
+        "code": "gen Electro 1",
         "tags": [
             "elemental_resonance"
         ],
@@ -1609,7 +1609,7 @@
             "p_num": 0
         },
         "des": "Create 1 Anemo Die.\n(You must have at least 2 Anemo characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Anemo",
+        "code": "gen Anemo 1",
         "tags": [
             "elemental_resonance"
         ],
@@ -1633,7 +1633,7 @@
         "tags": [
             "elemental_resonance"
         ],
-        "code": "gen 1 Omni;switch_my target",
+        "code": "gen Omni 1;switch_my target",
         "type": "event",
         "code_name": "elemental_resonance_impetuous_winds"
     },
@@ -1651,7 +1651,7 @@
             "p_num": 0
         },
         "des": "Create 1 Geo Die.\n(You must have at least 2 Geo characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Geo",
+        "code": "gen Geo 1",
         "tags": [
             "elemental_resonance"
         ],
@@ -1675,7 +1675,7 @@
         "tags": [
             "elemental_resonance"
         ],
-        "code": "gen 1 Dendro",
+        "code": "gen Dendro 1",
         "type": "event",
         "code_name": "elemental_resonance_woven_weeds"
     },
@@ -1693,7 +1693,7 @@
             "p_num": 0
         },
         "des": "Convert the Elemental Dice spent to Omni Element Die.",
-        "code": "gen 2 Omni",
+        "code": "gen Omni 2",
         "tags": [],
         "type": "event",
         "code_name": "the_bestest_travel_companion"
@@ -1750,7 +1750,7 @@
             "p_num": 0
         },
         "des": "Only playable if one of your characters is defeated this Round:\nCreate Omni Element Die and your current active character gains 1 Energy.",
-        "code": "recharge active 1;gen 1 Omni",
+        "code": "recharge active 1;gen Omni 1",
         "tags": [
             "when_defeated"
         ],
@@ -1929,6 +1929,7 @@
             "p_num": 0
         },
         "des": "Shift 1 Weapon Equipment Card that has been equipped to one of your characters to another one of your characters of the same Weapon Type.",
+        "code": "transfer weapon",
         "tags": [
             "tranfer_weapon"
         ],
@@ -1949,6 +1950,7 @@
             "p_num": 0
         },
         "des": "Shift 1 Artifact Equipment Card that has been equipped to one of your characters to another one of your characters.",
+        "code": "transfer artifact",
         "tags": [
             "tranfer_artifact"
         ],

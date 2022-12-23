@@ -34,9 +34,11 @@ class Skill:
         dmg_mods = None
 
         def dmg_buff_seq():
+            if dmg_type == 'Piercing':
+                return 'Physical', 0, dmg
             nonlocal dmg_mods
-            dmg = int(cmds[1])
-            dmg_type = cmds[2]
+            dmg = int(cmds[2])
+            dmg_type = cmds[1]
             if dmg_mods is None:
                 dmg_mods = 0
                 if weapon is not None:
@@ -49,8 +51,7 @@ class Skill:
                     if 'dmg_up' in i:
                         dmg_mods += res[i]
             # TODO: not sure whether it is correct
-            if dmg_type == 'Piercing':
-                return 'Physical', dmg_mods, dmg
+            
             return dmg_type, dmg, 0
 
         for code in self.code:
@@ -104,13 +105,12 @@ class Skill:
 
         # gen die based on the weapon
         if self.stype == 'elemental_skill' and weapon is not None:
-            v = weapon.query('gen_current_die')
+            v = weapon.query('gen_current')
             if v > 0:
                 my_deck.cost(my_char.element, -v) # generate dices
                 weapon.on_activated()
 
         my_char.proc_buff_event(f'on_{self.stype}_finished')
-
         enemy_char.proc_buff_event('on_enemy_skill_finished')
 
         if my_char.query_buff('on_skill_finished'):
@@ -206,7 +206,7 @@ class Character:
         self.talent = False
         self.buffs = []
         
-        self.infusion_element = []
+        self.attached_element = []
         self.active = False
         self.activate_cost = 1    
         self.alive = True
@@ -251,7 +251,7 @@ class Character:
             res.append(self.weapon)
         if self.artifact:
             res.append(self.artifact)
-        return self.buffs + res
+        return self.buffs + res + self.deck_ptr.buffs
 
     def add_buff(self, source, code):
         if isinstance(code, str):
@@ -442,7 +442,7 @@ class Character:
         self.artifact = None
         self.equip = None
         
-        self.infusion_element = []
+        self.attached_element = []
         self.buffs = []
         self.active = False
         self.activate_cost = 100
@@ -484,9 +484,7 @@ class Character:
             if self.take_buff('frozen'):
                 self.add_buff(f'reaction_unfrozen', 'vulnerable 2')
         
-        reaction = False
-        if dmg_type != 'Physical':
-            reaction = self.infusion(dmg_type, source)
+        reaction = self.attach_element(dmg_type, source)
 
         for i in self.deck_ptr.enemy_ptr.get_summon_buff(f'dmg_{dmg_type}_up'):
             self.add_buff(f'chaotic_entropy', f'vulnerable {i.query(f"dmg_{dmg_type}_up")}')
@@ -575,10 +573,13 @@ class Character:
     def frozen(self):
         self.add_buff('reaction_frozen', 'frozen')
 
-    def infusion(self, element, source):
-        if element in self.infusion_element:
+    def attach_element(self, element, source):
+        # return whether there is an reaction or not
+        if element == 'Physical':
             return False
-        for t, i in enumerate(self.infusion_element):
+        if element in self.attached_element:
+            return False
+        for t, i in enumerate(self.attached_element):
             reaction = element_can_react(i, element)
             if reaction:
                 enemy_char = self.deck_ptr.get_enemy_current_character()
@@ -605,12 +606,12 @@ class Character:
                     # TODO: add reaction later
                     raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')
                 try:
-                    self.infusion_element = self.infusion_element[:t] + self.infusion_element[t + 1:]
+                    self.attached_element = self.attached_element[:t] + self.attached_element[t + 1:]
                 except IndexError:
-                    self.infusion_element = self.infusion_element[:t]
+                    self.attached_element = self.attached_element[:t]
                 return True
         if element not in ['Geo', 'Anemo']:
-            self.infusion_element.append(element)
+            self.attached_element.append(element)
         return False
 
     """
@@ -635,7 +636,7 @@ class Character:
             
             'buffs': [i.state() for i in self.buffs],
             
-            'infusion_element': self.infusion_element,
+            'attached_element': self.attached_element,
             'active': self.active,
             'activate_cost': self.activate_cost,
             'alive': self.alive
@@ -645,7 +646,7 @@ class Character:
         return f"{self.name} | H: {self.health} / {self.health_limit} | E: {self.energy} / {self.energy_limit} {'| <*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
                f"T: {self.talent:<5} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
-               f"E: {self.element:<5} | {' '.join(self.infusion_element)}"
+               f"E: {self.element:<5} | {' '.join(self.attached_element)}"
         
 
                 

@@ -94,13 +94,9 @@ class Deck:
 
     def get_action_space(self):
         char = self.get_current_character()
-        # query character skill
-        if char.alive:
-            res = char.get_action_space(self)
-        else:
-            # activate character due to death (free switch)
-            return [f"activate {i.code_name}" for i in self.characters if i.alive]
-        
+        assert char.alive
+
+        res = []
         # query action cards
         visited_action = set()
         for i in self.available_actions:
@@ -124,22 +120,23 @@ class Deck:
     """
     Get status
     """
-    
-    def has_alive_changed(self):
-        changed = False
-        for i, c in enumerate(self.characters):
-            if self.last_alive[i] ^ c.alive:
-                self.last_alive[i] = c.alive
-                changed = True
-        return changed
-    
     def has_active_character(self):
         res = False
-        for  c in self.characters:
+        for c in self.characters:
             res |= c.active
-        return res
+        if res:
+            return
+        print(f'Player {self.deck_id + 1} needs to switch character')
+        res = self.game_ptr.state()
+        res['action_space'] = [f'activate {i.code_name}' for i in self.characters if i.alive]
+        print(res['action_space'])
+        print('-' * 10)
+        # ask user to activate a new character
+        action = self.agent.get_action(res)
+        self.game_ptr.action_history.append(f'Player {self.deck_id + 1}: {action}')
+        self.activate(action.split()[-1])
 
-    def is_alive(self):
+    def has_alive(self):
         res = False
         for c in self.characters:
             res |= c.alive
@@ -155,9 +152,9 @@ class Deck:
             for i in a.show_all_attr():
                 if i.startswith('roll_'):
                     ele = i[5:]
-                    if ele == 'current_die':
+                    if ele == 'current':
                         ele = self.get_current_character().element
-                    keep[ele] = a.query(i)
+                    keep[ele] = a.query(i) + keep.get(ele, 0)
         self.current_dice = self.d.roll(keep=keep)
         
     def reroll(self, total_num=8):
@@ -165,15 +162,18 @@ class Deck:
         keep = self.agent.get_keep_dice(self.state())
         self.current_dice = self.d.roll(total_num=total_num, keep=keep)
 
-    def gen(self, d_num, d_type):
+    def gen(self, d_type, d_num):
         if d_type == 'Rand':
             d_type = self.d.random_type()
-        self.cost(d_type, -d_num)
+        # the max num of dices is 16
+        gen_num = min(16 - count_total_dice(self.current_dice), d_num)
+        self.cost(d_type, -gen_num)
 
     def cost(self, d_type, d_num):
         if d_type == 'energy':
             self.get_current_character().energy -= d_num
         else:
+            
             try:
                 self.current_dice[d_type] -= d_num
             except KeyError:
@@ -193,11 +193,15 @@ class Deck:
         else:
             self.available_actions.append(action)
 
-    def pull_one_food(self):
+    def pull_food(self, pull_num):
+        c = 0
         for i, j in enumerate(self.to_pull_actions):
             if 'food'in j.tags:
                 action = self.to_pull_actions.pop(i)
                 self._pull_card(action)
+                c += 1
+                if c == pull_num:
+                    break
                 
     def pull(self, pull_num):
         for _ in range(pull_num):
@@ -276,10 +280,6 @@ class Deck:
             self.supports.append(s)
         else:
             self.supports[idx] = s
-
-        # special code for nre:
-        if s.code_name == 'nre':
-            self.pull_one_food()
 
         # activate location cost saving (trigger the counter)
         if 'location' in action.tags:
@@ -379,14 +379,18 @@ class Deck:
 
     def _activate(self, idx):
         # when actively switch the character
-        if self.game_ptr.current_agent == self.deck_id:
-            self.take_support_buff('switch_cost_down')
-        
         self.character_order.remove(idx)
         self.character_order.insert(0, idx)
         self.characters[idx].activate()
 
         self.proc_support_buffs('on_switch_finished')
+            
+    def activate(self, code_name):
+        self._deactivate()
+        idx = self.get_character_idx(code_name)
+        if idx not in self.character_order:
+            return
+        self._activate(idx)
 
     def activate_by_id(self, idx):
         self._deactivate()
@@ -401,13 +405,6 @@ class Deck:
             print('Killed')
             print('\n' * 5)
             """
-            return
-        self._activate(idx)
-            
-    def activate(self, code_name):
-        self._deactivate()
-        idx = self.get_character_idx(code_name)
-        if idx not in self.character_order:
             return
         self._activate(idx)
 
@@ -479,7 +476,7 @@ class Deck:
         # get dices
         self.roll()
         self.reroll()
-        for _ in range(self.query_support_buff('query_support_buff')):
+        for _ in range(self.query_support_buff('reroll')):
             self.reroll()
 
         # process support
