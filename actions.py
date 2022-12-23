@@ -138,7 +138,7 @@ class Action:
         return res
     
     def state(self):
-        return vars(self)
+        return {i:j for i, j in vars(self).items() if i not in ['des']}
     
     def __repr__(self):
         return f"- {self.name}: {self.des}"
@@ -157,7 +157,7 @@ def init_actions(names):
     if save:
         dump_js('Actions', pool)
         
-    print('Available actions: ', chrs)
+    # print('Available actions: ', chrs)
     return [Action(name, pool) for name in names]
     
         

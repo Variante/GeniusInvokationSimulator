@@ -156,14 +156,14 @@ class Liben(Support):
         assert action.code_name == 'liben'
         super(Liben, self).__init__(source, action) 
         
-        self.collection = set()
+        self.collection = []
 
     def on_round_finished(self, deck):
         # collect dices
         for i, j in deck.current_dice.items():
             if j > 0 and i not in self.collection:
                 deck.cost(i, 1)
-                self.collection.add(i)
+                self.collection.append(i)
 
                 if len(self.collection) >= 3:
                     break    

@@ -26,6 +26,7 @@ class Deck:
         self.summon_pool = load_js('Summons')
         self.summons = []
         self.supports = []
+        
         # team buff
         self.buffs = []
         
@@ -136,11 +137,13 @@ class Deck:
             res |= c.active
         if res:
             return
-        print(f'[R{self.game_ptr.round_num:02d}-S{self.game_ptr.step_num:02d}] Player {self.deck_id + 1} needs to switch character')
+        # print(f'[R{self.game_ptr.round_num:02d}-S{self.game_ptr.step_num:02d}] Player {self.deck_id + 1} needs to switch character')
         res = self.game_ptr.state()
         res['action_space'] = [f'activate {i.code_name}' for i in self.characters if i.alive]
+        """
         print(res['action_space'])
         print('-' * 10)
+        """
         if len(res['action_space']) == 0:
             return
         # ask user to activate a new character
@@ -511,7 +514,7 @@ class Deck:
 
 if __name__ == '__main__':
     d = Deck('p1', None)
-    d.reroll(keep=[0, 2, 0, 0, 0, 0, 0, 0], total_num=2)
+    d.roll()
     d.pull(2)
     print('Current dices: ', d.current_dice, sep = "\n")
     print('Action space: ')

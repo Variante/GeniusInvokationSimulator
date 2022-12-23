@@ -161,7 +161,7 @@ class Character:
         self.weapon_type = to_code_name(data['weapon'])
         self.weapon = None
         self.artifact = None
-        self.talent = True # False
+        self.talent = False
         self.buffs = []
         
         self.attached_element = []
@@ -497,7 +497,7 @@ class Character:
 
         self.weapon = None
         self.artifact = None
-        self.talent = True # False
+        self.talent = False
         self.buffs = []
         
         self.attached_element = []
@@ -558,7 +558,7 @@ def init_characters(names):
     if save:
         dump_js('Characters', pool)
     
-    print('Available characters: ', chrs)
+    # print('Available characters: ', chrs)
     
     return [Character(name, pool) for name in names]
     
