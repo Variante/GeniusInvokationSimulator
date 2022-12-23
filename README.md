@@ -11,7 +11,7 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 ```
 Progress
 [Characters] 4 / 27
-[Actions] 92 / 117
+[Actions] 94 / 117
 ```
 
 ## Dependence
@@ -27,12 +27,16 @@ python game.py
 ```
 
 ## TODO
-1. Elemental reactions: electro, hydro, dendro, geo
-2. More characters and more talent card
+1. Better buff system (team buff + personal buff)
+1. Elemental reactions: hydro, dendro, geo
+2. More characters and more talent card => current talent sysment may need to be redesigned
 3. Deck check, not all cards can be included in a deck
 4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
+12/23/22:
+1. Reorganize a lot of code, add (almost) all cards except talent cards
+
 12/22/22:
 1. Finished most of the event cards and all support cards
 2. Add Fischl

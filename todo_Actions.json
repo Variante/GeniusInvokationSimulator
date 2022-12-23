@@ -372,45 +372,5 @@
         "des": "Combat Action:  When your active character is Jadeplume Terrorshroom, equip this card.\nAfter Jadeplume Terrorshroom equips this card, immediately use Volatile Spore Cloud once.\nYour Jadeplume Terrorshroom, who has this card equipped, can accumulate 1 more stack of Radical Vitality.\n(You must have Jadeplume Terrorshroom in your deck to add this card to your deck.)",
         "tags": [],
         "type": ""
-    },
-    {
-        "img": "Elemental_Resonance_Enduring_Rock.png",
-        "name": "Elemental Resonance: Enduring Rock",
-        "cost_raw": "1 Geo Dice",
-        "cost": {
-            "d_type": [
-                "Geo"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "During this round, after your character deals Geo DMG next time: Should there be any Combat Status on your side that provides Shield, grant one such Status with 3 Shield points.\n(You must have at least 2 Geo characters in your deck to add this card to your deck.)",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_enduring_rock"
-    },
-    {
-        "img": "Elemental_Resonance_Sprawling_Greenery.png",
-        "name": "Elemental Resonance: Sprawling Greenery",
-        "cost_raw": "1 Dendro Dice",
-        "cost": {
-            "d_type": [
-                "Dendro"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "During this round, the next Elemental Reaction your active character triggers deals +2 DMG.\nYour Burning Flame, Dendro Core, and Catalyzing Field gain +1 Usage(s).\n(You must have at least 2 Dendro characters in your deck to add this card to your deck.)",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_sprawling_greenery"
     }
 ]

@@ -33,16 +33,14 @@ class Buff:
             elif len(cmdw) == 2:
                 self.attribs[cmdw[0]] = int(cmdw[1])
             else:
-                if cmd.startswith('collect'):
-                    self.attribs[cmdw[0]] = {}
-                else:
-                    self.attribs[cmdw[0]] = 1
+                self.attribs[cmdw[0]] = 1
                 
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
-        disabled = self.life <= 0
-        disabled |= 'starts_since_next_round' in self.attribs and self.life == self.init_life
-        disabled |= 'until_leave' in self.attribs and self.life <= 0
+        if 'until_leave' in self.attribs:
+            disabled = self.life > 0
+        else:
+            disabled =  self.life <= 0
         if self.condition is not None:
             disabled |= not eval(self.condition)
         if disabled:
@@ -111,6 +109,9 @@ class Summon(Buff):
 
     def heal(self, num):
         self.life += num
+
+    def should_leave(self):
+        return self.life <= 0
         
     def __repr__(self):
         if self.life == 0:
@@ -120,7 +121,7 @@ class Summon(Buff):
 
 class Support(Buff):
     def __init__(self, source, action):
-        super(Support, self).__init__(source, action.code)
+        super(Support, self).__init__(source, action.code[8:]) # remove support head
         self.name = action.name
         self.code_name = action.code_name
         # self.on_leave = action.on_leave
@@ -129,7 +130,8 @@ class Support(Buff):
         return f'{self.name}: ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
             f" from {self.source} ({self.life})"
 
-    def on_round_finished(self):
+
+    def on_round_finished(self, deck):
         if 'refresh' in self.attribs:
             # Similar to weapon, we use this life counter to describe the interal state
             # use in instead of query so that it will not be blocked
@@ -143,12 +145,38 @@ class Support(Buff):
                 self.change_keyword(i, self.query(i) + 1)
 
     def should_leave(self):
-        # For Liu Su
-        if 'renew' in self.attribs and self.life == 0:
-            self.life = self.init_life
-            self.attribs['renew'] -= 1
-            if self.attribs['renew'] < 1:
-                del self.attribs['renew']
+        return self.life <= 0 and 'stay' not in self.attribs
 
-        # for liben, when activated by on_round_start, life should go to -1, and it will override the stay tag
-        return (self.life == 0 and self.query('stay') == 0) or self.life < 0
+
+class liben(Support):
+    def __init__(self, source, action):
+        assert action.code_name == 'liben'
+        super(liben, self).__init__(source, action) 
+        
+        self.collection = set()
+
+    def on_round_finished(self, deck):
+        # collect dices
+        for i, j in deck.current_dice.items():
+            if j > 0 and i not in self.collection:
+                deck.cost(i, 1)
+                self.collection.add(i)
+
+                if len(self.collection) >= 3:
+                    break    
+        self.life = self.init_life - len(self.collection)
+
+
+class liu_su(Support):
+    def __init__(self, source, action):
+        assert action.code_name == 'liu_su'
+        super(liu_su, self).__init__(source, action) 
+
+        self.round_life = 2
+    
+    def on_round_finished(self, deck):
+        self.life = 1
+        self.round_life -= 1
+
+    def should_leave(self):
+        return self.round_life <= 0 

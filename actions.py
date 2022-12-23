@@ -32,39 +32,31 @@ class Action:
         elif 'artifact' in self.tags:
             self.code = 'artifact ' + self.code
 
-        # only available for support card
-        # self.on_leave = data.get('on_leave', '')
-        # self.active_character = data.get('active_character', None)
-    """
-    def is_affordable(self, dice, character):
-        return is_affordable(self.cost, dice, character)
-    """
-    
+        if self.atype == 'support':
+            self.code = 'support ' +  self.code
+
+    # Check whether we can use this card
     def _get_action_prefix(self, deck):
+        my_char = deck.get_current_character()
         if self.atype == 'equipment':
-            if 'talent' in self.tags and deck.get_current_character().code_name not in self.code:
+            if 'talent' in self.tags and my_char.code_name not in self.code:
                 return []
             elif 'weapon' in self.tags:
-                return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters() if to_code_name(cha.weapon_type) in self.tags]
+                return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters() if cha.weapon_type in self.tags]
             elif 'artifact' in self.tags:
-                return [f'equipment {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters()]
-            return f'equipment {self.code_name}'
+                return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters()]
         elif self.atype == 'support':
             idx = len(deck.supports) # add to the end or replace the original one
             max_l = 4
             if idx < max_l:
-                res = [f'support {self.code_name} {idx}']
+                res = [f'event {self.code_name} {idx}']
             else:
-                res = [f'support {self.code_name} {i}' for i in range(max_l)]
-            # this is for "knights_of_favonius_library"
-            if 'reroll' in self.tags:
-                return [f'{i};reroll 1' for i in res]
-            return res
+                res = [f'event {self.code_name} {i}' for i in range(max_l)]
         else:
             if "tranfer_weapon" in self.tags:
-                return [f'transfer weapon {i.code_name} {j.code_name}' for i in deck.get_alive_characters() for j in deck.get_alive_characters() if i.artifact is not None and i.weapon_type == j.weapon_type and i.code_name != j.code_name]
+                return [f'event {self.code_name} {i.code_name} {j.code_name}' for i in deck.get_alive_characters() for j in deck.get_alive_characters() if i.weapon is not None and i.weapon_type == j.weapon_type and i.code_name != j.code_name]
             if "tranfer_artifact" in self.tags:
-                return [f'transfer artifact {i.code_name} {j.code_name}' for i in deck.get_alive_characters() for j in deck.get_alive_characters() if i.artifact is not None and i.code_name != j.code_name]
+                return [f'event {self.code_name} {i.code_name} {j.code_name}' for i in deck.get_alive_characters() for j in deck.get_alive_characters() if i.artifact is not None and i.code_name != j.code_name]
 
             if 'food' in self.tags:
                 res = []
@@ -76,12 +68,12 @@ class Action:
                 return res
 
             if 'switch_my' in self.code:
-                return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_other_characters() if cha.alive]
+                return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_bg_characters() if cha.alive]
                 
             if 'when_defeated' in self.tags and deck.defeated_this_round == 0:
                 return []
                 
-            if 'recharge_active' in self.tags and deck.get_current_character().get_energy_need() == 0:
+            if 'recharge_active' in self.tags and my_char.get_energy_need() == 0:
                 return []
                 
             if 'recharge_any' in self.tags:
@@ -93,11 +85,11 @@ class Action:
                     
             if 'recharge_to_active' in self.tags:
                 to_move = 0
-                for cha in deck.get_other_characters():
+                for cha in deck.get_bg_characters():
                     to_move += cha.energy
                 if to_move == 0:
                     return []
-                if deck.get_current_character().get_energy_need() < 1:
+                if my_char.get_energy_need() < 1:
                     return []
 
             if 'heal_summon' in self.code:
@@ -110,15 +102,18 @@ class Action:
                     return [f'event {self.code_name} {s.code_name}' for s in deck.enemy_ptr.summons]
                 return []
 
-            if 'kill_all_summons' in self.code and len(deck.summons) + len(deck.enemy_ptr.summons) == 0:
+            if 'kill_all_summons' in self.code and (len(deck.summons) + len(deck.enemy_ptr.summons)) == 0:
                 return []
 
-            return f'event {self.code_name}'
+            # every event must have a target
+            return f'event {self.code_name} {my_char.code_name}'
     
     def get_cost(self, deck):
+        # talent cost down by artifacts
         if 'talent' in self.tags:
             mods = deck.get_current_character().query_pattern_buff('talent')
             return modify_cost(self.cost, mods)
+        # weapon/artifact/location cost down by supports
         elif 'weapon' in self.tags:
             mods = deck.query_support_buff('weapon_save')
             if mods >= self.cost["d_num"][0]:
@@ -135,10 +130,11 @@ class Action:
 
     def get_action_space(self, deck):
         res = generate_action_space(self.get_cost(deck), deck.current_dice, deck.get_current_character(), prefix=self._get_action_prefix(deck))
+        # Use this card to generate 1 dice
         if count_total_dice(deck.current_dice) > 0:
-            for i in deck.current_dice:
-                if deck.current_dice[i] > 0:
-                    res.append(f'convert {self.code_name};cost 1 {i};gen 1 {deck.get_current_element()}')
+            for i, j in deck.current_dice.items():
+                if j > 0 and i not in [deck.get_current_element(), 'Omni']:
+                    res.append(f'convert {self.code_name};cost {i} 1;gen {deck.get_current_element()} 1')
         return res
     
     def state(self):

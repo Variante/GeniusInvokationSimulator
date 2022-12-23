@@ -29,7 +29,8 @@
 		"Geo": "crystallize",
 		"Anemo": "swirl",
 		"Dendro": "catalyze",
-		"Pyro": "overloaded"
+		"Pyro": "overloaded",
+		"Cryo": "superconduct"
 	},
 	"Pyro": {
 		"Hydro": "vaporize",
@@ -43,6 +44,7 @@
 		"Pyro": "melt",
 		"Hydro": "frozen",
 		"Geo": "crystallize",
-		"Anemo": "swirl"
+		"Anemo": "swirl",
+		"Electro": "superconduct"
 	}
 }
