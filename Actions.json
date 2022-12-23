@@ -1,641 +1,5 @@
 [
     {
-        "img": "Sweet_Madame.png",
-        "name": "Sweet Madame",
-        "code_name": "sweet_madame",
-        "code": "heal 1",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Heal the target character for 1 HP.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event"
-    },
-    {
-        "img": "Mondstadt_Hash_Brown.png",
-        "name": "Mondstadt Hash Brown",
-        "cost_raw": "1 Elemental Dice",
-        "code": "heal 2",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Heal the target character for 2 HP.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "mondstadt_hash_brown"
-    },
-    {
-        "img": "Jueyun_Guoba.png",
-        "name": "Jueyun Guoba",
-        "cost_raw": "No Cost",
-        "code": "buff normal_attack_dmg_up 1",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, the target character's next Normal Attack deals +1 DMG.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "jueyun_guoba"
-    },
-    {
-        "img": "Adeptus'_Temptation.png",
-        "name": "Adeptus' Temptation",
-        "cost_raw": "2 Unaligned Dices",
-        "code": "buff elemental_burst_dmg_up 3",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, the target character's next Elemental Burst deals +3 DMG.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "adeptus_temptation"
-    },
-    {
-        "img": "Lotus_Flower_Crisp.png",
-        "name": "Lotus Flower Crisp",
-        "cost_raw": "1 Elemental Dice",
-        "code": "buff dmg_down 3",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, the target character takes -3 DMG the next time.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "lotus_flower_crisp"
-    },
-    {
-        "img": "Northern_Smoked_Chicken.png",
-        "name": "Northern Smoked Chicken",
-        "cost_raw": "No Cost",
-        "code": "buff normal_attack_cost_unaligned_down 1",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, the target character's next Normal Attack costs 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "northern_smoked_chicken"
-    },
-    {
-        "img": "Mushroom_Pizza.png",
-        "name": "Mushroom Pizza",
-        "cost_raw": "1 Elemental Dice",
-        "code": "heal 1;buff on_round_finished,heal 1,life 2 1 0",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Heal the target character for 1 HP. For the next two Rounds, heal this character for 1 HP again at the End Phase.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "mushroom_pizza"
-    },
-    {
-        "img": "Minty_Meat_Rolls.png",
-        "name": "Minty Meat Rolls",
-        "cost_raw": "1 Elemental Dice",
-        "code": "buff normal_attack_cost_unaligned_down 1,life 1 1 0",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Before this Round ends, the target character's Normal Attacks cost 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
-        "tags": [
-            "food"
-        ],
-        "type": "Event",
-        "code_name": "minty_meat_rolls"
-    },
-    {
-        "img": "Elemental_Resonance_Woven_Ice_Card.png",
-        "name": "Elemental Resonance: Woven Ice",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Create 1 Cryo Die.\n(You must have at least 2 Cryo characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Cryo",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_woven_ice"
-    },
-    {
-        "img": "Elemental_Resonance_Shattering_Ice.png",
-        "name": "Elemental Resonance: Shattering Ice",
-        "cost_raw": "1 Cryo Dice",
-        "cost": {
-            "d_type": [
-                "Cryo"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "During this Round, your current active character will deal +2 DMG for the next instance.\n(You must have at least 2 Cryo characters in your deck to add this card to your deck.)",
-        "code": "buff normal_attack_dmg_up 2,elemental_burst_dmg_up 2,elemental_skill_dmg_up 2",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_shattering_ice"
-    },
-    {
-        "img": "Elemental_Resonance_Woven_Waters.png",
-        "name": "Elemental Resonance: Woven Waters",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Create 1 Hydro Die.\n(You must have at least 2 Hydro characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Hydro",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_woven_waters"
-    },
-    {
-        "img": "Elemental_Resonance_Soothing_Water.png",
-        "name": "Elemental Resonance: Soothing Water",
-        "cost_raw": "1 Hydro Dice",
-        "cost": {
-            "d_type": [
-                "Hydro"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Heal your active character for 2 HP and all your characters on standby for 1 HP.\n(You must have at least 2 Hydro characters in your deck to add this card to your deck.)",
-        "code": "heal 2;heal_other 1",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_soothing_water"
-    },
-    {
-        "img": "Elemental_Resonance_Woven_Flames.png",
-        "name": "Elemental Resonance: Woven Flames",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Create 1 Pyro Die.\n(You must have at least 2 Pyro characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Pyro",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_woven_flames"
-    },
-    {
-        "img": "Elemental_Resonance_Fervent_Flames.png",
-        "name": "Elemental Resonance: Fervent Flames",
-        "cost_raw": "1 Pyro Dice",
-        "cost": {
-            "d_type": [
-                "Pyro"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "During this round, the next instance of Pyro-Related Reactions your current active character triggers deals +3 DMG.\n(You must have at least 2 Pyro characters in your deck to add this card to your deck.)",
-        "code": "buff pyro_reaction_dmg_up 3",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_fervent_flames"
-    },
-    {
-        "img": "Elemental_Resonance_Woven_Thunder.png",
-        "name": "Elemental Resonance: Woven Thunder",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Create 1 Electro Die.\n(You must have at least 2 Electro characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Electro",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_woven_thunder"
-    },
-    {
-        "img": "Elemental_Resonance_High_Voltage.png",
-        "name": "Elemental Resonance: High Resonance",
-        "cost_raw": "1 Electro Dice",
-        "cost": {
-            "d_type": [
-                "Electro"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "One of your characters without maximum Energy gains 1 Energy. (Active Character prioritized)\n(You must have at least 2 Electro characters in your deck to add this card to your deck.)",
-        "code": "recharge any 1",
-        "tags": [
-            "elemental_resonance",
-            "recharge_any"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_high_resonance"
-    },
-    {
-        "img": "Elemental_Resonance_Woven_Winds.png",
-        "name": "Elemental Resonance: Woven Winds",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Create 1 Anemo Die.\n(You must have at least 2 Anemo characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Anemo",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_woven_winds"
-    },
-    {
-        "img": "Elemental_Resonance_Impetuous_Winds.png",
-        "name": "Elemental Resonance: Impetuous Winds",
-        "cost_raw": "1 Anemo Dice",
-        "cost": {
-            "d_type": [
-                "Anemo"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Switch to the target character and create Omni Element Die.\n(You must have at least 2 Anemo characters in your deck to add this card to your deck.)",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "code": "gen 1 Omni;switch_my target",
-        "type": "event",
-        "code_name": "elemental_resonance_impetuous_winds"
-    },
-    {
-        "img": "Elemental_Resonance_Woven_Stone.png",
-        "name": "Elemental Resonance: Woven Stone",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Create 1 Geo Die.\n(You must have at least 2 Geo characters in your deck to add this card to your deck.)",
-        "code": "gen 1 Geo",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "type": "event",
-        "code_name": "elemental_resonance_woven_stone"
-    },
-    {
-        "img": "Elemental_Resonance_Woven_Weeds.png",
-        "name": "Elemental Resonance: Woven Weeds",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Create 1 Dendro Die.\n(You must have at least 2 Dendro characters in your deck to add this card to your deck.)",
-        "tags": [
-            "elemental_resonance"
-        ],
-        "code": "gen 1 Dendro",
-        "type": "event",
-        "code_name": "elemental_resonance_woven_weeds"
-    },
-    {
-        "img": "The_Bestest_Travel_Companion!.png",
-        "name": "The Bestest Travel Companion!",
-        "cost_raw": "2 Unaligned Dices",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "Convert the Elemental Dice spent to Omni Element Die.",
-        "code": "gen 2 Omni",
-        "tags": [],
-        "type": "event",
-        "code_name": "the_bestest_travel_companion"
-    },
-    {
-        "img": "Changing_Shifts.png",
-        "name": "Changing Shifts",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "The next time you perform \"Switch Character\": Spend 1 less Elemental Die.",
-        "code": "buff switch_cost_down 1,life 1 0 1",
-        "tags": [],
-        "type": "event",
-        "code_name": "changing_shifts"
-    },
-    {
-        "img": "Strategize.png",
-        "name": "Strategize",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Draw 2 cards.",
-        "code": "draw 2",
-        "tags": [],
-        "type": "event",
-        "code_name": "strategize"
-    },
-    {
-        "img": "I_Haven't_Lost_Yet!.png",
-        "name": "I Haven't Lost Yet!",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "Only playable if one of your characters is defeated this Round:\nCreate Omni Element Die and your current active character gains 1 Energy.",
-        "code": "recharge active 1;gen 1 Omni",
-        "tags": [
-            "when_defeated"
-        ],
-        "type": "event",
-        "code_name": "i_haven_t_lost_yet"
-    },
-    {
-        "img": "Leave_It_to_Me!.png",
-        "name": "Leave It to Me!",
-        "cost_raw": "No Cost",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                0
-            ],
-            "p_num": 0
-        },
-        "des": "The next time you perform \"Switch Character\": This switch will be considered a Fast Action instead of a Combat Action.",
-        "code": "buff switch_fast 1,life 1 0 1",
-        "tags": [],
-        "type": "event",
-        "code_name": "leave_it_to_me"
-    },
-    {
-        "img": "Starsigns.png",
-        "name": "Starsigns",
-        "cost_raw": "2 Unaligned Dices",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "Your current Active Character gains 1 Energy.",
-        "code": "recharge active 1",
-        "tags": [
-            "recharge_active"
-        ],
-        "type": "event",
-        "code_name": "starsigns"
-    },
-    {
-        "img": "Calx's_Arts.png",
-        "name": "Calx's Arts",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Shift 1 Energy from at most 2 of your characters on standby to your active character.",
-        "code": "recharge to_active 1",
-        "tags": [
-            "recharge_to_active"
-        ],
-        "type": "event",
-        "code_name": "calx_s_arts"
-    },
-    {
-        "img": "When_the_Crane_Returned.png",
-        "name": "When the Crane Returned",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "The next time you use a Skill: Switch your next character in to be the active character.",
-        "code": "buff on_skill_finished,life 1 0 1,switch_my_prev",
-        "tags": [],
-        "type": "event",
-        "code_name": "when_the_crane_returned"
-    },
-    {
-        "img": "Quick_Knit.png",
-        "name": "Quick Knit",
-        "cost_raw": "1 Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                1
-            ],
-            "p_num": 0
-        },
-        "des": "Choose one Summon on your side and grant it +1 Usage(s).",
-        "code": "heal_summon 1",
-        "tags": [],
-        "type": "event",
-        "code_name": "quick_knit"
-    },
-    {
-        "img": "Send_Off.png",
-        "name": "Send Off",
-        "cost_raw": "2 Unaligned Dices",
-        "cost": {
-            "d_type": [
-                "Unaligned"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "Choose one Summon on the opposing side and destroy it.",
-        "code": "kill_summon",
-        "tags": [],
-        "type": "event",
-        "code_name": "send_off"
-    },
-    {
-        "img": "Guardian's_Oath.png",
-        "name": "Guardian's Oath",
-        "cost_raw": "4 Matching Elemental Dice",
-        "cost": {
-            "d_type": [
-                "Matching"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Destroy all Summons. (Affects both you and your opponent!)",
-        "code": "kill_all_summons",
-        "tags": [],
-        "type": "event",
-        "code_name": "guardian_s_oath"
-    },
-    {
         "img": "Flowing_Flame_Card.png",
         "name": "Flowing Flame",
         "cost_raw": "3 Pyro Dices",
@@ -1501,10 +865,9 @@
         },
         "des": "When played: Select any Elemental Dice to reroll.\nRoll Phase: Gain another chance to reroll.",
         "tags": [
-            "location",
-            "reroll"
+            "location"
         ],
-        "code": "life 1 0 0,reroll,stay",
+        "code": "life 1 0 0,reroll,stay;reroll 1",
         "type": "support",
         "code_name": "knights_of_favonius_library"
     },
@@ -1895,6 +1258,644 @@
         "type": "support",
         "code_name": "nre"
     },
+    {
+        "img": "Sweet_Madame.png",
+        "name": "Sweet Madame",
+        "code_name": "sweet_madame",
+        "code": "heal 1",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Heal the target character for 1 HP.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event"
+    },
+    {
+        "img": "Mondstadt_Hash_Brown.png",
+        "name": "Mondstadt Hash Brown",
+        "cost_raw": "1 Elemental Dice",
+        "code": "heal 2",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Heal the target character for 2 HP.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "mondstadt_hash_brown"
+    },
+    {
+        "img": "Jueyun_Guoba.png",
+        "name": "Jueyun Guoba",
+        "cost_raw": "No Cost",
+        "code": "buff normal_attack_dmg_up 1",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Normal Attack deals +1 DMG.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "jueyun_guoba"
+    },
+    {
+        "img": "Adeptus'_Temptation.png",
+        "name": "Adeptus' Temptation",
+        "cost_raw": "2 Unaligned Dices",
+        "code": "buff elemental_burst_dmg_up 3",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Elemental Burst deals +3 DMG.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "adeptus_temptation"
+    },
+    {
+        "img": "Lotus_Flower_Crisp.png",
+        "name": "Lotus Flower Crisp",
+        "cost_raw": "1 Elemental Dice",
+        "code": "buff dmg_down 3",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character takes -3 DMG the next time.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "lotus_flower_crisp"
+    },
+    {
+        "img": "Northern_Smoked_Chicken.png",
+        "name": "Northern Smoked Chicken",
+        "cost_raw": "No Cost",
+        "code": "buff normal_attack_cost_unaligned_down 1",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, the target character's next Normal Attack costs 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "northern_smoked_chicken"
+    },
+    {
+        "img": "Mushroom_Pizza.png",
+        "name": "Mushroom Pizza",
+        "cost_raw": "1 Elemental Dice",
+        "code": "heal 1;buff on_round_finished,heal 1,life 2 1 0",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Heal the target character for 1 HP. For the next two Rounds, heal this character for 1 HP again at the End Phase.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "mushroom_pizza"
+    },
+    {
+        "img": "Minty_Meat_Rolls.png",
+        "name": "Minty Meat Rolls",
+        "cost_raw": "1 Elemental Dice",
+        "code": "buff normal_attack_cost_unaligned_down 1,life 1 1 0",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Before this Round ends, the target character's Normal Attacks cost 1 less Unaligned Element.\n(A character can consume at most 1 Food per Round)",
+        "tags": [
+            "food"
+        ],
+        "type": "Event",
+        "code_name": "minty_meat_rolls"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Ice_Card.png",
+        "name": "Elemental Resonance: Woven Ice",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Cryo Die.\n(You must have at least 2 Cryo characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Cryo",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_ice"
+    },
+    {
+        "img": "Elemental_Resonance_Shattering_Ice.png",
+        "name": "Elemental Resonance: Shattering Ice",
+        "cost_raw": "1 Cryo Dice",
+        "cost": {
+            "d_type": [
+                "Cryo"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this Round, your current active character will deal +2 DMG for the next instance.\n(You must have at least 2 Cryo characters in your deck to add this card to your deck.)",
+        "code": "buff normal_attack_dmg_up 2,elemental_burst_dmg_up 2,elemental_skill_dmg_up 2",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_shattering_ice"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Waters.png",
+        "name": "Elemental Resonance: Woven Waters",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Hydro Die.\n(You must have at least 2 Hydro characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Hydro",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_waters"
+    },
+    {
+        "img": "Elemental_Resonance_Soothing_Water.png",
+        "name": "Elemental Resonance: Soothing Water",
+        "cost_raw": "1 Hydro Dice",
+        "cost": {
+            "d_type": [
+                "Hydro"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Heal your active character for 2 HP and all your characters on standby for 1 HP.\n(You must have at least 2 Hydro characters in your deck to add this card to your deck.)",
+        "code": "heal 2;heal_other 1",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_soothing_water"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Flames.png",
+        "name": "Elemental Resonance: Woven Flames",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Pyro Die.\n(You must have at least 2 Pyro characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Pyro",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_flames"
+    },
+    {
+        "img": "Elemental_Resonance_Fervent_Flames.png",
+        "name": "Elemental Resonance: Fervent Flames",
+        "cost_raw": "1 Pyro Dice",
+        "cost": {
+            "d_type": [
+                "Pyro"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "During this round, the next instance of Pyro-Related Reactions your current active character triggers deals +3 DMG.\n(You must have at least 2 Pyro characters in your deck to add this card to your deck.)",
+        "code": "buff pyro_reaction_dmg_up 3",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_fervent_flames"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Thunder.png",
+        "name": "Elemental Resonance: Woven Thunder",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Electro Die.\n(You must have at least 2 Electro characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Electro",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_thunder"
+    },
+    {
+        "img": "Elemental_Resonance_High_Voltage.png",
+        "name": "Elemental Resonance: High Resonance",
+        "cost_raw": "1 Electro Dice",
+        "cost": {
+            "d_type": [
+                "Electro"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "One of your characters without maximum Energy gains 1 Energy. (Active Character prioritized)\n(You must have at least 2 Electro characters in your deck to add this card to your deck.)",
+        "code": "recharge any 1",
+        "tags": [
+            "elemental_resonance",
+            "recharge_any"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_high_resonance"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Winds.png",
+        "name": "Elemental Resonance: Woven Winds",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Anemo Die.\n(You must have at least 2 Anemo characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Anemo",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_winds"
+    },
+    {
+        "img": "Elemental_Resonance_Impetuous_Winds.png",
+        "name": "Elemental Resonance: Impetuous Winds",
+        "cost_raw": "1 Anemo Dice",
+        "cost": {
+            "d_type": [
+                "Anemo"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Switch to the target character and create Omni Element Die.\n(You must have at least 2 Anemo characters in your deck to add this card to your deck.)",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "code": "gen 1 Omni;switch_my target",
+        "type": "event",
+        "code_name": "elemental_resonance_impetuous_winds"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Stone.png",
+        "name": "Elemental Resonance: Woven Stone",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Geo Die.\n(You must have at least 2 Geo characters in your deck to add this card to your deck.)",
+        "code": "gen 1 Geo",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "type": "event",
+        "code_name": "elemental_resonance_woven_stone"
+    },
+    {
+        "img": "Elemental_Resonance_Woven_Weeds.png",
+        "name": "Elemental Resonance: Woven Weeds",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Create 1 Dendro Die.\n(You must have at least 2 Dendro characters in your deck to add this card to your deck.)",
+        "tags": [
+            "elemental_resonance"
+        ],
+        "code": "gen 1 Dendro",
+        "type": "event",
+        "code_name": "elemental_resonance_woven_weeds"
+    },
+    {
+        "img": "The_Bestest_Travel_Companion!.png",
+        "name": "The Bestest Travel Companion!",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "Convert the Elemental Dice spent to Omni Element Die.",
+        "code": "gen 2 Omni",
+        "tags": [],
+        "type": "event",
+        "code_name": "the_bestest_travel_companion"
+    },
+    {
+        "img": "Changing_Shifts.png",
+        "name": "Changing Shifts",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "The next time you perform \"Switch Character\": Spend 1 less Elemental Die.",
+        "code": "buff switch_cost_down 1,life 1 0 1",
+        "tags": [],
+        "type": "event",
+        "code_name": "changing_shifts"
+    },
+    {
+        "img": "Strategize.png",
+        "name": "Strategize",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Draw 2 cards.",
+        "code": "draw 2",
+        "tags": [],
+        "type": "event",
+        "code_name": "strategize"
+    },
+    {
+        "img": "I_Haven't_Lost_Yet!.png",
+        "name": "I Haven't Lost Yet!",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "Only playable if one of your characters is defeated this Round:\nCreate Omni Element Die and your current active character gains 1 Energy.",
+        "code": "recharge active 1;gen 1 Omni",
+        "tags": [
+            "when_defeated"
+        ],
+        "type": "event",
+        "code_name": "i_haven_t_lost_yet"
+    },
+    {
+        "img": "Leave_It_to_Me!.png",
+        "name": "Leave It to Me!",
+        "cost_raw": "No Cost",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                0
+            ],
+            "p_num": 0
+        },
+        "des": "The next time you perform \"Switch Character\": This switch will be considered a Fast Action instead of a Combat Action.",
+        "code": "buff switch_fast 1,life 1 0 1",
+        "tags": [],
+        "type": "event",
+        "code_name": "leave_it_to_me"
+    },
+    {
+        "img": "Starsigns.png",
+        "name": "Starsigns",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "Your current Active Character gains 1 Energy.",
+        "code": "recharge active 1",
+        "tags": [
+            "recharge_active"
+        ],
+        "type": "event",
+        "code_name": "starsigns"
+    },
+    {
+        "img": "Calx's_Arts.png",
+        "name": "Calx's Arts",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Shift 1 Energy from at most 2 of your characters on standby to your active character.",
+        "code": "recharge to_active 1",
+        "tags": [
+            "recharge_to_active"
+        ],
+        "type": "event",
+        "code_name": "calx_s_arts"
+    },
+    {
+        "img": "When_the_Crane_Returned.png",
+        "name": "When the Crane Returned",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "The next time you use a Skill: Switch your next character in to be the active character.",
+        "code": "buff on_skill_finished,life 1 0 1,switch_my_prev",
+        "tags": [],
+        "type": "event",
+        "code_name": "when_the_crane_returned"
+    },
+    {
+        "img": "Quick_Knit.png",
+        "name": "Quick Knit",
+        "cost_raw": "1 Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                1
+            ],
+            "p_num": 0
+        },
+        "des": "Choose one Summon on your side and grant it +1 Usage(s).",
+        "code": "heal_summon 1",
+        "tags": [],
+        "type": "event",
+        "code_name": "quick_knit"
+    },
+    {
+        "img": "Send_Off.png",
+        "name": "Send Off",
+        "cost_raw": "2 Unaligned Dices",
+        "cost": {
+            "d_type": [
+                "Unaligned"
+            ],
+            "d_num": [
+                2
+            ],
+            "p_num": 0
+        },
+        "des": "Choose one Summon on the opposing side and destroy it.",
+        "code": "kill_summon",
+        "tags": [],
+        "type": "event",
+        "code_name": "send_off"
+    },
+    {
+        "img": "Guardian's_Oath.png",
+        "name": "Guardian's Oath",
+        "cost_raw": "4 Matching Elemental Dice",
+        "cost": {
+            "d_type": [
+                "Matching"
+            ],
+            "d_num": [
+                4
+            ],
+            "p_num": 0
+        },
+        "des": "Destroy all Summons. (Affects both you and your opponent!)",
+        "code": "kill_all_summons",
+        "tags": [],
+        "type": "event",
+        "code_name": "guardian_s_oath"
+    },
+    
+    
     {
         "img": "Toss-Up.png",
         "name": "Toss-Up",

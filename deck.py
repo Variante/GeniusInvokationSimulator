@@ -165,7 +165,7 @@ class Deck:
         keep = self.agent.get_keep_dice(self.state())
         self.current_dice = self.d.roll(total_num=total_num, keep=keep)
 
-    def gen(self, d_type, d_num):
+    def gen(self, d_num, d_type):
         if d_type == 'Rand':
             d_type = self.d.random_type()
         self.cost(d_type, -d_num)

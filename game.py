@@ -132,37 +132,11 @@ class Game:
         my_char.get_skill(cmdw[2]).exec(my_deck, my_char, enemy_char)
         self.switch_agent = True
 
+    """
     def engine_support(self, action, idx):
         cur_deck = self.get_current_deck()
         cur_deck.add_support(action, idx)
 
-    def engine_equipment(self, action, target):
-        code_name = action.code_name
-        cur_deck = self.get_current_deck()
-        target_char = cur_deck.get_character(target)
-        if target_char is None:
-            # for buff without a specific target
-            target_char = cur_deck.get_current_character()
-        cmds = action.code.split(';')
-        for cmd in cmds:
-            cmdw = cmd.split()
-            if cmdw[0] == 'skill':
-                self._proc_skill(cmdw)
-            elif cmdw[0] == 'talent':
-                assert target_char.code_name in cmdw[1]
-                target_char.add_talent(cmd)
-            elif cmdw[0] == 'buff':
-                target_char.add_buff(code_name, cmd)
-            elif cmdw[0] == 'weapon':
-                target_char.add_weapon(action, cmd)
-            elif cmdw[0] == 'artifact':
-                target_char.add_artifact(action, cmd)
-            elif cmdw[0] == 'shield':
-                try:
-                    target_char.add_shield(code_name, int(cmdw[1]))
-                except ValueError:
-                    value = cur_deck.count_character_by_faction(cmdw[1])
-                    target_char.add_shield(code_name, value)
 
     def engine_event(self, action, target):
         code_name = action.code_name
@@ -211,6 +185,70 @@ class Game:
                 if s.query('on_food_event') == 0:
                     continue
                 target_char._engine_buff(s)
+    """
+    def card_engine(self, action, params):
+        code_name = action.code_name
+        my_deck = self.get_current_deck()
+        # by default the target is a character, however in some cases it can be summons
+        target = my_deck.get_character(params[0])
+        if target is None:
+            target = params[0]
+        cmds = action.code.split(';')
+        for cmd in cmds:
+            cmdw = cmd.split()
+            if cmdw[0] == 'heal':
+                target.heal(int(cmdw[1]))
+            elif cmdw[0] == 'heal_other':
+                for c in my_deck.get_other_characters():
+                    c.heal(int(cmdw[1]))
+            elif cmdw[0] == 'heal_summon':
+                my_deck.get_summon(target).heal(int(cmdw[1]))
+            elif cmdw[0] == 'kill_summon':
+                my_deck.enemy_ptr.get_summon(target)
+            elif cmdw[0] == 'kill_all_summons':
+                my_deck.kill_all_summons()
+                my_deck.enemy_ptr.kill_all_summons()
+            elif cmdw[0] == 'recharge':
+                my_deck.recharge(cmdw)
+            elif cmdw[0] == 'buff':
+                target.add_buff(code_name, cmd)
+            elif cmdw[0] == 'gen':
+                my_deck.gen(int(cmd[1]), cmdw[2])
+            # use card to switch characters
+            elif cmdw[0] == 'switch_my':
+                my_deck.activate(target)
+            elif cmdw[0] == 'draw':
+                my_deck.pull(int(cmdw[1]))
+            elif cmdw[0] == 'reroll':
+                for _ in range(int(cmdw[1])):
+                    my_deck.reroll()
+            elif cmdw[0] == 'summon_rand':
+                my_deck.add_rand_summon(code_name, int(cmdw[1]), cmdw[2:])
+            elif cmdw[0] == 'talent':
+                assert target.code_name == cmdw[1]
+                target.add_talent(cmd)
+            elif cmdw[0] == 'skill':
+                self._proc_skill(cmdw)
+            elif cmdw[0] == 'weapon':
+                assert target.weapon_type in action.tags
+                target.add_weapon(action, cmd)
+            elif cmdw[0] == 'artifact':
+                target.add_artifact(action, cmd)
+            elif cmdw[0] == 'shield':
+                try:
+                    target.add_shield(code_name, int(cmdw[1]))
+                except ValueError:
+                    value = my_deck.count_character_by_faction(cmdw[1])
+                    target.add_shield(code_name, value)
+            else:
+                raise NotImplementedError(f'[card_engine]{cmd}')
+
+        if 'food' in action.tags:
+            for s in my_deck.supports:
+                # Chef Mao and nre
+                if s.query('on_food_event') == 0:
+                    continue
+                target._engine_buff(s)
 
     def parse_space_action(self, action):
         self.action_history.append(f'Player {self.current_agent + 1}: {action}')
@@ -226,17 +264,10 @@ class Game:
         cmds = action.split(';')
         for cmd in cmds:
             cmdw = cmd.split()
-            if cmdw[0] == 'event':
+            if cmdw[0] in 'event':
                 action = my_deck.use_card(cmdw[1])
                 # not all events have a target
-                self.engine_event(action, cmdw[2] if len(cmdw) > 2 else None)
-            elif cmdw[0] == 'equipment':
-                action = my_deck.use_card(cmdw[1])
-                # not all events have a target
-                self.engine_equipment(action, cmdw[2] if len(cmdw) > 2 else None)
-            elif cmdw[0] == 'support':
-                action = my_deck.use_card(cmdw[1])
-                self.engine_support(action, int(cmdw[2])) # index of the support will be
+                self.card_engine(action, cmdw[2:])
             elif cmdw[0] == 'convert':
                 action = my_deck.use_card(cmdw[1])
             elif cmdw[0] == 'skill':
@@ -246,19 +277,13 @@ class Game:
             elif cmdw[0] == 'gen':
                 my_deck.gen(cmdw[2], int(cmd[1]))
             elif cmdw[0] == 'activate':
-                # this is only used when a character is defeated
+                # this is only used when an active character is defeated
                 my_deck.activate(cmdw[1])
-                self.switch_agent = True
-            elif cmdw[0] == 'reroll':
-                for _ in range(int(cmdw[1])):
-                    my_deck.reroll()
             elif cmdw[0] == 'switch':
                 my_char = my_deck.get_current_character()
                 res = my_char.take_buff('switch_fast') + my_deck.take_support_buff('switch_fast')
                 self.switch_agent = res == 0
-                my_deck.activate(cmdw[1])
-            elif cmdw[0] == 'transfer':
-                my_deck.transfer_equip(cmdw[1], cmdw[2], cmdw[3])   
+                my_deck.activate(cmdw[1]) 
             else:
                 raise NotImplementedError(f'[parse_space_action]{cmd}')
                 

@@ -24,7 +24,7 @@ class Skill:
         if my_char.talent:
             self.round_usage_with_talent += 1
 
-        energy_gain = 1 if self.stype != 'elemental_burst' else 0
+        energy_gain = 1 if self.cost['p_num'] == 0 else 0
 
         weapon =  my_char.weapon
 

@@ -119,7 +119,7 @@ class Summon(Buff):
 
 class Support(Buff):
     def __init__(self, source, action):
-        super(Support, self).__init__(source, action.code)
+        super(Support, self).__init__(source, action.code[8:]) # remove support head
         self.name = action.name
         self.code_name = action.code_name
         # self.on_leave = action.on_leave
