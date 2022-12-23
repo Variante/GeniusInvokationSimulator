@@ -49,9 +49,9 @@ class Action:
             idx = len(deck.supports) # add to the end or replace the original one
             max_l = 4
             if idx < max_l:
-                res = [f'event {self.code_name} {idx}']
+                return [f'event {self.code_name} {idx}']
             else:
-                res = [f'event {self.code_name} {i}' for i in range(max_l)]
+                return [f'event {self.code_name} {i}' for i in range(max_l)]
         else:
             if "tranfer_weapon" in self.tags:
                 return [f'event {self.code_name} {i.code_name} {j.code_name}' for i in deck.get_alive_characters() for j in deck.get_alive_characters() if i.weapon is not None and i.weapon_type == j.weapon_type and i.code_name != j.code_name]
@@ -106,7 +106,7 @@ class Action:
                 return []
 
             # every event must have a target
-            return f'event {self.code_name} {my_char.code_name}'
+        return f'event {self.code_name} {my_char.code_name}'
     
     def get_cost(self, deck):
         # talent cost down by artifacts

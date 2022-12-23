@@ -313,7 +313,7 @@ class Deck:
     def add_support(self, action, idx):
         # special support unit
         if "self-class" in action.tags:
-            eval(f's = {action.code_name}(action.code_name, action)')
+            s = support_cls[action.code_name](action.code_name, action)
         else:
             s = Support(action.code_name, action)
 

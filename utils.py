@@ -188,7 +188,8 @@ def modify_cost(original_cost, mods):
 
 
 reaction_table = load_js('Reaction')
- 
+
+
 def element_can_react(e1, e2):
     if e2 in reaction_table[e1]:
         return reaction_table[e1][e2]
@@ -199,8 +200,11 @@ def buff_engine(buff, my_deck, enemy_deck):
 
     res = buff.query('dmg')
     if isinstance(res, tuple) and res[1] > 0:
-        activated = True
-        enemy_deck.get_current_character().take_dmg(res[0], res[1], buff.source)
+        enemy_char = enemy_deck.get_current_character()
+        # In a rare case the enemy will be killed by switching a character
+        if enemy_char is not None:
+            enemy_char.take_dmg(res[0], res[1], buff.source)
+            activated = True
 
 
     res = buff.query('gen')

@@ -9,6 +9,9 @@ class Skill:
         self.cost = data['cost']
         self.des = data['des']
         self.code = data['code'].split(';')
+        # if one has talent
+        self.code_talent = data.get('code_talent', data['code']).split(';')
+
         self.round_usage = 0
         self.round_usage_with_talent = 0
         
@@ -22,7 +25,7 @@ class Skill:
         reaction = False
         dealt_dmg = 0
 
-        for code in self.code:
+        for code in self.code_talent if my_char.talent else self.code:
             cmds = code.split()
             if cmds[0] == 'if_else':
                 conds = code.split(':')
@@ -248,7 +251,7 @@ class Character:
         for i in self._get_buff_list():
             for j in i.attribs:
                 if j.startswith(buff_head):
-                    res[j] = i.query(j)
+                    res[j] = i.query(j) + res.get(j, 0)
         return res
 
     def take_buff(self, keyword):
@@ -261,18 +264,6 @@ class Character:
         self.refresh_buffs()
         return value
 
-    def take_buff_until(self, keyword, need):
-        value = 0
-        for i in self._get_buff_list():
-            res= i.query(keyword)
-            if res > 0:
-                value += res
-                i.on_activated()
-                if value >= need:
-                    break
-        self.refresh_buffs()
-        return value
-
     def take_pattern_buff(self, buff_head):
         res = {}
         for i in self._get_buff_list():
@@ -280,7 +271,7 @@ class Character:
             for j in i.attribs:
                 if j.startswith(buff_head) and i.query(j) > 0:
                     activated = True
-                    res[j] = i.query(j)
+                    res[j] = i.query(j) + res.get(j, 0)
             if activated:
                 i.on_activated()
         self.refresh_buffs()
@@ -288,6 +279,7 @@ class Character:
     
     def refresh_buffs(self):
         self.buffs = [buff for buff in self.buffs if buff.life > 0]
+        self.deck_ptr.buffs = [buff for buff in self.deck_ptr.buffs if buff.life > 0]
     
     def proc_buff_event(self, keyword):
         for buff in self.get_buff(keyword):

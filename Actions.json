@@ -1205,7 +1205,7 @@
             "companion",
             "self-class"
         ],
-        "code": "life 1 0 1,renew 1,recharge 1,on_switch_finished",
+        "code": "life 1 0 1,recharge 1,on_switch_finished",
         "type": "support",
         "code_name": "liu_su"
     },

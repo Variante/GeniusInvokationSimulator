@@ -7,9 +7,9 @@ class Buff:
         self.rf_by_round = 1 # life reduced per round
         self.rf_by_activated = 1 # life reduced by activated
         self.attribs = {}
-        self._parse_code(code)
         self.condition = None
         self.char_ptr = char_ptr
+        self._parse_code(code)
 
     # buff parse engine
     def _parse_code(self, code):
@@ -27,7 +27,7 @@ class Buff:
                 self.rf_by_activated = int(cmdw[3])
                 self.init_life = self.life 
             elif cmdw[0] == 'when':
-                self.condition = cmd[5:]
+                self.condition = ' '.join(cmdw[1:])
             elif len(cmdw) > 2:
                 self.attribs[cmdw[0]] = tuple(cmdw[1:-1] + [int(cmdw[-1])])
             elif len(cmdw) == 2:
@@ -148,10 +148,10 @@ class Support(Buff):
         return self.life <= 0 and 'stay' not in self.attribs
 
 
-class liben(Support):
+class Liben(Support):
     def __init__(self, source, action):
         assert action.code_name == 'liben'
-        super(liben, self).__init__(source, action) 
+        super(Liben, self).__init__(source, action) 
         
         self.collection = set()
 
@@ -167,10 +167,10 @@ class liben(Support):
         self.life = self.init_life - len(self.collection)
 
 
-class liu_su(Support):
+class LiuSu(Support):
     def __init__(self, source, action):
         assert action.code_name == 'liu_su'
-        super(liu_su, self).__init__(source, action) 
+        super(LiuSu, self).__init__(source, action) 
 
         self.round_life = 2
     
@@ -180,3 +180,10 @@ class liu_su(Support):
 
     def should_leave(self):
         return self.round_life <= 0 
+
+
+support_cls = {
+    'liben': Liben,
+    'liu_su': LiuSu
+
+}

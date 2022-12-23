@@ -12,12 +12,14 @@ class Agent:
         
     def get_action(self, state):
         try:
-            for i in state['action_space'][::-1]:
+            cp = [i for i in state['action_space']]
+            np.random.shuffle(cp)
+            for i in cp:
                 # if 'diluc' in i:
                 #     return i
                 # if 'kaeya' in i:
                 #     return i
-                if i.startswith('equipment'):
+                if i.startswith('event '):
                     return i
                 if i.startswith('skill'):
                     return i
