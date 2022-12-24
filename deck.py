@@ -26,6 +26,7 @@ class Deck:
         self.summon_pool = load_js('Summons')
         self.summons = []
         self.supports = []
+
         # team buff
         self.buffs = []
         
@@ -86,12 +87,10 @@ class Deck:
         print('-' * 40)
         print('Supports: ')
         for s in self.supports:
-            print(' ')
             print(s)
         print('-' * 40)
         print('Summons: ')
         for s in self.summons:
-            print(' ')
             print(s)
         print('-' * 40)
         print('Cards:')
@@ -100,7 +99,12 @@ class Deck:
         print('-' * 40)
          
     def print_actions(self):
-        print(*['- ' + i for i in self.get_action_space()], sep='\n')
+        opt = []
+        for i in self.get_action_space():
+            s = '- ' + i.split(';')[0]
+            if s not in opt:
+                opt.append(s)
+        print(*opt, sep='\n')
 
     def get_action_space(self):
         char = self.get_current_character()
@@ -136,11 +140,13 @@ class Deck:
             res |= c.active
         if res:
             return
-        print(f'[R{self.game_ptr.round_num:02d}-S{self.game_ptr.step_num:02d}] Player {self.deck_id + 1} needs to switch character')
+        # print(f'[R{self.game_ptr.round_num:02d}-S{self.game_ptr.step_num:02d}] Player {self.deck_id + 1} needs to switch character')
         res = self.game_ptr.state()
         res['action_space'] = [f'activate {i.code_name}' for i in self.characters if i.alive]
+        """
         print(res['action_space'])
         print('-' * 10)
+        """
         if len(res['action_space']) == 0:
             return
         # ask user to activate a new character
@@ -263,7 +269,7 @@ class Deck:
             except IndexError:
                 break
 
-    def add_summon(self, source, code_name):
+    def add_summon(self, source, code_name, talent=False):
         # fetch summon profile
         for i in self.summon_pool:
             if i['code_name'] == code_name:
@@ -271,7 +277,7 @@ class Deck:
                 break
         
         # check existing summons
-        sobj = Summon(source, summon_data)
+        sobj = Summon(source, summon_data, talent)
         for i, s in enumerate(self.summons):
             if s.code_name == code_name:
                 self.summons[i] = sobj
@@ -317,7 +323,7 @@ class Deck:
         else:
             s = Support(action.code_name, action)
 
-        if len(self.supports) >= idx:
+        if len(self.supports) <= idx:
             self.supports.append(s)
         else:
             self.supports[idx] = s
@@ -511,7 +517,7 @@ class Deck:
 
 if __name__ == '__main__':
     d = Deck('p1', None)
-    d.reroll(keep=[0, 2, 0, 0, 0, 0, 0, 0], total_num=2)
+    d.roll()
     d.pull(2)
     print('Current dices: ', d.current_dice, sep = "\n")
     print('Action space: ')

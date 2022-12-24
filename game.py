@@ -2,7 +2,7 @@ from utils import *
 from deck import Deck
 from agent import Agent
 import random
-
+from os import mkdir
 
 class Game:
     def __init__(self, decks):
@@ -19,9 +19,16 @@ class Game:
         self.agent_moves_first = None
         self.current_agent = 0
         self.finish_round = [False] * self.agent_num
+        self._seed = np.random.randint(100000)
 
         self.switch_agent = False
         self.action_history = []
+
+    def seed(self, s):
+        self._seed = s
+        random.seed(s)
+        np.random.seed(s)
+        
 
     """
     Save, load, states and prints
@@ -38,14 +45,24 @@ class Game:
         for i in self.decks:
             i.reset()
 
+    def dump_to_file(self, msg):
+        p = f'states/S{self._seed:06d}'
+        try:
+            mkdir(p)
+        except:
+            pass
+        dump_js(f'{p}/R{self.round_num:02d}_{self.step_num:02d}_{msg}', self.save())
+
     def save(self):
         game_state = {
             'round_num': self.round_num,
+            'step_num': self.step_num,
             'agent_moves_first': self.agent_moves_first,
             'current_agent': self.current_agent,
             'finish_round': self.finish_round,
             'switch_agent': self.switch_agent,
-            'action_history': self.action_history
+            'action_history': self.action_history,
+            'seed': self._seed
         }
         game_state['decks'] = [d.save() for d in self.decks]
         return game_state
@@ -282,21 +299,20 @@ class Game:
             if show:
                 self.print_desk(f'Player {self.current_agent + 1} init cards')
             if save_hist:
-                dump_js(f'states/R{self.round_num:02d}_00_draw_card', self.save())
+                self.dump_to_file('draw_card')
                 
             i.swap_card()
-
+            self.step_num += 1
             if save_hist:
-                dump_js(f'states/R{self.round_num:02d}_01_swap_card', self.save())
+                self.dump_to_file('swap_card')
 
             # select the first character
             self.has_active_character()
-            
+            self.step_num += 1
             if show:
-                self.print_full_desk(f'Player {self.current_agent + 1} activate')
+                self.print_full_desk(f'Player {self.current_agent + 1} select character')
             if save_hist:
-                dump_js(f'states/R{self.round_num:02d}_02_activate', self.save())
-            self.next_agent()
+                self.dump_to_file('select_character')
 
         ret = -1
         # round start
@@ -308,6 +324,13 @@ class Game:
             self.step_num = 0
             while self.check_win() < 0:
                 self.switch_agent = False
+
+                """
+                if show:
+                    self.print_full_desk(f'Player {self.current_agent + 1} before action')
+                if save_hist:
+                    self.dump_to_file('before')
+                """
 
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state_for_action())
@@ -322,7 +345,7 @@ class Game:
                 if show:
                     self.print_full_desk(f'Player {self.current_agent + 1} exec: ' + action)
                 if save_hist:
-                    dump_js(f'states/R{self.round_num:02d}_{self.step_num:02d}_done', self.save())
+                    self.dump_to_file('done')
 
                 # check round finished
                 if self.is_round_finished():
@@ -330,6 +353,8 @@ class Game:
                 # move to the next agent
                 if self.switch_agent:
                     self.next_agent()
+
+                self.step_num += 1
 
             ret = self.check_win()
             if ret >= 0:
@@ -347,15 +372,17 @@ class Game:
             if show:
                 self.print_desk('round finished')
             if save_hist:
-                dump_js(f'states/R{self.round_num:02d}_{self.step_num:02d}_round_finished', self.save())
+                self.dump_to_file('round_finished')
         return ret
         
         
         
 if __name__ == '__main__':
-    g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
-    for _ in range(500):
-        ret = g.game_loop(show=False)
+    g = Game([Deck('starter', Agent()), Deck('starter', Agent())])
+    for _ in range(1):
+        g.seed(np.random.randint(500))
+        ret = g.game_loop(show=True, save_hist=False)
+        g.dump_to_file('game_finished')
         g.print_winner(ret)
         g.reset()
     

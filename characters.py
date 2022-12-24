@@ -9,6 +9,7 @@ class Skill:
         self.cost = data['cost']
         self.des = data['des']
         self.code = data['code'].split(';')
+        self.energy_gain = data['energy_gain']
         # if one has talent
         self.code_talent = data.get('code_talent', data['code']).split(';')
 
@@ -72,13 +73,10 @@ class Skill:
                     if 'heal_up' in i:
                         h += res[i]
                 my_char.heal(h)
-
-            elif cmds[0] == 'energy':
-                energy_gain = int(cmds[1])
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'summon':
-                my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1])
+                my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1], my_char.talent)
             elif cmds[0] == 'switch_enemy':
                 my_deck.enemy_ptr.switch_next(cmds[1] == 'prev')
             else:
@@ -94,6 +92,7 @@ class Skill:
                 weapon.on_activated()
 
         my_char.proc_buff_event(f'on_{self.stype}_finished')
+        my_char.proc_buff_event(f'on_{my_char.code_name}_{self.stype}_finished') # for Fischl talent
         enemy_char.proc_buff_event('on_enemy_skill_finished')
         my_char.proc_buff_event('on_skill_finished')
 
@@ -160,7 +159,7 @@ class Character:
         self.weapon_type = to_code_name(data['weapon'])
         self.weapon = None
         self.artifact = None
-        self.talent = True # False
+        self.talent = False
         self.buffs = []
         
         self.attached_element = []
@@ -496,7 +495,7 @@ class Character:
 
         self.weapon = None
         self.artifact = None
-        self.talent = True # False
+        self.talent = False
         self.buffs = []
         
         self.attached_element = []
@@ -557,7 +556,7 @@ def init_characters(names):
     if save:
         dump_js('Characters', pool)
     
-    print('Available characters: ', chrs)
+    # print('Available characters: ', chrs)
     
     return [Character(name, pool) for name in names]
     

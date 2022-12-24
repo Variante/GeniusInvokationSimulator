@@ -102,8 +102,11 @@ class Artifact(Buff):
     
 
 class Summon(Buff):
-    def __init__(self, source, data):
-        super(Summon, self).__init__(source, data['code'])
+    def __init__(self, source, data, talent):
+        code = data['code']
+        if talent:
+            code = data.get('code_talent', code)
+        super(Summon, self).__init__(source, code)
         self.name = data['name']
         self.code_name = data['code_name']
 
@@ -116,8 +119,8 @@ class Summon(Buff):
     def __repr__(self):
         if self.life == 0:
             return ''
-        return f'{self.name}: ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
-            f" from {self.source} ({self.life})"
+        return f'{self.name}({self.life}): ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
+            f" from {self.source}"
 
 class Support(Buff):
     def __init__(self, source, action):
@@ -127,8 +130,8 @@ class Support(Buff):
         # self.on_leave = action.on_leave
         
     def __repr__(self):
-        return f'{self.name}: ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
-            f" from {self.source} ({self.life})"
+        return f'{self.name}({self.life}): ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
+            f" from {self.source}"
 
 
     def on_round_finished(self, deck):
@@ -153,14 +156,14 @@ class Liben(Support):
         assert action.code_name == 'liben'
         super(Liben, self).__init__(source, action) 
         
-        self.collection = set()
+        self.collection = []
 
     def on_round_finished(self, deck):
         # collect dices
         for i, j in deck.current_dice.items():
             if j > 0 and i not in self.collection:
                 deck.cost(i, 1)
-                self.collection.add(i)
+                self.collection.append(i)
 
                 if len(self.collection) >= 3:
                     break    
