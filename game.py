@@ -325,10 +325,12 @@ class Game:
             while self.check_win() < 0:
                 self.switch_agent = False
 
+                """
                 if show:
                     self.print_full_desk(f'Player {self.current_agent + 1} before action')
                 if save_hist:
                     self.dump_to_file('before')
+                """
 
                 agent = self.agents[self.current_agent]
                 action = agent.get_action(self.state_for_action())
@@ -376,7 +378,7 @@ class Game:
         
         
 if __name__ == '__main__':
-    g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
+    g = Game([Deck('starter', Agent()), Deck('starter', Agent())])
     for _ in range(1):
         g.seed(np.random.randint(500))
         ret = g.game_loop(show=True, save_hist=False)
