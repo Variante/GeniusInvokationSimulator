@@ -59,10 +59,12 @@ class Skill:
 
                 # query infusion
                 if dmg_type == 'Physical':
-                    for i in  my_char.take_pattern_buff('infusion'):
-                        dmg_type = i.split('_')[-1]
+                    for i in my_char.take_pattern_buff('infusion'):
+                        if 'melee' in i and my_char.is_melee():
+                            continue
+                        dmg_type = i.split('_')[1]
                         break
-                    
+
                 ddmg, dreact = enemy_char.take_dmg(dmg_type, dmg + dmg_mods, f'e-{my_char.code_name}-{self.code_name}')
                 dealt_dmg += ddmg
                 reaction |= dreact
@@ -352,6 +354,8 @@ class Character:
     """
     Get information and actions
     """
+    def is_melee(self):
+        return self.weapon_type in ['blade', 'claymore', 'polearm']
     
     def get_skill(self, code_name):
         for i in self.skills:

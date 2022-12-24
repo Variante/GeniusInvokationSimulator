@@ -211,6 +211,71 @@
         "code_name": "kaeya"
     },
     {
+        "img": "Chongyun_Genius_Invokation_Card_2.png",
+        "name": "Chongyun",
+        "energy_limit": 3,
+        "element": "Cryo",
+        "weapon": "Claymore",
+        "faction": "Liyue",
+        "skills": [
+            {
+                "name": "Demonbane",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Cryo",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "energy_gain": 1,
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Dice and 2 Unaligned Dices.",
+                "code_name": "demonbane"
+            },
+            {
+                "name": "Chonghua's Layered Frost",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Cryo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Cryo 3;buff infusion_Cryo_melee,life 2 1 0,team",
+                "code_talent": "dmg Cryo 3;buff infusion_Cryo_melee,life 3 1 0,team;buff normal_attack_dmg_up 1,when self.char_ptr.is_melee(),life 3 1 0,team",
+                "energy_gain": 1,
+                "des": "Deals 3 Cryo DMG, creates 1 Chonghua Frost Field. Costs 3 Cryo Dices.",
+                "code_name": "chonghua_s_layered_frost"
+            },
+            {
+                "name": "Cloud-Parting Star",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Cryo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 3
+                },
+                "code": "dmg Cryo 7",
+                "energy_gain": 0,
+                "des": "Deals 7 Cryo DMG. Costs 3 Cryo Dices and 3 Energy.",
+                "code_name": "cloud_parting_star"
+            }
+        ],
+        "code_name": "chongyun"
+    },
+    {
         "img": "Diluc_Genius_Invokation_Card_2.png",
         "name": "Diluc",
         "energy_limit": 3,
