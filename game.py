@@ -271,21 +271,21 @@ class Game:
         self.finish_round = [False] * self.agent_num
         
         # update all states
-        for deck in self.decks:
-            deck.on_round_start()
+        self.decks[self.current_agent].on_round_start()
+        self.decks[1 - self.current_agent].on_round_start()
    
     def on_round_finished(self):
         # update all states
-        for deck in self.decks:
-            deck.on_round_finished()
+        self.decks[self.agent_moves_first].on_round_finished()
+        self.decks[1 - self.agent_moves_first].on_round_finished()
 
         self.current_agent = self.agent_moves_first
         self.agent_moves_first = None
         
     def has_active_character(self):
         # start from the oppsite
-        self.decks[1 - self.current_agent].has_active_character()
         self.decks[self.current_agent].has_active_character()
+        self.decks[1 - self.current_agent].has_active_character()
         
             
     def game_loop(self, show=False, save_hist=False):
