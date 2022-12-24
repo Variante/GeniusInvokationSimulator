@@ -12,17 +12,18 @@ class Agent:
         
     def get_action(self, state):
         try:
-            cp = [i for i in state['action_space']]
+            cp = list(range(len(state['action_space'])))
             np.random.shuffle(cp)
             for i in cp:
                 # if 'diluc' in i:
                 #     return i
                 # if 'kaeya' in i:
                 #     return i
-                if i.startswith('event '):
-                    return i
-                if i.startswith('skill'):
-                    return i
+                j =  state['action_space'][i]
+                if j.startswith('event '):
+                    return j
+                if j.startswith('skill'):
+                    return j
             return np.random.choice(state['action_space'])    
         except IndexError:
             return ''

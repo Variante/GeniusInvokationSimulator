@@ -2,7 +2,7 @@
     {
         "img": "Ganyu_Genius_Invokation_Card_2.png",
         "name": "Ganyu",
-        "skill": [
+        "skills": [
             {
                 "name": "Liutian Archery",
                 "type": "Normal Attack",
@@ -28,7 +28,7 @@
     {
         "img": "Diona_Genius_Invokatio_Card.png",
         "name": "Diona",
-        "skill": [
+        "skills": [
             {
                 "name": "Katzlein Style",
                 "type": "Normal Attack",
@@ -49,7 +49,7 @@
     {
         "img": "Chongyun_Genius_Invokation_Card_2.png",
         "name": "Chongyun",
-        "skill": [
+        "skills": [
             {
                 "name": "Demonbane",
                 "type": "Normal Attack",
@@ -70,7 +70,7 @@
     {
         "img": "Ayaka_Genius_Invokation_Card_2.png",
         "name": "Ayaka",
-        "skill": [
+        "skills": [
             {
                 "name": "Kamisato Art: Kabuki",
                 "type": "Normal Attack",
@@ -96,7 +96,7 @@
     {
         "img": "Barbara_Genius_Invokation_Card_2.png",
         "name": "Barbara",
-        "skill": [
+        "skills": [
             {
                 "name": "Whisper of Water",
                 "type": "Normal Attack",
@@ -117,7 +117,7 @@
     {
         "img": "Xingqiu_Genius_Invokation_Card_2.png",
         "name": "Xingqiu",
-        "skill": [
+        "skills": [
             {
                 "name": "Guhua Style",
                 "type": "Normal Attack",
@@ -138,7 +138,7 @@
     {
         "img": "Mona_Genius_Invokation_Card_2.png",
         "name": "Mona",
-        "skill": [
+        "skills": [
             {
                 "name": "Ripple of Fate",
                 "type": "Normal Attack",
@@ -164,7 +164,7 @@
     {
         "img": "Xiangling_Genius_Invokation_Card_2.png",
         "name": "Xiangling",
-        "skill": [
+        "skills": [
             {
                 "name": "Dough-Fu",
                 "type": "Normal Attack",
@@ -185,7 +185,7 @@
     {
         "img": "Bennet_Genius_Invokation_Card.png",
         "name": "Bennet",
-        "skill": [
+        "skills": [
             {
                 "name": "Strike of Fortune",
                 "type": "Normal Attack",
@@ -206,7 +206,7 @@
     {
         "img": "Yoimiya_Genius_Invokation_Card.png",
         "name": "Yoimiya",
-        "skill": [
+        "skills": [
             {
                 "name": "Firework Flare-Up",
                 "type": "Normal Attack",
@@ -227,7 +227,7 @@
     {
         "img": "Razor_Genius_Invokation_Card.png",
         "name": "Razor",
-        "skill": [
+        "skills": [
             {
                 "name": "Steel Fang",
                 "type": "Normal Attack",
@@ -248,7 +248,7 @@
     {
         "img": "Keqing_Genius_Invokation_Card.png",
         "name": "Keqing",
-        "skill": [
+        "skills": [
             {
                 "name": "Yunlai Swordsmanship",
                 "type": "Normal Attack",
@@ -269,7 +269,7 @@
     {
         "img": "Cyno_Genius_Invokation_Card.png",
         "name": "Cyno",
-        "skill": [
+        "skills": [
             {
                 "name": "Invoker's Spear",
                 "type": "Normal Attack",
@@ -295,7 +295,7 @@
     {
         "img": "Jean_Genius_Invokation_Card.png",
         "name": "Jean",
-        "skill": [
+        "skills": [
             {
                 "name": "Favonius Bladework",
                 "type": "Normal Attack",
@@ -316,7 +316,7 @@
     {
         "img": "Ningguang_Genius_Invokation_Card.png",
         "name": "Ningguang",
-        "skill": [
+        "skills": [
             {
                 "name": "Sparkling Scatter",
                 "type": "Normal Attack",
@@ -337,7 +337,7 @@
     {
         "img": "Noelle_Genius_Invokation_Card.png",
         "name": "Noelle",
-        "skill": [
+        "skills": [
             {
                 "name": "Favonius Bladework - Maid",
                 "type": "Normal Attack",
@@ -358,7 +358,7 @@
     {
         "img": "Collei_Genius_Invokation_Card.png",
         "name": "Collei",
-        "skill": [
+        "skills": [
             {
                 "name": "Supplicant's Bowmanship",
                 "type": "Normal Attack",
@@ -379,7 +379,7 @@
     {
         "img": "Rhodeia_Genius_Invokation_Card.png",
         "name": "Rhodeia of Loch",
-        "skill": [
+        "skills": [
             {
                 "name": "Surge",
                 "type": "Normal Attack",
@@ -405,7 +405,7 @@
     {
         "img": "Mirror_Maiden_Genius_Invokation_Card.png",
         "name": "Mirror Maiden",
-        "skill": [
+        "skills": [
             {
                 "name": "Water Ball",
                 "type": "Normal Attack",
@@ -426,7 +426,7 @@
     {
         "img": "Fatui_Pyro_Agent_Genius_Invokation_Card.png",
         "name": "Fatui Pyro Agent",
-        "skill": [
+        "skills": [
             {
                 "name": "Thrust",
                 "type": "Normal Attack",
@@ -452,7 +452,7 @@
     {
         "img": "Maguu_Kenki_Genius_Invokation_Card.png",
         "name": "Maguu Kenki",
-        "skill": [
+        "skills": [
             {
                 "name": "Ichimonji",
                 "type": "Normal Attack",
@@ -478,7 +478,7 @@
     {
         "img": "Stonehide_Lawachurl_Genius_Invokation_Card.png",
         "name": "Stonehide Lawachurl",
-        "skill": [
+        "skills": [
             {
                 "name": "Plasma Lawa",
                 "type": "Normal Attack",
@@ -504,7 +504,7 @@
     {
         "img": "Jadeplume_Terrorshroom_Genius_Invokation_Card.png",
         "name": "Jadeplume Terrorshroom",
-        "skill": [
+        "skills": [
             {
                 "name": "Majestic Dance",
                 "type": "Normal Attack",

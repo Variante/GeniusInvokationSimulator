@@ -26,7 +26,7 @@ class Deck:
         self.summon_pool = load_js('Summons')
         self.summons = []
         self.supports = []
-        
+
         # team buff
         self.buffs = []
         
@@ -87,12 +87,10 @@ class Deck:
         print('-' * 40)
         print('Supports: ')
         for s in self.supports:
-            print(' ')
             print(s)
         print('-' * 40)
         print('Summons: ')
         for s in self.summons:
-            print(' ')
             print(s)
         print('-' * 40)
         print('Cards:')
@@ -101,7 +99,11 @@ class Deck:
         print('-' * 40)
          
     def print_actions(self):
-        print(*['- ' + i for i in self.get_action_space()], sep='\n')
+        opt = set()
+        for i in self.get_action_space():
+            opt.add('- ' + i.split(';')[0])
+        
+        print(*opt, sep='\n')
 
     def get_action_space(self):
         char = self.get_current_character()
@@ -320,7 +322,7 @@ class Deck:
         else:
             s = Support(action.code_name, action)
 
-        if len(self.supports) >= idx:
+        if len(self.supports) <= idx:
             self.supports.append(s)
         else:
             self.supports[idx] = s
