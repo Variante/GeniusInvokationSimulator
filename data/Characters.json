@@ -120,7 +120,8 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg Cryo 2;shield 1,life 1 0 0,team",
+                "code": "dmg Cryo 2;shield 1,team",
+                "code_talent": "dmg Cryo 2;shield 2,team",
                 "energy_gain": 1,
                 "des": "Deals 2 Cryo DMG, creates 1 Cat",
                 "code_name": "icy_paws"
