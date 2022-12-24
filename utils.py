@@ -2,13 +2,13 @@ import json
 import numpy as np
 import re
 
-def load_js(name, prefix=''):
+def load_js(name, prefix='data/'):
     fs = prefix + name + '.json'
     # print(f'Load from {fs}')
     with open(fs, 'r') as f:
         return json.load(f)
 
-def dump_js(name, data, prefix=''):
+def dump_js(name, data, prefix='data/'):
     fs = prefix + name + '.json'
     # print(f'Dump to {fs}')
     with open(fs, 'w') as f:
