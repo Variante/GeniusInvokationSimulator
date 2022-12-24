@@ -1,19 +1,18 @@
 [
     {
-        "img": "Diluc_Genius_Invokation_Card_2.png",
-        "name": "Diluc",
-        "energy_limit": 3,
-        "element": "Pyro",
-        "weapon": "Claymore",
-        "faction": "Mondstadt",
+        "img": "Ganyu_Genius_Invokation_Card_2.png",
+        "name": "Ganyu",
+        "energy_limit": 2,
+        "element": "Cryo",
+        "weapon": "Bow",
+        "faction": "Liyue",
         "skills": [
             {
-                "name": "Tempered Sword",
+                "name": "Liutian Archery",
                 "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices.",
                 "cost": {
                     "d_type": [
-                        "Pyro",
+                        "Cryo",
                         "Unaligned"
                     ],
                     "d_num": [
@@ -23,45 +22,128 @@
                     "p_num": 0
                 },
                 "code": "dmg Physical 2",
-				"energy_gain": 1,
-                "code_name": "tempered_sword"
+                "energy_gain": 1,
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Die and 2 Unaligned Dices",
+                "code_name": "liutian_archery"
             },
             {
-                "name": "Searing Onslaught",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Pyro DMG. For the third use of this Skill each round, deals +2 DMG. Costs 3 Pyro Dices.",
+                "name": "Frostflake Arrow",
+                "type": "Normal Attack",
                 "cost": {
                     "d_type": [
-                        "Pyro"
+                        "Cryo"
+                    ],
+                    "d_num": [
+                        5
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Cryo 2;dmg_bg Piercing 2",
+                "code_talent": "if_else self.total_usage>1:dmg Cryo 3:dmg Cryo 2;if_else self.total_usage>1:dmg_bg Piercing 3:dmg_bg Piercing 2",
+                "energy_gain": 1,
+                "des": "Deals 2 Cryo DMG, deals 2 Piercing DMG to all opposing characters on standby. Costs 5 Cryo Dices",
+                "code_name": "frostflake_arrow"
+            },
+            {
+                "name": "Trail of Qilin",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Cryo"
                     ],
                     "d_num": [
                         3
                     ],
                     "p_num": 0
                 },
-                "code": "if_else self.round_usage==3:dmg Pyro 5:dmg Pyro 3",
-				"energy_gain": 1,
-                "code_name": "searing_onslaught"
+                "code": "dmg Cryo 1;buff dmg_down,life 2 0 1,team",
+                "energy_gain": 1,
+                "des": "Deals 1 Cryo DMG, creates 1 Ice Lotus. Costs 3 Cryo Dices.",
+                "code_name": "trail_of_qilin"
             },
             {
-                "name": "Dawn",
+                "name": "Celestial Shower",
                 "type": "Elemental Burst",
-                "des": "Deals 8 Pyro DMG. This character gains Pyro Infusion. Costs 4 Pyro Dices and 3 Energy.",
                 "cost": {
                     "d_type": [
-                        "Pyro"
+                        "Cryo"
                     ],
                     "d_num": [
-                        4
+                        3
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Cryo 1;dmg_bg Piercing 1;summon sacred_cryo_pearl",
+                "energy_gain": 0,
+                "des": "Deals 1 Cryo DMG, deals 1 Piercing DMG to all opposing characters on standby, summons 1 Sacred Cryo Pearl. Costs 3 Cryo dices and 2 Energy.",
+                "code_name": "celestial_shower"
+            }
+        ],
+        "code_name": "ganyu"
+    },
+    {
+        "img": "Diona_Genius_Invokatio_Card.png",
+        "name": "Diona",
+        "energy_limit": 3,
+        "element": "Cryo",
+        "faction": "Mondstadt",
+        "weapon": "Bow",
+        "skills": [
+            {
+                "name": "Katzlein Style",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Cryo",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "energy_gain": 1,
+                "des": "Deals 2 Physical DMG. Costs 1 Cryo Dice and 2 Unaligned Dices",
+                "code_name": "katzlein_style"
+            },
+            {
+                "name": "Icy Paws",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Cryo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Cryo 2;shield 1,life 1 0 0,team",
+                "energy_gain": 1,
+                "des": "Deals 2 Cryo DMG, creates 1 Cat",
+                "code_name": "icy_paws"
+            },
+            {
+                "name": "Signature Mix",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Cryo"
+                    ],
+                    "d_num": [
+                        3
                     ],
                     "p_num": 3
                 },
-                "code": "dmg Pyro 8;buff infusion_Pyro,life 2 1 0",
-				"energy_gain": 0,
-                "code_name": "dawn"
+                "code": "dmg Cryo 1;heal 2;summon drunken_mist",
+                "energy_gain": 1,
+                "des": "Deals 1 Cryo DMG, heals this character for 2 HP, summons 1 Drunken Mist. Costs 3 Cryo Dices and 3 Energy.",
+                "code_name": "signature_mix"
             }
         ],
-        "code_name": "diluc"
+        "code_name": "diona"
     },
     {
         "img": "Kaeya_Genius_Invokation_Card.png",
@@ -87,7 +169,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Physical 2",
-				"energy_gain": 1,
+                "energy_gain": 1,
                 "code_name": "ceremonial_bladework"
             },
             {
@@ -104,7 +186,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Cryo 3",
-				"energy_gain": 1,
+                "energy_gain": 1,
                 "code_name": "frostgnaw"
             },
             {
@@ -120,12 +202,76 @@
                     ],
                     "p_num": 2
                 },
-                "code": "dmg Cryo 1;buff on_character_activated,dmg Cryo 2,life 3 0 1,transfer",
-				"energy_gain": 0,
+                "code": "dmg Cryo 1;buff on_character_activated,dmg Cryo 2,life 3 0 1,team",
+                "energy_gain": 0,
                 "code_name": "glacial_waltz"
             }
         ],
         "code_name": "kaeya"
+    },
+    {
+        "img": "Diluc_Genius_Invokation_Card_2.png",
+        "name": "Diluc",
+        "energy_limit": 3,
+        "element": "Pyro",
+        "weapon": "Claymore",
+        "faction": "Mondstadt",
+        "skills": [
+            {
+                "name": "Tempered Sword",
+                "type": "Normal Attack",
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices.",
+                "cost": {
+                    "d_type": [
+                        "Pyro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "energy_gain": 1,
+                "code_name": "tempered_sword"
+            },
+            {
+                "name": "Searing Onslaught",
+                "type": "Elemental Skill",
+                "des": "Deals 3 Pyro DMG. For the third use of this Skill each round, deals +2 DMG. Costs 3 Pyro Dices.",
+                "cost": {
+                    "d_type": [
+                        "Pyro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "if_else self.round_usage==3:dmg Pyro 5:dmg Pyro 3",
+                "energy_gain": 1,
+                "code_name": "searing_onslaught"
+            },
+            {
+                "name": "Dawn",
+                "type": "Elemental Burst",
+                "des": "Deals 8 Pyro DMG. This character gains Pyro Infusion. Costs 4 Pyro Dices and 3 Energy.",
+                "cost": {
+                    "d_type": [
+                        "Pyro"
+                    ],
+                    "d_num": [
+                        4
+                    ],
+                    "p_num": 3
+                },
+                "code": "dmg Pyro 8;buff infusion_Pyro,life 2 1 0",
+                "energy_gain": 0,
+                "code_name": "dawn"
+            }
+        ],
+        "code_name": "diluc"
     },
     {
         "img": "Sucrose_Genius_Invokation_Card.png",
@@ -150,7 +296,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Anemo 1",
-				"energy_gain": 1,
+                "energy_gain": 1,
                 "des": "Deals 1 Anemo DMG. Costs 1 Anemo Dice and 2 Unaligned Dices.",
                 "code_name": "wind_spirit_creation"
             },
@@ -167,7 +313,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Anemo 3;switch_enemy prev",
-				"energy_gain": 1,
+                "energy_gain": 1,
                 "des": "Deals 3 Anemo DMG, the target is forcibly switched to the previous character. Costs 3 Anemo Dices.",
                 "code_name": "astable_anemohypostasis_creation_6308"
             },
@@ -184,7 +330,7 @@
                     "p_num": 2
                 },
                 "code": "dmg Anemo 1;summon large_wind_spirit",
-				"energy_gain": 0,
+                "energy_gain": 0,
                 "des": "Deals 1 Anemo DMG, summons 1 Large Wind Spirit. Costs 3 Anemo Dices and 2 Energy.",
                 "code_name": "forbidden_creation_isomer_74_type_ii"
             }
@@ -215,7 +361,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Physical 2",
-				"energy_gain": 1,
+                "energy_gain": 1,
                 "code_name": "bolts_of_downfall"
             },
             {
@@ -231,7 +377,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Electro 1;summon oz",
-				"energy_gain": 1,
+                "energy_gain": 1,
                 "des": "Deals 1 Electro DMG, summons oz. Costs 3 Electro Dices.",
                 "code_name": "nightrider"
             },
@@ -248,7 +394,7 @@
                     "p_num": 3
                 },
                 "code": "dmg Electro 4;dmg_bg Piercing 2",
-				"energy_gain": 0,
+                "energy_gain": 0,
                 "des": "Deals 4 Electro DMG, deals 2 piercing DMG to all opposing characters on standby. Costs 3 Electro Dices and 3 Energy.",
                 "code_name": "midnight_phantasmagoria"
             }

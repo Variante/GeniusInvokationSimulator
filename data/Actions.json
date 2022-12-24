@@ -1,5 +1,47 @@
 [
     {
+        "img": "Undivided_Heart_Card.png",
+        "name": "Undivided Heart",
+        "cost_raw": "5 Cryo Dices",
+        "cost": {
+            "d_type": [
+                "Cryo"
+            ],
+            "d_num": [
+                5
+            ],
+            "p_num": 0
+        },
+        "code": "talent ganyu;skill ganyu frostflake_arrow",
+        "des": "Combat Action:  When your active character is Ganyu, equip this card.\nAfter Ganyu equips this card, immediately use Frostflake Arrow once.\nWhen your Ganyu, who has this card equipped, uses Frostflake Arrow: Cryo DMG dealt by this Skill +1 if this Skill has been used before during this match, and it now deals 3 Piercing DMG to all opposing characters on standby instead.\n(You must have Ganyu in your deck to add this card to your deck.)",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "undivided_heart"
+    },
+    {
+        "img": "Shaken,_Not_Purred_Card.png",
+        "name": "Shaken, Not Purred",
+        "cost_raw": "4 Cryo Dices",
+        "cost": {
+            "d_type": [
+                "Cryo"
+            ],
+            "d_num": [
+                4
+            ],
+            "p_num": 0
+        },
+        "code": "talent diona;skill diona icy_paws",
+        "des": "Combat Action:  When your active character is Diona, equip this card.\nAfter Diona equips this card, immediately use Icy Paws once.\nWhen your Diona, who has this card equipped, creates a Cat-Claw Shield, its Shield points +1.\n(You must have Diona in your deck to add this card to your deck.)",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "shaken_not_purred"
+    },
+    {
         "img": "Cold-Blooded_Strike_Card.png",
         "name": "Cold-Blooded Strike",
         "cost_raw": "4 Cryo Dices",

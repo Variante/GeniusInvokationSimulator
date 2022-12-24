@@ -378,8 +378,8 @@ class Game:
         
         
 if __name__ == '__main__':
-    g = Game([Deck('starter', Agent()), Deck('starter', Agent())])
-    for _ in range(500):
+    g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
+    for _ in range(100):
         g.seed(np.random.randint(10000))
         ret = g.game_loop(show=False, save_hist=False)
         # g.dump_to_file('game_finished')

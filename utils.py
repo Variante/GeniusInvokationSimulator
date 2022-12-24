@@ -205,7 +205,12 @@ def buff_engine(buff, my_deck, enemy_deck):
         if enemy_char is not None:
             enemy_char.take_dmg(res[0], res[1], buff.source)
             activated = True
-
+    
+    res = buff.query('dmg_bg')
+    if isinstance(res, tuple) and res[1] > 0:
+        for enemy_char in enemy_char.get_bg_characters():
+            enemy_char.take_dmg(res[0], res[1], buff.source)
+            activated = True
 
     res = buff.query('gen')
     if isinstance(res, tuple) and res[1] > 0:

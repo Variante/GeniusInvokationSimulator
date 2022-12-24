@@ -35,5 +35,17 @@
 		"code_name": "oz",
 		"code": "life 2 0 1,dmg Electro 1",
 		"code_talent": "life 2 0 1,dmg Electro 2,on_fischl_normal_attack_finished"
+	},
+	{
+        "img": "Sacred_Cryo_Pearl_Summon.webp",
+        "name": "Sacred Cryo Pearl",
+		"code_name": "sacred_cryo_pearl",
+		"code": "life 2 0 1,dmg Cryo 1,dmg_bg Piercing 1"
+	},
+	{
+        "img": "Drunken_Mist_Summon.webp",
+        "name": "Drunken Mist",
+		"code_name": "drunken_mist",
+		"code": "life 2 0 1,dmg Cryo 1,heal 2"
 	}
 ]
