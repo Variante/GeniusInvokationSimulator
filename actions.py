@@ -141,7 +141,7 @@ class Action:
         return {i:j for i, j in vars(self).items() if i not in ['des']}
     
     def __repr__(self):
-        return f"- {self.name}: {self.des}"
+        return f"- {self.name}" #: {self.des}"
 
 def init_actions(names):
     # assert len(names) == 30

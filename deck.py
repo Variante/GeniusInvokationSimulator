@@ -99,10 +99,11 @@ class Deck:
         print('-' * 40)
          
     def print_actions(self):
-        opt = set()
+        opt = []
         for i in self.get_action_space():
-            opt.add('- ' + i.split(';')[0])
-        
+            s = '- ' + i.split(';')[0]
+            if s not in opt:
+                opt.append(s)
         print(*opt, sep='\n')
 
     def get_action_space(self):
