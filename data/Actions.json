@@ -1902,7 +1902,7 @@
         },
         "des": "Summon 1 Random Hilichurl Summon!\n(You must have at least 2 Monster characters in your deck to add this card to your deck.)",
         "tags": [],
-        "code": "summon_rand 1 cryo_hilichurl_shooter electro_hilichurl_shooter pyro_hilichurl_shooter hydro_samachurl",
+        "code": "summon_rand 1 cryo_hilichurl_shooter electro_hilichurl_shooter hilichurl_berserker hydro_samachurl",
         "type": "event",
         "code_name": "abysssal_summons"
     },
