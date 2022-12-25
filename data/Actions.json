@@ -126,6 +126,27 @@
         "code_name": "glorius_season"
     },
     {
+        "img": "The_Scent_Remained_Equipment_Card.webp",
+        "name": "The Scent Remained",
+        "cost_raw": "4 Hydro Dices",
+        "cost": {
+            "d_type": [
+                "Hydro"
+            ],
+            "d_num": [
+                4
+            ],
+            "p_num": 0
+        },
+        "des": "Combat Action: When your active character is Xingqiu, equip this card.\nAfter Xingqiu equips this card, immediately use Fatal Rainscreen once.\nWhen your Xingqiu, who has this card equipped, creates a Rain Sword, its starting Usage(s)+1.\n(You must have Xingqiu in your deck to add this card to your deck.)",
+        "code": "talent xingqiu;skill xingqiu fatal_rainscreen",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "the_scent_remained"
+    },
+    {
         "img": "Flowing_Flame_Card.png",
         "name": "Flowing Flame",
         "cost_raw": "3 Pyro Dices",

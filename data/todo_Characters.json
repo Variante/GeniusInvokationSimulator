@@ -1,26 +1,5 @@
 [
     {
-        "img": "Xingqiu_Genius_Invokation_Card_2.png",
-        "name": "Xingqiu",
-        "skills": [
-            {
-                "name": "Guhua Style",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Hydro Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Fatal Rainscreen",
-                "type": "Elemental Skill",
-                "des": "Deals 2 Hydro DMG, grants this character Hydro Application, creates 1 Rain Sword. Costs 3 Hydro Dices"
-            },
-            {
-                "name": "Raincutter",
-                "type": "Elemental Burst",
-                "des": "Deals 1 Hydro DMG, grants this character Hydro Application, creates 1 Rainbow Bladework. Costs 3 Hydro Dices and 2 Energy."
-            }
-        ]
-    },
-    {
         "img": "Mona_Genius_Invokation_Card_2.png",
         "name": "Mona",
         "skills": [

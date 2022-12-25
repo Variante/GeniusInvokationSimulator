@@ -395,6 +395,68 @@
         "code_name": "barbara"
     },
     {
+        "img": "Xingqiu_Genius_Invokation_Card_2.png",
+        "name": "Xingqiu",
+        "energy_limit": 2,
+        "element": "Hydro",
+        "weapon": "Sword",
+        "faction": "Liyue",
+        "skills": [
+            {
+                "name": "Guhua Style",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Hydro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "des": "Deals 2 Physical DMG. Costs 1 Hydro Dice and 2 Unaligned Dices.",
+                "code_name": "guhua_style"
+            },
+            {
+                "name": "Fatal Rainscreen",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Hydro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Hydro 2;apply Hydro;buff dmg_larger_than_three_dmg_down 1,team,life 2 0 1",
+                "code_talent": "dmg Hydro 2;apply Hydro;buff dmg_larger_than_three_dmg_down 1,team,life 3 0 1",
+                "des": "Deals 2 Hydro DMG, grants this character Hydro Application, creates 1 Rain Sword. Costs 3 Hydro Dices",
+                "code_name": "fatal_rainscreen"
+            },
+            {
+                "name": "Raincutter",
+                "cost": {
+                    "d_type": [
+                        "Hydro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Hydro 1;apply Hydro;buff on_normal_attack_finished,dmg Hydro 2,team,life 3 0 1",
+                "type": "Elemental Burst",
+                "des": "Deals 1 Hydro DMG, grants this character Hydro Application, creates 1 Rainbow Bladework. Costs 3 Hydro Dices and 2 Energy.",
+                "code_name": "raincutter"
+            }
+        ],
+        "code_name": "xingqiu"
+    },
+    {
         "img": "Diluc_Genius_Invokation_Card_2.png",
         "name": "Diluc",
         "energy_limit": 3,

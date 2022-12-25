@@ -105,6 +105,8 @@ class Skill:
                 my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1], my_char.talent)
             elif cmds[0] == 'switch_enemy':
                 my_deck.enemy_ptr.switch_next(cmds[1] == 'prev')
+            elif cmds[0] == 'apply':
+                my_char.attach_element_no_dmg(cmds[1])
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
                 
@@ -444,6 +446,13 @@ class Character:
         
             if dmg_num <= 0:
                 break       
+
+            # Xingqiu's skill: TODO: should use dmg_num, or the original dmg_num before any sheild?
+            if dmg_num >= 3:
+                res = buff.query('dmg_larger_than_three_dmg_down')
+                if res > 0:
+                    dmg_num -= 1
+                    buff.on_activated()
 
         self.health = max(self.health - dmg_num - piercing_dmg, 0)
         # dead
