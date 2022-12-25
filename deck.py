@@ -263,9 +263,9 @@ class Deck:
                 s = list_ptr[i]
                 if s.query(kw):
                     buff_engine(s, self, self.enemy_ptr)
-                    if s.should_leave():
-                        list_ptr.pop(i)
-                        continue                    
+                if s.should_leave():
+                    list_ptr.pop(i)
+                    continue                    
                 i += 1
             except IndexError:
                 break

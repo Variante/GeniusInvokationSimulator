@@ -69,8 +69,8 @@
         "img": "Melody_Loop_Summon.webp",
         "name": "Melody Loop",
         "code_name": "melody_loop",
-        "code": "life 2 0 1,heal_all 1,apply_Hydro 1",
-        "code_talent": "life 2 0 1,heal_all 1,apply_Hydro 1,switch_cost_down"
+        "code": "life 2 0 1,heal_all 1,apply_Hydro 1,special_code",
+        "code_talent": "life 2 0 1,heal_all 1,apply_Hydro 1,switch_cost_down,special_code"
     },
     {
         "img": "Oceanic_Mimic_Ferret_Summon.webp",
@@ -82,8 +82,7 @@
         "img": "Oceanic_Mimic_Frog_Summon.webp",
         "name": "Oceanic Mimic Frog",
         "code_name": "oceanic_mimic_frog",
-		"code": "",
-        "code_todo": "life 2 0 1,dmg Hydro 2,until_leave;buff dmg_down 1,life 2 0 1,team"
+		"code": "life 2 0 1,dmg Hydro 2,dmg_down 1,special_code"
     },
     {
         "img": "Oceanic_Mimic_Raptor_Summon.webp",
@@ -102,8 +101,7 @@
         "img": "Reflection_Summon.webp",
         "name": "Reflection",
         "code_name": "reflection",
-        "code": "",
-        "code_todo": "life 1 0 1,dmg Hydro 1,until_leave;buff dmg_down 1,life 1 0 1,team"
+        "code": "life 1 0 1,dmg Hydro 1,dmg_down 1,special_code"
     },
 	{
         "img": "Sacred_Cryo_Pearl_Summon.webp",

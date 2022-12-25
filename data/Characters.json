@@ -457,6 +457,75 @@
         "code_name": "xingqiu"
     },
     {
+        "img": "Mona_Genius_Invokation_Card_2.png",
+        "name": "Mona",
+        "energy_limit": 3,
+        "element": "Hydro",
+        "weapon": "Catalyst",
+        "faction": "Mondstadt",
+        "skills": [
+            {
+                "name": "Ripple of Fate",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Hydro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Hydro 1",
+                "des": "Deals 1 Hydro DMG. Costs 1 Hydro Dice and 2 Unaligned Dices.",
+                "code_name": "ripple_of_fate"
+            },
+            {
+                "name": "Mirror Reflection of Doom",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Hydro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Hydro 1;summon reflection",
+                "des": "Deals 1 Hydro DMG, summons 1 Reflection. Costs 3 Hydro Dices.",
+                "code_name": "mirror_reflection_of_doom"
+            },
+            {
+                "name": "Stellaris Phantasm",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Hydro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 3
+                },
+                "code": "dmg Hydro 4;buff double_dmg_dealt,life 1 0 1,team",
+                "des": "Deals 4 Hydro DMG, creates 1 Illusory Bubble. Costs 3 Hydro Dices and 3 Energy.",
+                "code_name": "stellaris_phantasm"
+            },
+            {
+                "name": "Illusory Torrent",
+                "type": "Passive Skill",
+                "cost": {},
+                "code": "buff switch_fast,life 1 0 1,unique",
+                "des": "When you perform \"Switch Character\" while Mona is your active character: This switch is considered a Fast Action instead of a Combat Action. (Once per round).",
+                "code_name": "illusory_torrent"
+            }
+        ],
+        "code_name": "mona"
+    },
+    {
         "img": "Diluc_Genius_Invokation_Card_2.png",
         "name": "Diluc",
         "energy_limit": 3,

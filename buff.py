@@ -129,6 +129,26 @@ class Summon(Buff):
         return f'{self.name}({self.life}): ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
             f" from {self.source}"
 
+
+class ShieldSummon(Summon):
+    def __init__(self, source, data, deck):
+        super(ShieldSummon, self).__init__(source, data, False)
+
+    def query(self, keyword):
+        value = self.attribs.get(keyword, 0)
+        if keyword == 'dmg_down':
+            disabled = self.life <= 0
+        else:
+            disabled =  self.life > 0
+        if disabled:
+            if isinstance(value, int):
+                value = 0
+            elif isinstance(value, tuple):
+                value = (value[0], 0)
+        return value
+
+
+
 class Melody_Loop(Summon):
     def __init__(self, source, data, deck): 
         for char in deck.characters:
@@ -218,7 +238,9 @@ class LiuSu(Support):
         return self.round_life <= 0 
 
 summon_cls = {
-    'melody_loop': Melody_Loop
+    'melody_loop': Melody_Loop,
+    'reflection': ShieldSummon,
+    'oceanic_mimic_frog': ShieldSummon,
 }
 
 support_cls = {

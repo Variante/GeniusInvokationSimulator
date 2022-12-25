@@ -1,31 +1,5 @@
 [
     {
-        "img": "Mona_Genius_Invokation_Card_2.png",
-        "name": "Mona",
-        "skills": [
-            {
-                "name": "Ripple of Fate",
-                "type": "Normal Attack",
-                "des": "Deals 1 Hydro DMG. Costs 1 Hydro Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Mirror Reflection of Doom",
-                "type": "Elemental Skill",
-                "des": "Deals 1 Hydro DMG, summons 1 Reflection. Costs 3 Hydro Dices."
-            },
-            {
-                "name": "Stellaris Phatasm",
-                "type": "Elemental Burst",
-                "des": "Deals 4 Hydro DMG, creates 1 Illusory Bubble. Costs 3 Hydro Dices and 3 Energy."
-            },
-            {
-                "name": "Illusory Torrent",
-                "type": "Passive Skill",
-                "des": "When you perform \"Switch Character\" while Mona is your active character: This switch is considered a Fast Action instead of a Combat Action. (Once per round)."
-            }
-        ]
-    },
-    {
         "img": "Xiangling_Genius_Invokation_Card_2.png",
         "name": "Xiangling",
         "skills": [

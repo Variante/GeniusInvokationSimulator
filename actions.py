@@ -42,6 +42,8 @@ class Action:
             if 'talent' in self.tags:
                 if my_char.code_name not in self.code and 'kamisato_ayaka' not in self.code:
                     return []
+                if 'kamisato_ayaka' in self.code and deck.get_character('kamisato_ayaka') is None:
+                    return []
                 return f"event {self.code_name} {self.code.split(';')[0].split()[-1]}"
             elif 'weapon' in self.tags:
                 return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters() if cha.weapon_type in self.tags]

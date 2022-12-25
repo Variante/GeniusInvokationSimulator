@@ -147,6 +147,27 @@
         "code_name": "the_scent_remained"
     },
     {
+        "img": "Prophecy_of_Submersion_Equipment_Card.webp",
+        "name": "Prophecy of Submersion",
+        "cost_raw": "3 Hydro Dices",
+        "cost": {
+            "d_type": [
+                "Hydro"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 3
+        },
+        "des": "Combat Action: When your active character is Mona, equip this card.\nWhen Mona equips this card, immediately use Stellaris Phantasm once.\nWhen your Mona, who has this card equipped, is the active character, the Hydro-Related Reactions you trigger deal +2 additional DMG.\n(You must have Mona in your deck to add this card to your deck.)",
+        "code": "talent mona;buff hydro_reaction_dmg_up 2,life 1 0 0;skill mona stellaris_phantasm",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "prophecy_of_submersion"
+    },
+    {
         "img": "Flowing_Flame_Card.png",
         "name": "Flowing Flame",
         "cost_raw": "3 Pyro Dices",
@@ -1224,7 +1245,7 @@
         "tags": [
             "companion"
         ],
-        "code": "life 3 0 1,on_round_start,draw 1,gen Omni 1,until_leave",
+        "code": "life 3 1 0,on_round_start,draw 1,gen Omni 1,until_leave",
         "type": "support",
         "code_name": "timmie"
     },

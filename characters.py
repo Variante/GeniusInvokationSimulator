@@ -109,7 +109,10 @@ class Skill:
                 my_char.attach_element_no_dmg(cmds[1])
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
-                
+        
+        if self.stype == 'passive_skill':
+            return
+
         my_char.recharge(energy_gain)
 
         # gen die based on the weapon
@@ -351,7 +354,7 @@ class Character:
         # activate passive skill
         for skill in self.skills:
             if skill.stype == 'passive_skill':
-                skill.exec(self.deck_ptr, self, self.deck_ptr.enemy_ptr.get_current_character())
+                skill.exec(self.deck_ptr, self, None)
         self.proc_buff_event('on_character_activated')
 
     def deactivate(self):
@@ -411,22 +414,22 @@ class Character:
     def take_dmg(self, dmg_type, dmg_num, source, dmg_piercing=0):
         if dmg_type in ['Physical', 'Pyro']:
             if self.take_buff('frozen'):
-                self.add_buff(f'reaction_unfrozen', 'vulnerable 2')
+                self.add_buff(f'{source}-unfrozen', 'vulnerable 2')
         
         reaction = self.attach_element(dmg_type, source)
 
         for i in self.deck_ptr.enemy_ptr.get_summon_buff(f'dmg_{dmg_type}_up'):
             self.add_buff(f'{i.source}-chaotic_entropy', f'vulnerable {i.query(f"dmg_{dmg_type}_up")}')
         
-        return self.dmg(dmg_num, dmg_piercing), reaction
+        return self.dmg(dmg_num, dmg_piercing, source), reaction
         
-    def dmg(self, dmg_num, piercing_dmg):
+    def dmg(self, dmg_num, piercing_dmg, source):
         v = self.take_buff('vulnerable')
         dmg_num += v
 
         # This video is about how to calculate the shield
         # https://www.bilibili.com/video/BV1384y1t7cE/
-        for buff in self.buffs + self.deck_ptr.buffs:
+        for buff in self.buffs + self.deck_ptr.buffs + self.deck_ptr.summons:
             res = buff.query('dmg_down') # purple buffs
             if res > 0:
                 dmg_num -= 1
@@ -453,6 +456,17 @@ class Character:
                 if res > 0:
                     dmg_num -= 1
                     buff.on_activated()
+
+        # TODO: buff from mona, double the real dmg (after shields) or raw dmg?:
+        double = False
+        enemy_deck = self.deck_ptr.enemy_ptr
+        for c in enemy_deck.characters:
+            if c.code_name in source:
+                double = True
+                break
+        if double:
+            if enemy_deck.take_team_buff('double_dmg_dealt'):
+                dmg_num *= 2
 
         self.health = max(self.health - dmg_num - piercing_dmg, 0)
         # dead
@@ -532,9 +546,15 @@ class Character:
                 if  enemy_char is not None and 'Pyro' in [i, element] and source.startswith('e-' + enemy_char.code_name):
                     val = enemy_char.take_buff(f'pyro_reaction_dmg_up')
                     if val > 0:
-                        self.add_buff(f'reaction_{reaction}', f'vulnerable {val}')
+                        self.add_buff(f'{source}-{reaction}-dmg_up', f'vulnerable {val}')
                         # TODO: not sure about this, should be good according to this video:
                         # https://www.bilibili.com/video/BV13P4y1X74c/
+
+                 # for card "Prophecy of Submersion"
+                if  enemy_char is not None and 'Hydro' in [i, element]:
+                    val = enemy_char.take_buff(f'hydro_reaction_dmg_up')
+                    if val > 0:
+                        self.add_buff(f'{source}-{reaction}-dmg_up', f'vulnerable {val}')
 
                 if reaction in ['melt', 'vaporize']:
                     self.melt_or_vaporize(source, reaction)
