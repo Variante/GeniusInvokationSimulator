@@ -1,26 +1,5 @@
 [
     {
-        "img": "Yoimiya_Genius_Invokation_Card.png",
-        "name": "Yoimiya",
-        "skills": [
-            {
-                "name": "Firework Flare-Up",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Niwabi Fire-Dance",
-                "type": "Elemental Skill",
-                "des": "This character gains Niwabi Enshou. Costs 1 Pryo Dice.,"
-            },
-            {
-                "name": "Ryuukin Saxifrage",
-                "type": "Elemental Burst",
-                "des": "Deals 3 Pyro DMG, creates 1 Aurous Blaze."
-            }
-        ]
-    },
-    {
         "img": "Razor_Genius_Invokation_Card.png",
         "name": "Razor",
         "skills": [

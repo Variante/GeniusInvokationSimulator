@@ -12,8 +12,8 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 
 ```
 Progress
-[Characters] 13 / 27
-[Actions] 103 / 119
+[Characters] 14 / 27
+[Actions] 104 / 119
 ```
 
 ## Dependence
@@ -38,7 +38,7 @@ python game.py
 
 ## Update log
 12/25/22:
-1. Add Barbara, Xingqiu and Mona
+1. Add new characters until Yoimiya
 2. Add Hydro reaction
 3. Fix summon bug - not activated at the end of a round
 

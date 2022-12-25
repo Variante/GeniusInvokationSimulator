@@ -1,22 +1,5 @@
 [
     {
-        "img": "Naganohara_Meteor_Swarm_Card.png",
-        "name": "Naganohara Meteor Swarm",
-        "cost_raw": "2 Pyro Dices",
-        "cost": {
-            "d_type": [
-                "Pyro"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Yoimiya, equip this card.\nAfter Yoimiya equips this card, immediately use Niwabi Fire-Dance once.\nAfter your Yoimiya, who has this card equipped, triggers Niwabi Enshou: Deal 1 additional Pyro DMG.\n(You must have Yoimiya in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Stellar_Predator_Card.png",
         "name": "Stellar Predator",
         "cost_raw": "3 Electro Dices",

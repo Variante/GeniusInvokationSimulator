@@ -36,7 +36,7 @@ class Skill:
         dmg = 0
         reaction = False
         dealt_dmg = 0
-
+        bc = 0
         for code in self.code_talent if my_char.talent else self.code:
             cmds = code.split()
             if cmds[0] == 'if_else':
@@ -100,7 +100,8 @@ class Skill:
             elif cmds[0] == 'shield':
                 my_char.add_shield(self, code)
             elif cmds[0] == 'buff':
-                my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
+                my_char.add_buff(f'skill {my_char.name}-{self.code_name}-{bc}', code + ',unique')
+                bc += 1
             elif cmds[0] == 'summon':
                 my_deck.add_summon(f'skill {my_char.name}-{self.code_name}', cmds[1], my_char.talent)
             elif cmds[0] == 'switch_enemy':
@@ -351,6 +352,9 @@ class Character:
     
     def activate(self):
         self.active = True
+        # redirect buffs
+        for b in self.deck_ptr.buffs:
+            b.char_ptr = self
         # activate passive skill
         for skill in self.skills:
             if skill.stype == 'passive_skill':
