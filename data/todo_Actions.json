@@ -1,22 +1,5 @@
 [
     {
-        "img": "Thundering_Penance_Card.png",
-        "name": "Thundering Penance",
-        "cost_raw": "3 Electro Dices",
-        "cost": {
-            "d_type": [
-                "Electro"
-            ],
-            "d_num": [
-                3
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Keqing, equip this card.\nAfter Keqing equips this card, immediately use Stellar Restoration once.\nWhen your Keqing, who has this card equipped, creates an Electro Elemental Infusion, it will have the following effects:\nStarting Duration (Rounds) +1, Electro DMG dealt by the attached character +1.\n(You must have Keqing in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Featherfall_Judgement_Card.png",
         "name": "Featherfall Judgement Card",
         "cost_raw": "3 Electro Dices",

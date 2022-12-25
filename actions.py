@@ -3,14 +3,14 @@ from utils import *
 class Action:
     def __init__(self, name, pool):
         for i in pool:
-            if i['name'] == name:
+            if i['name'] == name or i['code_name'] == name:
                 data = i
                 break
         else:
             print(f'Unknown action card {name}.')
             exit(0)
             
-        self.name = name   
+        self.name = data['name']   
         self.code_name = data['code_name']
         self.code = data.get('code', '')
         self.cost = data['cost']
@@ -146,6 +146,31 @@ class Action:
     
     def __repr__(self):
         return f"- {self.name}" #: {self.des}"
+
+
+class GenAction(Action):
+    def __init__(self, code_name):
+        pool = [{
+            "img": "Lightning_Stiletto_Event_Card.webp",
+            "name": "Lightning Stiletto",
+            "cost_raw": "3 Electro Dices",
+            "cost": {
+                "d_type": [
+                    "Electro"
+                ],
+                "d_num": [
+                    3
+                ],
+                "p_num": 0
+            },
+            "des": "Combat Action: Switch your Keqing in to be your active character and immediately use Stellar Restoration once. This instance of Stellar Restoration will grant Keqing Electro Infusion without creating another Lightning Stiletto.\n(When Keqing uses Stellar Restoration with this card in Hand: Instead of creating another Lightning Stiletto, discard this card and Keqing gains Electro Infusion)",
+            "code": "switch_my keqing;skill keqing stellar_restoration",
+            "tags": ["generated", "talent"],
+            "type": "equipment", # actually it is event but i'm lazy to change the code
+            "code_name": "lightning_stiletto"
+        }]
+        super(GenAction, self).__init__(code_name, pool)
+
 
 def init_actions(names):
     # assert len(names) == 30

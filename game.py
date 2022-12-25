@@ -245,6 +245,7 @@ class Game:
                 action = my_deck.use_card(cmdw[1])
                 # not all events have a target
                 self.card_engine(action, cmdw[2:])
+                my_deck.drop_card(action)
             elif cmdw[0] == 'convert':
                 action = my_deck.use_card(cmdw[1])
             elif cmdw[0] == 'skill':
@@ -255,6 +256,8 @@ class Game:
                 my_deck.gen(cmdw[1], int(cmdw[2]))
             elif cmdw[0] == 'switch':
                 my_char = my_deck.get_current_character()
+                if my_char.code_name == cmdw[1]:
+                    continue
                 # clear buffs
                 my_char.take_buff('switch_cost_down') + my_deck.take_team_buff('switch_cost_down')
                 res = my_char.take_buff('switch_fast') + my_deck.take_team_buff('switch_fast')

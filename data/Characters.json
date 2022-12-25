@@ -897,6 +897,68 @@
         "code_name": "razor"
     },
     {
+        "img": "Keqing_Genius_Invokation_Card.png",
+        "name": "Keqing",
+        "energy_limit": 3,
+        "element": "Electro",
+        "weapon": "Sword",
+        "faction": "Liyue",
+        "skills": [
+            {
+                "name": "Yunlai Swordsmanship",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Electro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices.",
+                "code_name": "yunlai_swordsmanship"
+            },
+            {
+                "name": "Stellar Restoration",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Electro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Electro 3;if_else my_deck.has_card_in_hand('lightning_stiletto'):buff infusion_Electro,life 2 1 0:;if_else my_deck.has_card_in_hand('lightning_stiletto'):drop_action lightning_stiletto:gen_action lightning_stiletto",
+                "code_talent": "dmg Electro 3;if_else my_deck.has_card_in_hand('lightning_stiletto'):buff infusion_Electro,life 3 1 0,normal_attack_dmg_up 1,elemental_burst_dmg_up 1,elemental_skill_dmg_up 1:;if_else my_deck.has_card_in_hand('lightning_stiletto'):drop_action lightning_stiletto:gen_action lightning_stiletto",
+                "des": "Deals 3 Electro DMG, creates 1 Lightning Stiletto. Costs 3 Electro Dices.",
+                "code_name": "stellar_restoration"
+            },
+            {
+                "name": "Starward Sword",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Electro"
+                    ],
+                    "d_num": [
+                        4
+                    ],
+                    "p_num": 3
+                },
+                "code": "dmg Electro 4;dmg_bg Piercing 3",
+                "des": "Deals 4 Electro DMG, deals 3 piercing DMG to all opposing characters on standby. Costs 4 Electro Dices and 3 Energy.",
+                "code_name": "starward_sword"
+            }
+        ],
+        "code_name": "keqing"
+    },
+    {
         "img": "Sucrose_Genius_Invokation_Card.png",
         "name": "Sucrose",
         "energy_limit": 2,

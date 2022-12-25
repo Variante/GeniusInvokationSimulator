@@ -1,26 +1,5 @@
 [
     {
-        "img": "Keqing_Genius_Invokation_Card.png",
-        "name": "Keqing",
-        "skills": [
-            {
-                "name": "Yunlai Swordsmanship",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Stellar Restoration",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Electro DMG, creates 1 Lightning Stiletto. Costs 3 Electro Dices."
-            },
-            {
-                "name": "Starward Sword",
-                "type": "Elemental Burst",
-                "des": "Deals 4 Electro DMG, deals 3 piercing DMG to all opposing characters on standby. Costs 4 Electro Dices and 3 Energy."
-            }
-        ]
-    },
-    {
         "img": "Cyno_Genius_Invokation_Card.png",
         "name": "Cyno",
         "skills": [

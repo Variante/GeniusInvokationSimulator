@@ -111,6 +111,11 @@ class Skill:
                 my_char.attach_element_no_dmg(cmds[1])
             elif cmds[0] == 'recharge':
                 my_deck.recharge(cmds)
+            elif cmds[0] == 'gen_action':
+                my_deck.gen_card(cmds[1])
+            elif cmds[0] == 'drop_action':
+                action = my_deck.use_card(cmds[1])
+                my_deck.drop_card(action)
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
         

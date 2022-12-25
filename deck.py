@@ -2,7 +2,7 @@ from utils import *
 from dices import Dices
 from buff import *
 from characters import init_characters
-from actions import init_actions
+from actions import init_actions, GenAction
 import random
 
 class Deck:
@@ -41,7 +41,7 @@ class Deck:
             c.reset()
         self.characters[0].active = True
 
-        self.to_pull_actions = self.to_pull_actions + self.used_actions + self.available_actions
+        self.to_pull_actions = [i for i in self.to_pull_actions + self.used_actions + self.available_actions if 'generated' not in i.tags]
         self.used_actions = []
         self.available_actions = []
         self.current_dice = self.d.roll()
@@ -247,12 +247,30 @@ class Deck:
         self.pull(c)
 
     def use_card(self, code_name):
-        for idx, i in enumerate(self.available_actions):
+        for i in self.available_actions:
             if i.code_name == code_name:
-                break
-        action = self.available_actions.pop(idx)
-        self.used_actions.append(action)
-        return action
+                return i
+        else:
+            return None
+
+    def drop_card(self, action):
+        if action is None:
+            return
+        try:
+            self.available_actions.remove(action)
+            self.used_actions.append(action)
+        except:
+            pass
+
+    def gen_card(self, code_name):
+        action = GenAction(code_name)
+        self._pull_card(action)
+
+    def has_card_in_hand(self, code_name):
+        for i in self.available_actions:
+            if i.code_name == code_name:
+                return True
+        return False
         
     """
     Summons
