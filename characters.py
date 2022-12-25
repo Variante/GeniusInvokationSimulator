@@ -9,7 +9,9 @@ class Skill:
         self.cost = data['cost']
         self.des = data['des']
         self.code = data['code'].split(';')
-        self.energy_gain = data['energy_gain']
+        self.energy_gain = data.get('energy_gain', 1)
+        if self.stype in ['elemental_burst', 'passive_skill']:
+            self.energy_gain = 0
         # if one has talent
         self.code_talent = data.get('code_talent', data['code']).split(';')
 
@@ -28,8 +30,10 @@ class Skill:
         if my_char.talent:
             self.round_usage_with_talent += 1
 
-        energy_gain = 1 if self.cost['p_num'] == 0 else 0
+        energy_gain = self.energy_gain
         weapon =  my_char.weapon
+        dmg_type = 'Physical'
+        dmg = 0
         reaction = False
         dealt_dmg = 0
 
@@ -241,9 +245,17 @@ class Character:
         if isinstance(code, str):
             b = Buff(source, code, self)
             if 'team' in code:
-                self.deck_ptr.buffs.append(b)
+                bl = self.deck_ptr.buffs
             else:
-                self.buffs.append(b)
+                bl = self.buffs
+            if 'unique' in code:
+                # replace the old buff
+                for i, j in enumerate(bl):
+                    if j.source == source:
+                        bl[i] = b
+                        return
+            bl.append(b)
+
         else:
             raise NotImplementedError('Unknown buff code format')
 
@@ -288,8 +300,8 @@ class Character:
         return res
     
     def refresh_buffs(self):
-        self.buffs = [buff for buff in self.buffs if buff.life > 0]
-        self.deck_ptr.buffs = [buff for buff in self.deck_ptr.buffs if buff.life > 0]
+        self.buffs = [buff for buff in self.buffs if not buff.should_leave()]
+        self.deck_ptr.buffs = [buff for buff in self.deck_ptr.buffs if not buff.should_leave()]
     
     def proc_buff_event(self, keyword):
         for buff in self.get_buff(keyword):
@@ -302,6 +314,8 @@ class Character:
     def affordable_skills(self, dice):
         res = []
         for skill in self.skills:
+            if skill.stype == 'passive_skill':
+                continue
             res.extend(
                 generate_action_space(skill.get_cost(self.deck_ptr, self),
                 dice, self, prefix=f'skill {self.code_name} {skill.code_name}'))
@@ -320,6 +334,10 @@ class Character:
     
     def activate(self):
         self.active = True
+        # activate passive skill
+        for skill in self.skills:
+            if skill.stype == 'passive_skill':
+                skill.exec(self.deck_ptr, self, self.deck_ptr.enemy_ptr.get_current_character())
         self.proc_buff_event('on_character_activated')
 
     def deactivate(self):

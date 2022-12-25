@@ -29,6 +29,7 @@ python game.py
 ```
 
 ## TODO
+1. UI solution
 1. Better buff system (team buff + personal buff)
 1. Elemental reactions: hydro, dendro, geo
 2. More characters and more talent card => current talent sysment may need to be redesigned
@@ -36,6 +37,10 @@ python game.py
 4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
+12/24/22:
+1. Add Kamisato Ayaka
+2. Buff system now can recognize 'refresh', 'stay' and 'unique' tags
+
 12/23/22:
 1. Reorganize a lot of code, add (almost) all cards except talent cards
 

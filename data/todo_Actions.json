@@ -1,22 +1,5 @@
 [
     {
-        "img": "Kanten_Senmyou_Blessing_Card.png",
-        "name": "Kanten Senmyou Blessing",
-        "cost_raw": "2 Cryo Dices",
-        "cost": {
-            "d_type": [
-                "Cryo"
-            ],
-            "d_num": [
-                2
-            ],
-            "p_num": 0
-        },
-        "des": "The Cryo Elemental Infusion created by your Kamisato Ayaka, who has this card equipped, allows the character to which it is attached to deal +1 Cryo DMG.\nWhen you switch to Kamisato Ayaka, who has this card equipped: Spend 1 less Elemental Die. (Once per Round)\n(You must have Kamisato Ayaka in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Glorious_Season_Card.png",
         "name": "Glorius Season",
         "cost_raw": "4 Hydro Dices",
