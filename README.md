@@ -37,12 +37,17 @@ python game.py
 4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
+12/25/22:
+1. Add Barbara and Hydro reaction
+2. Fix summon bug - not activated at the end of a round
+
 12/24/22:
 1. Add Kamisato Ayaka
 2. Buff system now can recognize 'refresh', 'stay' and 'unique' tags
 
 12/23/22:
 1. Reorganize a lot of code, add (almost) all cards except talent cards
+2. Add more Cryo characters
 
 12/22/22:
 1. Finished most of the event cards and all support cards

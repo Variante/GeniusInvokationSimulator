@@ -120,7 +120,7 @@ class Deck:
             visited_action.add(i.code_name)
         
         # query switch character, first calcualte action card
-        c_mode = char.query_buff('switch_cost_down') + self.query_support_buff('switch_cost_down')
+        c_mode = char.query_buff('switch_cost_down') + self.query_team_buff('switch_cost_down')
         
         for char in self.characters:
             if char.alive and not char.active:
@@ -278,7 +278,10 @@ class Deck:
                 break
         
         # check existing summons
-        sobj = Summon(source, summon_data, talent)
+        if code_name in summon_cls:
+            sobj = summon_cls[code_name](source, summon_data, self)
+        else:
+            sobj = Summon(source, summon_data, talent)
         for i, s in enumerate(self.summons):
             if s.code_name == code_name:
                 self.summons[i] = sobj
@@ -346,15 +349,15 @@ class Deck:
                     break
             """
                 
-    def query_support_buff(self, keyword):
+    def query_team_buff(self, keyword):
         val = 0
-        for i in self.supports:
+        for i in self.buffs + self.supports + self.summons:
             val += i.query(keyword)
         return val
 
-    def take_support_buff(self, keyword):
+    def take_team_buff(self, keyword):
         val = 0
-        for i in self.supports:
+        for i in self.buffs + self.supports + self.summons:
             res = i.query(keyword)
             if res > 0:
                 val += res
@@ -489,7 +492,7 @@ class Deck:
         # get dices
         self.roll()
         self.reroll()
-        for _ in range(self.query_support_buff('reroll')):
+        for _ in range(self.query_team_buff('reroll')):
             self.reroll()
 
         # process support
@@ -502,11 +505,9 @@ class Deck:
         for cha in self.characters:
             cha.on_round_finished()
         
-        """
         for s in self.summons:
             s.on_round_finished()
-            # this actually does nothing, we rely on on_activated
-        """
+            # this actually does nothing, we rely on on_activated, except melody_loop
         # process summons
         self.proc_summon_buffs('on_round_finished')
 

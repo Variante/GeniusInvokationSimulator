@@ -69,7 +69,8 @@
         "img": "Melody_Loop_Summon.webp",
         "name": "Melody Loop",
         "code_name": "melody_loop",
-        "code": "life 2 0 1,heal_all 1,apply_Hydro 1"
+        "code": "life 2 0 1,heal_all 1,apply_Hydro 1",
+        "code_talent": "life 2 0 1,heal_all 1,apply_Hydro 1,switch_cost_down"
     },
     {
         "img": "Oceanic_Mimic_Ferret_Summon.webp",

@@ -236,7 +236,9 @@ def buff_engine(buff, my_deck, enemy_deck):
     res = buff.query('heal')
     if res > 0:
         # activated = True
-        activated = my_deck.get_current_character().heal(res)
+        my_char = my_deck.get_current_character()
+        if my_char is not None:
+            activated = my_char.heal(res)
         
     res = buff.query('heal_all')
     if res > 0:
@@ -270,6 +272,14 @@ def buff_engine(buff, my_deck, enemy_deck):
     if res > 0:
         activated = True
         my_deck.switch_next()
+
+    # For Barbara
+    res = buff.query('apply_Hydro')
+    if res > 0:
+        my_char = my_deck.get_current_character()
+        if my_char is not None:
+            activated = True
+            my_char.attach_element_no_dmg('Hydro')
 
     if activated:
         buff.on_activated()

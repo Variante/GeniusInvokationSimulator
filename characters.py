@@ -45,6 +45,8 @@ class Skill:
                     code = conds[1]
                 else:
                     code = conds[2]
+                if len(code) == 0:
+                    continue
                 cmds = code.split()
 
             if cmds[0] == 'dmg':
@@ -53,7 +55,7 @@ class Skill:
                 dmg_mods = 0
                 if weapon is not None:
                     dmg_mods += 1
-                    if enemy_char.health <= 6:
+                    if enemy_char is not None and enemy_char.health <= 6:
                         dmg_mods += my_char.weapon.query('enemy_health_lower_than_six_dmg_up')
 
                 # query all buffs
@@ -68,8 +70,12 @@ class Skill:
                             continue
                         dmg_type = i.split('_')[1]
                         break
-
-                ddmg, dreact = enemy_char.take_dmg(dmg_type, dmg + dmg_mods, f'e-{my_char.code_name}-{self.code_name}')
+                
+                if enemy_char is None:
+                    ddmg = 0
+                    dreact = False
+                else:
+                    ddmg, dreact = enemy_char.take_dmg(dmg_type, dmg + dmg_mods, f'e-{my_char.code_name}-{self.code_name}')
                 dealt_dmg += ddmg
                 reaction |= dreact
             elif cmds[0] == 'dmg_bg':
@@ -81,11 +87,16 @@ class Skill:
             elif cmds[0] == 'heal':
                 h = int(cmds[1])
                 # query all buffs
+                """
                 res = my_char.take_pattern_buff(self.stype)
                 for i in res:
                     if 'heal_up' in i:
                         h += res[i]
+                """
                 my_char.heal(h)
+            elif cmds[0] == 'heal_all':
+                for c in my_deck.get_alive_characters():
+                    c.heal(int(cmds[1]))
             elif cmds[0] == 'shield':
                 my_char.add_shield(self, code)
             elif cmds[0] == 'buff':
@@ -108,7 +119,8 @@ class Skill:
 
         my_char.proc_buff_event(f'on_{self.stype}_finished')
         my_char.proc_buff_event(f'on_{my_char.code_name}_{self.stype}_finished') # for Fischl talent
-        enemy_char.proc_buff_event('on_enemy_skill_finished')
+        if enemy_char is not None:
+            enemy_char.proc_buff_event('on_enemy_skill_finished')
         my_char.proc_buff_event('on_skill_finished')
 
         def move_progress(deck, kw):
@@ -448,10 +460,10 @@ class Character:
         if self.active:
             self.deck_ptr.switch_next()
 
-    def superconduct(self, source):
-        self.add_buff(f'{source}-superconduct', 'vulnerable 2')
+    def superconduct_or_electro_charged(self, source, reaction):
+        self.add_buff(f'{source}-{reaction}', 'vulnerable 1')
         for c in self.deck_ptr.get_bg_characters():
-            c.take_dmg('Piercing', 1, '{source}-superconduct-piercing')
+            c.take_dmg('Piercing', 1, '{source}-{reaction}-piercing')
     
     def swirl(self, source, element):
         # print('\n\n swirl element ', element)
@@ -471,9 +483,25 @@ class Character:
                     i.change_keyword(f'dmg_{element}_up', 1)
                     break
 
-    
-    def frozen(self):
-        self.add_buff('reaction_frozen', 'frozen')
+    def frozen(self, source):
+        self.add_buff(source + '-frozen', 'frozen')
+
+    def attach_element_no_dmg(self, element):
+        if element in ['Physical', 'Piercing']:
+            return False
+        if element in self.attached_element:
+            return False
+        for t, i in enumerate(self.attached_element):
+            reaction = element_can_react(i, element)
+            if reaction:
+                try:
+                    self.attached_element = self.attached_element[:t] + self.attached_element[t + 1:]
+                except IndexError:
+                    self.attached_element = self.attached_element[:t]
+                return True
+        if element not in ['Geo', 'Anemo']:
+            self.attached_element.append(element)
+        return False
 
     def attach_element(self, element, source):
         # return whether there is an reaction or not
@@ -488,24 +516,27 @@ class Character:
 
                 # if anyone triggers a reaction
                 self.proc_buff_event('on_reaction')
-                enemy_char.proc_buff_event('on_reaction')
+                if enemy_char is not None:
+                    enemy_char.proc_buff_event('on_reaction')
 
                 # for card "Elemental Resonance: Fervent Flames"
-                if 'Pyro' in [i, element] and source.startswith('e-' + enemy_char.code_name):
+                if  enemy_char is not None and 'Pyro' in [i, element] and source.startswith('e-' + enemy_char.code_name):
                     val = enemy_char.take_buff(f'pyro_reaction_dmg_up')
                     if val > 0:
                         self.add_buff(f'reaction_{reaction}', f'vulnerable {val}')
                         # TODO: not sure about this, should be good according to this video:
                         # https://www.bilibili.com/video/BV13P4y1X74c/
 
-                if reaction in ['melt' or 'vaporize']:
+                if reaction in ['melt', 'vaporize']:
                     self.melt_or_vaporize(source, reaction)
                 elif reaction == 'overloaded':
                     self.overloaded(source)
                 elif reaction == 'swirl':
                     self.swirl(source, i)
-                elif reaction == 'superconduct':
-                    self.superconduct(source)
+                elif reaction in ['superconduct', 'electro_charged']:
+                    self.superconduct_or_electro_charged(source, element)
+                elif reaction == 'frozen':
+                    self.frozen(source)
                 else:
                     # TODO: add reaction later
                     raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')

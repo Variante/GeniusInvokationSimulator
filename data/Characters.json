@@ -179,6 +179,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Cryo 3",
+                "code_talent": "dmg Cryo 3;if_else self.round_usage_with_talent==1:heal 2:",
                 "code_name": "frostgnaw"
             },
             {
@@ -333,6 +334,67 @@
         "code_name": "kamisato_ayaka"
     },
     {
+        "img": "Barbara_Genius_Invokation_Card_2.png",
+        "name": "Barbara",
+        "energy_limit": 3,
+        "element": "Hydro",
+        "weapon": "Catalyst",
+        "faction": "Mondstadt",
+        "skills": [
+            {
+                "name": "Whisper of Water",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Hydro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Hydro 1",
+                "des": "Deals 1 Hydro DMG. Costs 1 Hydro Dice and 2 Unaligned Dices.",
+                "code_name": "whisper_of_water"
+            },
+            {
+                "name": "Let the Show Begin",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Hydro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Hydro 1;summon melody_loop",
+                "des": "Deals 1 Hydro DMG, summons 1 Melody Loop. Costs 3 Hydro Dices.",
+                "code_name": "let_the_show_begin"
+            },
+            {
+                "name": "Shining Miracle",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Hydro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 3
+                },
+                "code": "heal_all 4",
+                "des": "Heals all of your characters for 4 HP. Costs 3 Hydro Dices and 3 Energy.",
+                "code_name": "shining_miracle"
+            }
+        ],
+        "code_name": "barbara"
+    },
+    {
         "img": "Diluc_Genius_Invokation_Card_2.png",
         "name": "Diluc",
         "energy_limit": 3,
@@ -372,7 +434,6 @@
                     "p_num": 0
                 },
                 "code": "if_else self.round_usage==3:dmg Pyro 5:dmg Pyro 3",
-                
                 "code_name": "searing_onslaught"
             },
             {
@@ -510,7 +571,6 @@
                     "p_num": 3
                 },
                 "code": "dmg Electro 4;dmg_bg Piercing 2",
-                
                 "des": "Deals 4 Electro DMG, deals 2 piercing DMG to all opposing characters on standby. Costs 3 Electro Dices and 3 Energy.",
                 "code_name": "midnight_phantasmagoria"
             }

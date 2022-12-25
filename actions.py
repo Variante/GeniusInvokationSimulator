@@ -39,8 +39,10 @@ class Action:
     def _get_action_prefix(self, deck):
         my_char = deck.get_current_character()
         if self.atype == 'equipment':
-            if 'talent' in self.tags and my_char.code_name not in self.code:
-                return []
+            if 'talent' in self.tags:
+                if my_char.code_name not in self.code and 'kamisato_ayaka' not in self.code:
+                    return []
+                return f"event {self.code_name} {self.code.split(';')[0].split()[-1]}"
             elif 'weapon' in self.tags:
                 return [f'event {self.code_name} {cha.code_name}' for cha in deck.get_alive_characters() if cha.weapon_type in self.tags]
             elif 'artifact' in self.tags:

@@ -1,22 +1,5 @@
 [
     {
-        "img": "Glorious_Season_Card.png",
-        "name": "Glorius Season",
-        "cost_raw": "4 Hydro Dices",
-        "cost": {
-            "d_type": [
-                "Hydro"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Barbara, equip this card.\nAfter Barbara equips this card, immediately use Let the Show Begin\u266a once.\nWhen your Barbara, who has this card equipped, is on the field, Melody Loop will allow you to spend 1 less Elemental Die the next time you use \"Switch Character.\" (Once per round)\n(You must have Barbara in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Crossfire_Card.png",
         "name": "Crossfire",
         "cost_raw": "4 Pyro Dices",

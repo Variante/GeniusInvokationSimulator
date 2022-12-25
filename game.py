@@ -256,8 +256,8 @@ class Game:
             elif cmdw[0] == 'switch':
                 my_char = my_deck.get_current_character()
                 # clear buffs
-                my_char.take_buff('switch_cost_down') + my_deck.take_support_buff('switch_cost_down')
-                res = my_char.take_buff('switch_fast') + my_deck.take_support_buff('switch_fast')
+                my_char.take_buff('switch_cost_down') + my_deck.take_team_buff('switch_cost_down')
+                res = my_char.take_buff('switch_fast') + my_deck.take_team_buff('switch_fast')
                 self.switch_agent = res == 0
                 my_deck.switch(cmdw[1]) 
             else:
@@ -382,8 +382,8 @@ class Game:
         
 if __name__ == '__main__':
     g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
-    for _ in range(100):
-        g.seed(np.random.randint(10000))
+    for i in range(1000):
+        g.seed(i)
         ret = g.game_loop(show=False, save_state=False)
         # g.dump_to_file('game_finished')
         g.print_winner(ret)

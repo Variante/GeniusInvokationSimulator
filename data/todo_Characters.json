@@ -1,26 +1,5 @@
 [
     {
-        "img": "Barbara_Genius_Invokation_Card_2.png",
-        "name": "Barbara",
-        "skills": [
-            {
-                "name": "Whisper of Water",
-                "type": "Normal Attack",
-                "des": "Deals 1 Hydro DMG. Costs 1 Hydro Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Let the Show Begin",
-                "type": "Elemental Skill",
-                "des": "Deals 1 Hydro DMG, summons 1 Melody Loop. Costs 3 Hydro Dices."
-            },
-            {
-                "name": "Shining Miracle",
-                "type": "Elemental Burst",
-                "des": "Heals all of your characters for 4 HP. Costs 3 Hydro Dices and 3 Energy."
-            }
-        ]
-    },
-    {
         "img": "Xingqiu_Genius_Invokation_Card_2.png",
         "name": "Xingqiu",
         "skills": [

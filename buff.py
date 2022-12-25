@@ -115,6 +115,7 @@ class Summon(Buff):
         super(Summon, self).__init__(source, code)
         self.name = data['name']
         self.code_name = data['code_name']
+        self.attribs['on_round_finished'] = 1
 
     def heal(self, num):
         self.life += num
@@ -127,6 +128,35 @@ class Summon(Buff):
             return ''
         return f'{self.name}({self.life}): ' + ','.join([f'{i}({self.attribs[i]})' for i in self.attribs]) + \
             f" from {self.source}"
+
+class Melody_Loop(Summon):
+    def __init__(self, source, data, deck): 
+        for char in deck.characters:
+            if char.code_name == 'barbara':
+                break
+        super(Melody_Loop, self).__init__(source, data, char.talent)
+        self.my_char = char
+        self.round_usage = 1
+
+    def query(self, keyword):
+        value = self.attribs.get(keyword, 0)
+        if keyword == 'switch_cost_down':
+            disabled = not (self.round_usage != 0 and self.my_char.alive and self.my_char.talent)
+        else:
+            disabled = False
+        if disabled:
+            if isinstance(value, int):
+                value = 0
+            elif isinstance(value, tuple):
+                value = (value[0], 0)
+        return value
+
+    def on_activated(self):
+        self.round_usage = 0
+
+    def on_round_finished(self):
+        self.life -= 1
+        self.round_usage = 1
 
 class Support(Buff):
     def __init__(self, source, action):
@@ -187,6 +217,9 @@ class LiuSu(Support):
     def should_leave(self):
         return self.round_life <= 0 
 
+summon_cls = {
+    'melody_loop': Melody_Loop
+}
 
 support_cls = {
     'liben': Liben,
