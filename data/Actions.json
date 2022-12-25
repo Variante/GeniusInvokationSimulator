@@ -210,6 +210,27 @@
         "code_name": "crossfire"
     },
     {
+        "img": "Grand_Expectation_Card.png",
+        "name": "Grand Expectation",
+        "cost_raw": "4 Pyro Dices and 2 Energy",
+        "cost": {
+            "d_type": [
+                "Pyro"
+            ],
+            "d_num": [
+                4
+            ],
+            "p_num": 2
+        },
+        "des": "Combat Action:  When your active character is Bennett, equip this card.\nAfter Bennett equips this card, immediately use Fantastic Voyage once.\nWhen your Bennett, who has this card equipped, creates an Inspiration Field, its DMG Bonus is now always active and will no longer have an HP restriction.\n(You must have Bennett in your deck to add this card to your deck.)",
+        "code": "talent bennett;skill bennett fantastic_voyage",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "grand_expectation"
+    },
+    {
         "img": "Stellar_Predator_Card.png",
         "name": "Stellar Predator",
         "cost_raw": "3 Electro Dices",

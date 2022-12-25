@@ -1,26 +1,5 @@
 [
     {
-        "img": "Bennet_Genius_Invokation_Card.png",
-        "name": "Bennet",
-        "skills": [
-            {
-                "name": "Strike of Fortune",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Passion Overload",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Pyro DMG. Costs 3 Pyro Dices."
-            },
-            {
-                "name": "Fantastic Voyage",
-                "type": "Elemental Burst",
-                "des": "Deals 2 Pyro DMG, creates 1 Inspirational Field. Costs 4 Pyro Dices and 2 Energy."
-            }
-        ]
-    },
-    {
         "img": "Yoimiya_Genius_Invokation_Card.png",
         "name": "Yoimiya",
         "skills": [

@@ -1,22 +1,5 @@
 [
     {
-        "img": "Grand_Expectation_Card.png",
-        "name": "Grand Expectation",
-        "cost_raw": "4 Pyro Dices and 2 Energy",
-        "cost": {
-            "d_type": [
-                "Pyro"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 2
-        },
-        "des": "Combat Action:  When your active character is Bennett, equip this card.\nAfter Bennett equips this card, immediately use Fantastic Voyage once.\nWhen your Bennett, who has this card equipped, creates an Inspiration Field, its DMG Bonus is now always active and will no longer have an HP restriction.\n(You must have Bennett in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Naganohara_Meteor_Swarm_Card.png",
         "name": "Naganohara Meteor Swarm",
         "cost_raw": "2 Pyro Dices",

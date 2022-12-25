@@ -12,8 +12,8 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 
 ```
 Progress
-[Characters] 12 / 27
-[Actions] 102 / 119
+[Characters] 13 / 27
+[Actions] 103 / 119
 ```
 
 ## Dependence

@@ -649,6 +649,68 @@
         "code_name": "xiangling"
     },
     {
+        "img": "Bennet_Genius_Invokation_Card.png",
+        "name": "Bennett",
+        "energy_limit": 2,
+        "element": "Pyro",
+        "faction": "Mondstadt",
+        "weapon": "Sword",
+        "skills": [
+            {
+                "name": "Strike of Fortune",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Pyro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices.",
+                "code_name": "strike_of_fortune"
+            },
+            {
+                "name": "Passion Overload",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Pyro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Pyro 3",
+                "des": "Deals 3 Pyro DMG. Costs 3 Pyro Dices.",
+                "code_name": "passion_overload"
+            },
+            {
+                "name": "Fantastic Voyage",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Pyro"
+                    ],
+                    "d_num": [
+                        4
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Pyro 2;buff on_skill_finished,when self.char_ptr.health<=6,heal 2,life 2 1 0,team;buff normal_attack_dmg_up 2,elemental_burst_dmg_up 2,elemental_skill_dmg_up 2,when self.char_ptr.health>=7,team",
+                "code_talent": "dmg Pyro 2;buff on_skill_finished,when self.char_ptr.health<=6,heal 2,life 2 1 0,team;buff normal_attack_dmg_up 2,elemental_burst_dmg_up 2,elemental_skill_dmg_up 2,team",
+                "des": "Deals 2 Pyro DMG, creates 1 Inspirational Field. Costs 4 Pyro Dices and 2 Energy.",
+                "code_name": "fantastic_voyage"
+            }
+        ],
+        "code_name": "bennett"
+    },
+    {
         "img": "Sucrose_Genius_Invokation_Card.png",
         "name": "Sucrose",
         "energy_limit": 2,
