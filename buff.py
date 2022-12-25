@@ -57,7 +57,10 @@ class Buff:
         self.life -= self.rf_by_activated
         
     def on_round_finished(self):
-        self.life -= self.rf_by_round
+        if 'refresh' in self.attribs:
+            self.life = self.init_life
+        else:
+            self.life -= self.rf_by_round
 
     def remove_keyword(self, kw):
         del self.attribs[kw]
@@ -65,6 +68,9 @@ class Buff:
     def change_keyword(self, kw, v):
         self.attribs[kw] = v
 
+    def should_leave(self):
+        return self.life <= 0 and 'stay' not in self.attribs
+        
     def state(self):
         return {i:j for i, j in vars(self).items() if i not in ['condition', 'char_ptr']}
 
@@ -146,9 +152,6 @@ class Support(Buff):
         for i in ['artifact_save', 'weapon_save']:
             if i in self.attribs:
                 self.change_keyword(i, self.query(i) + 1)
-
-    def should_leave(self):
-        return self.life <= 0 and 'stay' not in self.attribs
 
 
 class Liben(Support):

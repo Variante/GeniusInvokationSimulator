@@ -1,31 +1,5 @@
 [
     {
-        "img": "Ayaka_Genius_Invokation_Card_2.png",
-        "name": "Ayaka",
-        "skills": [
-            {
-                "name": "Kamisato Art: Kabuki",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Cryo Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Kamisato Art: Hyouka",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Cryo DMG. Costs 3 Cryo Dices."
-            },
-            {
-                "name": "Kamisato Art: Soumetsu",
-                "type": "Elemental Burst",
-                "des": "Deals 4 Cryo DMG, summons 1 Frostflake Seki no To. Costs 3 Cryo Dices and 3 Energy."
-            },
-            {
-                "name": "Kamisato Art: Senho",
-                "type": "Passive Skill",
-                "des": "When switched to be the active character, this character gains Cryo Elemental Infusion."
-            }
-        ]
-    },
-    {
         "img": "Barbara_Genius_Invokation_Card_2.png",
         "name": "Barbara",
         "skills": [
