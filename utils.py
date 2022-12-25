@@ -235,14 +235,13 @@ def buff_engine(buff, my_deck, enemy_deck):
     # current behavior: yes
     res = buff.query('heal')
     if res > 0:
-        activated = True
-        my_deck.get_current_character().heal(res)
+        # activated = True
+        activated = my_deck.get_current_character().heal(res)
         
     res = buff.query('heal_all')
     if res > 0:
-        activated = True
         for c in my_deck.get_alive_characters():
-            c.heal(res)
+            activated |= c.heal(res)
 
     res = buff.query('heal_injured_bg_most')
     if res > 0:

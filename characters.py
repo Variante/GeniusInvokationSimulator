@@ -372,7 +372,9 @@ class Character:
         self.energy = max(min(self.energy + gain, self.energy_limit), 0)
     
     def heal(self, num):
+        activated = self.get_health_need() > 0
         self.health = min(num + self.health, self.health_limit)
+        return activated
         
     def take_dmg(self, dmg_type, dmg_num, source, dmg_piercing=0):
         if dmg_type in ['Physical', 'Pyro']:
