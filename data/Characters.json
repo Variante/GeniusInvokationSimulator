@@ -587,6 +587,68 @@
         "code_name": "diluc"
     },
     {
+        "img": "Xiangling_Genius_Invokation_Card_2.png",
+        "name": "Xiangling",
+        "energy_limit": 2,
+        "element": "Pyro",
+        "weapon": "polearm",
+        "faction": "Liyue",
+        "skills": [
+            {
+                "name": "Dough-Fu",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Pyro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "des": "Deals 2 Physical DMG. Costs 1 Pyro Dice and 2 Unaligned Dices.",
+                "code_name": "dough_fu"
+            },
+            {
+                "name": "Guoba Attack",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Pyro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "summon guoba",
+                "code_talent": "summon guoba;dmg Pyro 1",
+                "des": "Summons 1 Guoba. Costs 3 Pyro Dices.",
+                "code_name": "guoba_attack"
+            },
+            {
+                "name": "Pyronado",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Pyro"
+                    ],
+                    "d_num": [
+                        4
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Pyro 2;buff on_skill_finished,dmg Pyro 2,life 2 0 1,team",
+                "des": "Deals 2 Pyro DMG, creates 1 Pyronado. Costs 4 Pyro Dices and 2 Energy.",
+                "code_name": "pyronado"
+            }
+        ],
+        "code_name": "xiangling"
+    },
+    {
         "img": "Sucrose_Genius_Invokation_Card.png",
         "name": "Sucrose",
         "energy_limit": 2,

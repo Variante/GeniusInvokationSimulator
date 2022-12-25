@@ -189,6 +189,27 @@
         "code_name": "flowing_flame"
     },
     {
+        "img": "Crossfire_Card.png",
+        "name": "Crossfire",
+        "cost_raw": "4 Pyro Dices",
+        "cost": {
+            "d_type": [
+                "Pyro"
+            ],
+            "d_num": [
+                4
+            ],
+            "p_num": 0
+        },
+        "des": "Combat Action:  When your active character is Xiangling, equip this card.\nAfter Xiangling equips this card, immediately use Guoba Attack once.\nWhen your Xiangling, who has this card equipped, uses Guoba Attack, she will also deal 1 Pyro DMG.\n(You must have Xiangling in your deck to add this card to your deck.)",
+        "code": "talent xiangling;skill xiangling guoba_attack",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "crossfire"
+    },
+    {
         "img": "Stellar_Predator_Card.png",
         "name": "Stellar Predator",
         "cost_raw": "3 Electro Dices",
