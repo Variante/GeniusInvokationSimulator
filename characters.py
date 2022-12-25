@@ -548,7 +548,7 @@ class Character:
     def __repr__(self):
         return f"{self.name} | H: {self.health} / {self.health_limit} | E: {self.energy} / {self.energy_limit} {'| <*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
-               f"T: {self.talent:<5} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
+               f"T: {self.talent} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
                f"E: {self.element:<5} | {' '.join(self.attached_element)}"
         
 
@@ -578,6 +578,7 @@ def init_characters(names):
     
         
 if __name__ == '__main__':
-    print(json.dumps(init_characters(['Diluc'])[0].state()))
+    pool = load_js('Characters')
+    dump_js('test_character_list', [i['name'] for i in pool])
 
 

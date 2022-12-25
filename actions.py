@@ -163,4 +163,4 @@ def init_actions(names):
         
 if __name__ == '__main__':
     pool = load_js('Actions')
-    dump_js('test_action_list', [i['name'] for i in pool])
+    dump_js('test_action_list', [i['name'] for i in pool if 'TODO' not in i['tags']])
