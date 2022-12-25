@@ -140,7 +140,7 @@ class Deck:
         for c in self.characters:
             res |= c.active
         if res:
-            return
+            return True
         # print(f'[R{self.game_ptr.round_num:02d}-S{self.game_ptr.step_num:02d}] Player {self.deck_id + 1} needs to switch character')
         res = self.game_ptr.state()
         res['action_space'] = [f'activate {i.code_name}' for i in self.characters if i.alive]
@@ -149,11 +149,12 @@ class Deck:
         print('-' * 10)
         """
         if len(res['action_space']) == 0:
-            return
+            return False
         # ask user to activate a new character
         action = self.agent.get_action(res)
         self.game_ptr.action_history.append(f'Player {self.deck_id + 1}: {action}')
         self.get_character(action.split()[-1]).activate()
+        return True
 
     def has_alive(self):
         res = False
@@ -388,14 +389,15 @@ class Deck:
 
     def recharge(self, cmdw):
         if cmdw[1] == 'any':
-            for c in self.characters:
+            for c in [self.get_current_character()] + self.get_bg_characters():
                 if c.get_energy_need() > 0:
-                    c.recharge(int(cmdw[2]))
-                    return True
-            return False
+                    return c.recharge(int(cmdw[2]))
+        elif cmdw[1] == 'Electro':
+            for c in [self.get_current_character()] + self.get_bg_characters():
+                if c.get_energy_need() > 0 and c.element == 'Electro':
+                    return c.recharge(int(cmdw[2]))
         elif cmdw[1] == 'active':
-            self.get_current_character().recharge(int(cmdw[2]))
-            return True
+            return self.get_current_character().recharge(int(cmdw[2]))
         elif cmdw[1] == 'to_active':
             cur = self.get_current_character()
             v = int(cmdw[2])
@@ -404,6 +406,7 @@ class Deck:
                     cur.recharge(v)
                     c.recharge(-v)
             return True
+        return False
 
     """
     Switch characters
@@ -502,6 +505,9 @@ class Deck:
         self.defeated_this_round = 0
 
     def on_round_finished(self):
+        if not self.has_active_character():
+            return 
+
         for cha in self.characters:
             cha.on_round_finished()
         

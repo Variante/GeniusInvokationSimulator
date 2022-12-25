@@ -30,8 +30,9 @@ class Skill:
         if my_char.talent:
             self.round_usage_with_talent += 1
 
-        energy_gain = self.energy_gain
+        my_char.recharge(self.energy_gain)
         weapon =  my_char.weapon
+
         dmg_type = 'Physical'
         dmg = 0
         reaction = False
@@ -108,13 +109,13 @@ class Skill:
                 my_deck.enemy_ptr.switch_next(cmds[1] == 'prev')
             elif cmds[0] == 'apply':
                 my_char.attach_element_no_dmg(cmds[1])
+            elif cmds[0] == 'recharge':
+                my_deck.recharge(cmds)
             else:
                 raise NotImplementedError(f'[{self.name}] exec {self.code} - {code}')
         
         if self.stype == 'passive_skill':
             return
-
-        my_char.recharge(energy_gain)
 
         # gen die based on the weapon
         if self.stype == 'elemental_skill' and weapon is not None:
@@ -408,7 +409,9 @@ class Character:
         return self.energy_limit - self.energy
     
     def recharge(self, gain):
+        activated = self.get_energy_need() > 0
         self.energy = max(min(self.energy + gain, self.energy_limit), 0)
+        return activated
     
     def heal(self, num):
         activated = self.get_health_need() > 0

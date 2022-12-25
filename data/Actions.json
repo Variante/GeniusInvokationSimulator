@@ -273,6 +273,27 @@
         "code_name": "stellar_predator"
     },
     {
+        "img": "Awakening_Card.png",
+        "name": "Awakening",
+        "cost_raw": "4 Electro Dices",
+        "cost": {
+            "d_type": [
+                "Electro"
+            ],
+            "d_num": [
+                4
+            ],
+            "p_num": 0
+        },
+        "des": "Combat Action:  When your active character is Razor, equip this card.\nAfter Razor equips this card, immediately use Claw and Thunder once.\nAfter your Razor, who has this card equipped, uses Claw and Thunder: 1 of your Electro characters gains 1 Energy. (Active Character prioritized)\n(You must have Razor in your deck to add this card to your deck.)",
+        "code": "talent razor;skill razor claw_and_thunder",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "awakening"
+    },
+    {
         "img": "Chaotic_Entropy_Card.png",
         "name": "Chaotic Entropy",
         "cost_raw": "3 Anemo Dices and 2 Energy",

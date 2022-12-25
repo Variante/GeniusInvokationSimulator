@@ -835,6 +835,68 @@
         "code_name": "fischl"
     },
     {
+        "img": "Razor_Genius_Invokation_Card.png",
+        "name": "Razor",
+        "energy_limit": 3,
+        "element": "Electro",
+        "weapon": "Claymore",
+        "faction": "Mondstadt",
+        "skills": [
+            {
+                "name": "Steel Fang",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Electro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices.",
+                "code_name": "steel_fang"
+            },
+            {
+                "name": "Claw and Thunder",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Electro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Electro 3",
+                "code_talent": "dmg Electro 3;recharge Electro 1",
+                "des": "Deals 3 Electro DMG. Costs 3 Electro Dices.",
+                "code_name": "claw_and_thunder"
+            },
+            {
+                "name": "Lightning Fang",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Electro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 3
+                },
+                "code": "dmg Electro 5;buff on_normal_attack_finished,on_elemental_skill_finished,life 2 1 0,dmg Electro 2",
+                "des": "Deals 5 Electro DMG. This character gains The Wolf Within. Costs 3 Electro Dices and 3 Energy.",
+                "code_name": "lightning_fang"
+            }
+        ],
+        "code_name": "razor"
+    },
+    {
         "img": "Sucrose_Genius_Invokation_Card.png",
         "name": "Sucrose",
         "energy_limit": 2,

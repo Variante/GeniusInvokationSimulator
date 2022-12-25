@@ -1,39 +1,5 @@
 [
     {
-        "img": "Stellar_Predator_Card.png",
-        "name": "Stellar Predator",
-        "cost_raw": "3 Electro Dices",
-        "cost": {
-            "d_type": [
-                "Electro"
-            ],
-            "d_num": [
-                3
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Fischl, equip this card.\nAfter Fischl equips this card, immediately use Nightrider once.\nWhen your Fischl, who has this card equipped, creates an Oz, and after Fischl uses a Normal Attack: Deal 2 Electro DMG. (Consumes Usage(s))\n(You must have Fischl in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
-        "img": "Awakening_Card.png",
-        "name": "Awakening",
-        "cost_raw": "4 Electro Dices",
-        "cost": {
-            "d_type": [
-                "Electro"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Razor, equip this card.\nAfter Razor equips this card, immediately use Claw and Thunder once.\nAfter your Razor, who has this card equipped, uses Claw and Thunder: 1 of your Electro characters gains 1 Energy. (Active Character prioritized)\n(You must have Razor in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Thundering_Penance_Card.png",
         "name": "Thundering Penance",
         "cost_raw": "3 Electro Dices",
