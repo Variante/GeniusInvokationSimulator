@@ -630,6 +630,7 @@ def init_characters(names):
         
 if __name__ == '__main__':
     pool = load_js('Characters')
+    print('Available Characters: ', len(pool))
     dump_js('test_character_list', [i['name'] for i in pool])
 
 

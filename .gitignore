@@ -4,5 +4,4 @@ states/*
 parse.py
 web.html
 .vscode/*
-test_*
 *.zip
