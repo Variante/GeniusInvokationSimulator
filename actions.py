@@ -169,7 +169,7 @@ class GenAction(Action):
             "type": "equipment", # actually it is event but i'm lazy to change the code
             "code_name": "lightning_stiletto"
         }]
-        super(GenAction, self).__init__(code_name, pool)
+        super().__init__(code_name, pool)
 
 
 def init_actions(names):

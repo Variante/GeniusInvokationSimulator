@@ -84,7 +84,7 @@ class Buff:
 class Weapon(Buff):
     def __init__(self, source, code, char_ptr, weapon_type):
         # Put life in the front so that it can be overrided, and remove head "weapon"
-        super(Weapon, self).__init__(source, 'life 1 0 1,' + code[7:], char_ptr)
+        super().__init__(source, 'life 1 0 1,' + code[7:], char_ptr)
         self.wtype = weapon_type
         self.name = source
 
@@ -97,7 +97,7 @@ class Weapon(Buff):
 class Artifact(Buff):
     def __init__(self, source, code, char_ptr):
         # Put life in the front so that it can be overrided, and remove head "artifact"
-        super(Artifact, self).__init__(source, 'life 1 0 1,' + code[9:], char_ptr)
+        super().__init__(source, 'life 1 0 1,' + code[9:], char_ptr)
         self.name = source
 
     # In weapon: use life as a counter, which means how many times we used the weapon
@@ -112,7 +112,7 @@ class Summon(Buff):
         code = data['code']
         if talent:
             code = data.get('code_talent', code)
-        super(Summon, self).__init__(source, code)
+        super().__init__(source, code)
         self.name = data['name']
         self.code_name = data['code_name']
         self.attribs['on_round_finished'] = 1
@@ -132,7 +132,7 @@ class Summon(Buff):
 
 class ShieldSummon(Summon):
     def __init__(self, source, data, deck):
-        super(ShieldSummon, self).__init__(source, data, False)
+        super().__init__(source, data, False)
 
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
@@ -154,7 +154,7 @@ class Melody_Loop(Summon):
         for char in deck.characters:
             if char.code_name == 'barbara':
                 break
-        super(Melody_Loop, self).__init__(source, data, char.talent)
+        super().__init__(source, data, char.talent)
         self.my_char = char
         self.round_usage = 1
 
@@ -180,7 +180,7 @@ class Melody_Loop(Summon):
 
 class Support(Buff):
     def __init__(self, source, action):
-        super(Support, self).__init__(source, action.code[8:]) # remove support head
+        super().__init__(source, action.code[8:]) # remove support head
         self.name = action.name
         self.code_name = action.code_name
         # self.on_leave = action.on_leave
@@ -207,7 +207,7 @@ class Support(Buff):
 class Liben(Support):
     def __init__(self, source, action):
         assert action.code_name == 'liben'
-        super(Liben, self).__init__(source, action) 
+        super().__init__(source, action) 
         
         self.collection = []
 
@@ -226,7 +226,7 @@ class Liben(Support):
 class LiuSu(Support):
     def __init__(self, source, action):
         assert action.code_name == 'liu_su'
-        super(LiuSu, self).__init__(source, action) 
+        super().__init__(source, action) 
 
         self.round_life = 2
     
