@@ -2,13 +2,13 @@ import json
 import numpy as np
 import re
 
-def load_js(name, prefix=''):
+def load_js(name, prefix='data/'):
     fs = prefix + name + '.json'
     # print(f'Load from {fs}')
     with open(fs, 'r') as f:
         return json.load(f)
 
-def dump_js(name, data, prefix=''):
+def dump_js(name, data, prefix='data/'):
     fs = prefix + name + '.json'
     # print(f'Dump to {fs}')
     with open(fs, 'w') as f:
@@ -205,7 +205,12 @@ def buff_engine(buff, my_deck, enemy_deck):
         if enemy_char is not None:
             enemy_char.take_dmg(res[0], res[1], buff.source)
             activated = True
-
+    
+    res = buff.query('dmg_bg')
+    if isinstance(res, tuple) and res[1] > 0:
+        for enemy_char in enemy_char.get_bg_characters():
+            enemy_char.take_dmg(res[0], res[1], buff.source)
+            activated = True
 
     res = buff.query('gen')
     if isinstance(res, tuple) and res[1] > 0:

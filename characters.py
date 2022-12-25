@@ -13,10 +13,17 @@ class Skill:
         # if one has talent
         self.code_talent = data.get('code_talent', data['code']).split(';')
 
+        self.total_usage = 0
+        self.round_usage = 0
+        self.round_usage_with_talent = 0
+
+    def reset(self):
+        self.total_usage = 0
         self.round_usage = 0
         self.round_usage_with_talent = 0
         
     def exec(self, my_deck, my_char, enemy_char):
+        self.total_usage += 1
         self.round_usage += 1
         if my_char.talent:
             self.round_usage_with_talent += 1
@@ -52,10 +59,12 @@ class Skill:
 
                 # query infusion
                 if dmg_type == 'Physical':
-                    for i in  my_char.take_pattern_buff('infusion'):
-                        dmg_type = i.split('_')[-1]
+                    for i in my_char.take_pattern_buff('infusion'):
+                        if 'melee' in i and my_char.is_melee():
+                            continue
+                        dmg_type = i.split('_')[1]
                         break
-                    
+
                 ddmg, dreact = enemy_char.take_dmg(dmg_type, dmg + dmg_mods, f'e-{my_char.code_name}-{self.code_name}')
                 dealt_dmg += ddmg
                 reaction |= dreact
@@ -73,6 +82,8 @@ class Skill:
                     if 'heal_up' in i:
                         h += res[i]
                 my_char.heal(h)
+            elif cmds[0] == 'shield':
+                my_char.add_shield(self, code)
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'summon':
@@ -343,6 +354,8 @@ class Character:
     """
     Get information and actions
     """
+    def is_melee(self):
+        return self.weapon_type in ['blade', 'claymore', 'polearm']
     
     def get_skill(self, code_name):
         for i in self.skills:
@@ -490,6 +503,9 @@ class Character:
     """
 
     def reset(self):
+        for skill in self.skills:
+            skill.reset()
+
         self.health = self.health_limit
         self.energy = 0
 
@@ -532,7 +548,7 @@ class Character:
     def __repr__(self):
         return f"{self.name} | H: {self.health} / {self.health_limit} | E: {self.energy} / {self.energy_limit} {'| <*>'if self.active else ''}\n" + \
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
-               f"T: {self.talent:<5} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
+               f"T: {self.talent} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
                f"E: {self.element:<5} | {' '.join(self.attached_element)}"
         
 
@@ -562,6 +578,7 @@ def init_characters(names):
     
         
 if __name__ == '__main__':
-    print(json.dumps(init_characters(['Diluc'])[0].state()))
+    pool = load_js('Characters')
+    dump_js('test_character_list', [i['name'] for i in pool])
 
 

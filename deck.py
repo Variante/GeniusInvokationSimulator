@@ -80,6 +80,7 @@ class Deck:
     def print_deck(self):
         print_dice(self.current_dice)
         print('-' * 40)
+        print(f'Team buffs: {"".join([buff.__repr__() for buff in self.buffs])}')
         print('Characters: ')
         for c in self.characters:
             print(' ')
@@ -513,15 +514,3 @@ class Deck:
             s.on_round_finished(self)
         # process support
         self.proc_support_buffs('on_round_finished')
-
-
-if __name__ == '__main__':
-    d = Deck('p1', None)
-    d.roll()
-    d.pull(2)
-    print('Current dices: ', d.current_dice, sep = "\n")
-    print('Action space: ')
-    print(*d.get_action_space(), sep = "\n")
-    print('-' * 8)
-    print(d)
-    

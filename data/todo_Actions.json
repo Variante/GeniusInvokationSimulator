@@ -1,56 +1,5 @@
 [
     {
-        "img": "Undivided_Heart_Card.png",
-        "name": "Undivided Heart",
-        "cost_raw": "5 Cryo Dices",
-        "cost": {
-            "d_type": [
-                "Cryo"
-            ],
-            "d_num": [
-                5
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Ganyu, equip this card.\nAfter Ganyu equips this card, immediately use Frostflake Arrow once.\nWhen your Ganyu, who has this card equipped, uses Frostflake Arrow: Cryo DMG dealt by this Skill +1 if this Skill has been used before during this match, and it now deals 3 Piercing DMG to all opposing characters on standby instead.\n(You must have Ganyu in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
-        "img": "Shaken,_Not_Purred_Card.png",
-        "name": "Shaken, Not Purred",
-        "cost_raw": "4 Cryo Dices",
-        "cost": {
-            "d_type": [
-                "Cryo"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Diona, equip this card.\nAfter Diona equips this card, immediately use Icy Paws once.\nWhen your Diona, who has this card equipped, creates a Cat-Claw Shield, its Shield points +1.\n(You must have Diona in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
-        "img": "Steady_Breathing_Card.png",
-        "name": "Steady Breathing",
-        "cost_raw": "4 Cryo Dices",
-        "cost": {
-            "d_type": [
-                "Cryo"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Chongyun, equip this card.\nAfter Chongyun equips this card, immediately use Chonghua's Layered Frost once.\nWhen your Chongyun, who has this card equipped, creates a Chonghua Frost Field, it will have the following effects: Starting Duration (Rounds) +1, will cause your Sword, Claymore, and Polearm-wielding characters' Normal Attacks to deal +1 DMG.\n(You must have Chongyun in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Kanten_Senmyou_Blessing_Card.png",
         "name": "Kanten Senmyou Blessing",
         "cost_raw": "2 Cryo Dices",

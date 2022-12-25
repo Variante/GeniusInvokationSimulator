@@ -1,0 +1,125 @@
+[
+    {
+        "img": "Burning_Flame_Summon.webp",
+        "name": "Burning Flame",
+        "code_name": "burning_flame",
+        "code": "life 1 0 1,dmg Pyro 1,stack 2"
+    },
+	{
+        "img": "Cryo_Hilichurl_Shooter_Summon.webp",
+        "name": "Cryo Hilichurl Shooter",
+		"code_name": "cryo_hilichurl_shooter",
+		"code": "life 2 0 1,dmg Cryo 1"
+	},
+    {
+        "img": "Cuilein-Anbar_Summon.webp",
+        "name": "Cuilein-Anbar",
+        "code_name": "cuilein-anbar",
+        "code": "life 2 0 1,dmg Dendro 2"
+    },
+    {
+        "img": "Dandelion_Field_Summon.webp",
+        "name": "Dandelion Field",
+        "code_name": "dandelion_field",
+        "code": "life 2 0 1,dmg Anemo 1,heal 1"
+    },
+	{
+        "img": "Drunken_Mist_Summon.webp",
+        "name": "Drunken Mist",
+		"code_name": "drunken_mist",
+		"code": "life 2 0 1,dmg Cryo 1,heal 2"
+	},
+	{
+        "img": "Electro_Hilichurl_Shooter_Summon.webp",
+        "name": "Electro Hilichurl Shooter",
+		"code_name": "electro_hilichurl_shooter",
+		"code": "life 2 0 1,dmg Electro 1"
+	},
+    {
+        "img": "Frostflake_Seki_no_To_Summon.webp",
+        "name": "Frostflake Seki no To",
+        "code_name": "frostflake_seki_no_to",
+        "code": "life 2 0 1,dmg Cryo 2"
+    },
+    {
+        "img": "Guoba_Summon.webp",
+        "name": "Guoba",
+        "code_name": "guoba",
+        "code": "life 2 0 1,dmg Pyro 1"
+    },
+    {
+        "img": "Hilichurl_Berserker_Summon.webp",
+        "name": "Hilichurl Berserker",
+        "code_name": "hilichurl_berserker",
+        "code": "life 2 0 1,dmg Pyro 1"
+    },
+	{
+        "img": "Hydro_Samachurl_Summon.webp",
+        "name": "Hydro Samachurl",
+		"code_name": "hydro_samachurl",
+		"code": "life 2 0 1,dmg Hydro 1"
+	},
+	{
+        "img": "Large_Wind_Spirit_Summon.webp",
+        "name": "Large Wind Spirit",
+		"code_name": "large_wind_spirit",
+		"code": "life 3 0 1,dmg Anemo 2,on_swirl"
+	},
+    {
+        "img": "Melody_Loop_Summon.webp",
+        "name": "Melody Loop",
+        "code_name": "melody_loop",
+        "code": "life 2 0 1,heal_all 1,apply_Hydro 1"
+    },
+    {
+        "img": "Oceanic_Mimic_Ferret_Summon.webp",
+        "name": "Oceanic Mimic Ferret",
+        "code_name": "oceanic_mimic_ferret",
+        "code": "life 2 0 1,dmg Hydro 2"
+    },
+    {
+        "img": "Oceanic_Mimic_Frog_Summon.webp",
+        "name": "Oceanic Mimic Frog",
+        "code_name": "oceanic_mimic_frog",
+		"code": "",
+        "code_todo": "life 2 0 1,dmg Hydro 2,until_leave;buff dmg_down 1,life 2 0 1,team"
+    },
+    {
+        "img": "Oceanic_Mimic_Raptor_Summon.webp",
+        "name": "Oceanic Mimic Raptor",
+        "code_name": "oceanic_mimic_raptor",
+        "code": "life 3 0 1,dmg Hydro 2"
+    },
+	{
+        "img": "Oz_Summon.webp",
+        "name": "Oz",
+		"code_name": "oz",
+		"code": "life 2 0 1,dmg Electro 1",
+		"code_talent": "life 2 0 1,dmg Electro 2,on_fischl_normal_attack_finished"
+	},
+    {
+        "img": "Reflection_Summon.webp",
+        "name": "Reflection",
+        "code_name": "reflection",
+        "code": "",
+        "code_todo": "life 1 0 1,dmg Hydro 1,until_leave;buff dmg_down 1,life 1 0 1,team"
+    },
+	{
+        "img": "Sacred_Cryo_Pearl_Summon.webp",
+        "name": "Sacred Cryo Pearl",
+		"code_name": "sacred_cryo_pearl",
+		"code": "life 2 0 1,dmg Cryo 1,dmg_bg Piercing 1"
+	},
+    {
+        "img": "Shadowsword_Galloping_Frost_Summon.webp",
+        "name": "Shadowsword Galloping Frost",
+        "code_name": "shadowsword_galloping_frost",
+        "code": "life 2 0 1,dmg Cryo 1"
+    },
+    {
+        "img": "Shadowsword_Lone_Gale_Summon.webp",
+        "name": "Shadowsword Lone Gale",
+        "code_name": "shadowsword_lone_gale",
+        "code": "life 2 0 1,dmg Anemo 1"
+    }
+]

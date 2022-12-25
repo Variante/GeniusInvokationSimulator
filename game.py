@@ -95,8 +95,9 @@ class Game:
         for i, d in enumerate(self.decks):
             print(f'Player {i + 1} ' + ('[√]' if self.finish_round[i] else '[ ]') + (' <*>' if self.current_agent == i else ''))
             d.print_deck()
-            print('Available actions:')
-            d.print_actions()
+            if i == self.current_agent:
+                print('Available actions:')
+                d.print_actions()
             print('-' * 50)
 
     def print_winner(self, ret):
@@ -271,24 +272,24 @@ class Game:
         self.finish_round = [False] * self.agent_num
         
         # update all states
-        for deck in self.decks:
-            deck.on_round_start()
+        self.decks[self.current_agent].on_round_start()
+        self.decks[1 - self.current_agent].on_round_start()
    
     def on_round_finished(self):
         # update all states
-        for deck in self.decks:
-            deck.on_round_finished()
+        self.decks[self.agent_moves_first].on_round_finished()
+        self.decks[1 - self.agent_moves_first].on_round_finished()
 
         self.current_agent = self.agent_moves_first
         self.agent_moves_first = None
         
     def has_active_character(self):
         # start from the oppsite
-        self.decks[1 - self.current_agent].has_active_character()
         self.decks[self.current_agent].has_active_character()
+        self.decks[1 - self.current_agent].has_active_character()
         
             
-    def game_loop(self, show=False, save_hist=False):
+    def game_loop(self, show=False, save_state=False):
         # init the game
         for i in self.decks:
             # draw 5 init cards
@@ -298,12 +299,12 @@ class Game:
             # swap init cards
             if show:
                 self.print_desk(f'Player {self.current_agent + 1} init cards')
-            if save_hist:
+            if save_state:
                 self.dump_to_file('draw_card')
                 
             i.swap_card()
             self.step_num += 1
-            if save_hist:
+            if save_state:
                 self.dump_to_file('swap_card')
 
             # select the first character
@@ -311,8 +312,10 @@ class Game:
             self.step_num += 1
             if show:
                 self.print_full_desk(f'Player {self.current_agent + 1} select character')
-            if save_hist:
+            if save_state:
                 self.dump_to_file('select_character')
+
+        self.current_agent = np.random.randint(2)
 
         ret = -1
         # round start
@@ -328,7 +331,7 @@ class Game:
                 """
                 if show:
                     self.print_full_desk(f'Player {self.current_agent + 1} before action')
-                if save_hist:
+                if save_state:
                     self.dump_to_file('before')
                 """
 
@@ -343,8 +346,8 @@ class Game:
 
                 self.has_active_character()
                 if show:
-                    self.print_full_desk(f'Player {self.current_agent + 1} exec: ' + action)
-                if save_hist:
+                    self.print_full_desk(f'Player {self.current_agent + 1}: ' + action)
+                if save_state:
                     self.dump_to_file('done')
 
                 # check round finished
@@ -371,18 +374,18 @@ class Game:
 
             if show:
                 self.print_desk('round finished')
-            if save_hist:
+            if save_state:
                 self.dump_to_file('round_finished')
         return ret
         
         
         
 if __name__ == '__main__':
-    g = Game([Deck('starter', Agent()), Deck('starter', Agent())])
+    g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
     for _ in range(1):
-        g.seed(np.random.randint(500))
-        ret = g.game_loop(show=True, save_hist=False)
-        g.dump_to_file('game_finished')
+        g.seed(np.random.randint(10000))
+        ret = g.game_loop(show=True, save_state=False)
+        # g.dump_to_file('game_finished')
         g.print_winner(ret)
         g.reset()
     
