@@ -463,8 +463,19 @@ class Character:
         
         reaction = self.attach_element(dmg_type, source)
 
+        # Card "Chaotic Entropy"
         for i in self.deck_ptr.enemy_ptr.get_summon_buff(f'dmg_{dmg_type}_up'):
             self.add_buff(f'{i.source}-chaotic_entropy', f'vulnerable {i.query(f"dmg_{dmg_type}_up")}')
+
+        # Card "Elemental Resonance: Enduring Rock"
+        if dmg_type == 'Geo':
+            for b in self.deck_ptr.enemy_ptr.buffs:
+                res = b.query('shield')
+                if res > 0:
+                    buf = self.deck_ptr.enemy_ptr.take_team_buffs('geo_dmg_shield_up')
+                    b.change_keyword('shield', res + buf)
+                    break
+    
         
         return self.dmg(dmg_num, dmg_piercing, source), reaction
         
@@ -600,9 +611,15 @@ class Character:
                 enemy_char = self.deck_ptr.get_enemy_current_character()
 
                 # if anyone triggers a reaction
-                self.proc_buff_event('on_reaction')
+                # self.proc_buff_event('on_reaction')
+                # for "Instructor's Cap"
                 if enemy_char is not None:
                     enemy_char.proc_buff_event('on_reaction')
+                # Card "Elemental Resonance: Sprawling Greenery"
+                res = self.deck_ptr.enemy_ptr.take_team_buff('on_reaction_dmg_up')
+                if res > 0:
+                    self.add_buff('event-elemental_resonance_sprawling_greenery', f'vulnerable {res}')
+
 
                 # for card "Elemental Resonance: Fervent Flames"
                 if  enemy_char is not None and 'Pyro' in [i, element] and source.startswith('e-' + enemy_char.code_name):

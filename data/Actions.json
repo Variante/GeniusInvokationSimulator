@@ -1834,8 +1834,7 @@
         },
         "des": "During this round, after your character deals Geo DMG next time: Should there be any Combat Status on your side that provides Shield, grant one such Status with 3 Shield points.\n(You must have at least 2 Geo characters in your deck to add this card to your deck.)",
         "tags": [
-            "elemental_resonance",
-            "TODO"
+            "elemental_resonance"
         ],
         "type": "event",
         "code": "buff geo_dmg_shield_up 3,team",
@@ -1877,11 +1876,10 @@
         },
         "des": "During this round, the next Elemental Reaction your active character triggers deals +2 DMG.\nYour Burning Flame, Dendro Core, and Catalyzing Field gain +1 Usage(s).\n(You must have at least 2 Dendro characters in your deck to add this card to your deck.)",
         "tags": [
-            "elemental_resonance",
-            "TODO"
+            "elemental_resonance"
         ],
         "type": "event",
-        "code": "buff on_reaction_dmg_up 2,team;heal_dendro",
+        "code": "buff on_reaction_dmg_up 2,team;heal_dendro 1",
         "code_name": "elemental_resonance_sprawling_greenery"
     },
     {

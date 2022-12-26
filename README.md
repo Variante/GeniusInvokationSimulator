@@ -8,12 +8,12 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 中文用户请参考[这个文档](https://docs.qq.com/doc/DSWRKbVRHRlhnaUJt)
 
 ---
-## This project is still under construction. But we are close to finish... I guess
+## This project is still under construction. But we are very close... I guess
 
 ```
 Progress
 [Characters] 20 / 27
-[Actions] 110 / 119
+[Actions] 112 / 119
 ```
 
 ## Dependence

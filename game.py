@@ -219,6 +219,16 @@ class Game:
                 my_deck.add_support(action, int(params[0]))
             elif cmdw[0] == 'transfer':
                 my_deck.transfer_equip(cmdw[1], params[0], params[1])
+            elif cmdw[0] == 'heal_dendro':
+                val = int(cmdw[1])
+                # burning flame += 1
+                s = my_deck.get_summon('burning_flame')
+                if s is not None:
+                    s.life += val
+                # Dendro core and catalyzing_field
+                for s in my_deck.buffs:
+                    if s.query('dendro_core') or s.query('catalyzing_field'):
+                        s.life += val
             else:
                 raise NotImplementedError(f'[card_engine]{cmd}')
         
