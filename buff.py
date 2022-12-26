@@ -155,13 +155,13 @@ class Melody_Loop(Summon):
             if char.code_name == 'barbara':
                 break
         super().__init__(source, data, char.talent)
-        self.my_char = char
+        self.char_ptr = char
         self.round_usage = 1
 
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
         if keyword == 'switch_cost_down':
-            disabled = not (self.round_usage != 0 and self.my_char.alive and self.my_char.talent)
+            disabled = not (self.round_usage != 0 and self.char_ptr.alive and self.char_ptr.talent)
         else:
             disabled = False
         if disabled:
@@ -203,6 +203,21 @@ class Support(Buff):
             if i in self.attribs:
                 self.change_keyword(i, self.query(i) + 1)
 
+    def state(self):
+        res = super().state()
+        display_val = None
+        if 'until_leave' in self.attribs:
+            display_val = self.init_life - self.life
+        elif 'on_round_finished' in self.attribs or 'on_round_start' in self.attribs:
+            display_val = self.life
+        elif 'artifact_save' in self.attribs:
+            display_val = self.attribs['artifact_save']
+        elif 'weapon_save' in self.attribs:
+            display_val = self.attribs['weapon_save']
+        elif self.code_name == 'liu_su':
+            display_val = self.round_life
+        res['display_value'] = display_val
+        return res
 
 class Liben(Support):
     def __init__(self, source, action):

@@ -51,7 +51,7 @@ class Game:
             mkdir(p)
         except:
             pass
-        dump_js(f'{p}/R{self.round_num:02d}_{self.step_num:02d}_{msg}', self.save())
+        dump_js(f'{p}/R{self.round_num:02d}_{self.step_num:02d}_{msg}', self.save(), prefix='')
 
     def save(self):
         game_state = {
