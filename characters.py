@@ -204,7 +204,6 @@ class Character:
         self.attached_element = []
         self.active = False
         self.activate_cost = 1    
-        self.alive = True
         
         self.deck_ptr = None
 
@@ -349,7 +348,7 @@ class Character:
         return res
         
     def get_action_space(self, deck):
-        if not self.alive:
+        if not self.alive():
             return []
         if self.query_buff('frozen'):
             return []
@@ -381,7 +380,7 @@ class Character:
         self.proc_buff_event('on_defeated')
         self.deck_ptr.defeated_this_round += 1
         self.reset()
-        self.alive = False
+        self.health = 0
 
     def on_round_finished(self):
         self.proc_buff_event('on_round_finished')
@@ -395,6 +394,9 @@ class Character:
     """
     Get information and actions
     """
+    def alive(self):
+        return self.health > 0
+
     def is_melee(self):
         return self.weapon_type in ['blade', 'claymore', 'polearm']
     
@@ -649,7 +651,6 @@ class Character:
         self.attached_element = []
         self.active = False
         self.activate_cost = 1    
-        self.alive = True
 
 
     def state(self):
@@ -673,8 +674,7 @@ class Character:
             
             'attached_element': self.attached_element,
             'active': self.active,
-            'activate_cost': self.activate_cost,
-            'alive': self.alive
+            'activate_cost': self.activate_cost
         }
         
     def __repr__(self):

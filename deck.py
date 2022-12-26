@@ -109,7 +109,7 @@ class Deck:
 
     def get_action_space(self):
         char = self.get_current_character()
-        assert char.alive
+        assert char.alive()
 
         res = char.get_action_space(self)
         # query action cards
@@ -123,7 +123,7 @@ class Deck:
         c_mode = char.query_buff('switch_cost_down') + self.query_team_buff('switch_cost_down')
         
         for char in self.characters:
-            if char.alive and not char.active:
+            if char.alive() and not char.active:
                 sw_cost = max(char.activate_cost - c_mode, 0)
                 res.extend(
                 generate_action_space(build_cost(sw_cost),
@@ -143,7 +143,7 @@ class Deck:
             return True
         # print(f'[R{self.game_ptr.round_num:02d}-S{self.game_ptr.step_num:02d}] Player {self.deck_id + 1} needs to switch character')
         res = self.game_ptr.state()
-        res['action_space'] = [f'activate {i.code_name}' for i in self.characters if i.alive]
+        res['action_space'] = [f'activate {i.code_name}' for i in self.characters if i.alive()]
         """
         print(res['action_space'])
         print('-' * 10)
@@ -159,7 +159,7 @@ class Deck:
     def has_alive(self):
         res = False
         for c in self.characters:
-            res |= c.alive
+            res |= c.alive()
         return res
     
     """
@@ -179,7 +179,7 @@ class Deck:
         
     def reroll(self, total_num=8):
         # self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))
-        keep = self.agent.get_keep_dice(self.state())
+        keep = self.agent.get_keep_dice({'my_state': self.state()})
         self.current_dice = self.d.roll(total_num=total_num, keep=keep)
 
     def gen(self, d_type, d_num):
@@ -434,7 +434,7 @@ class Deck:
         if cur is not None:
             if code_name == cur.code_name:
                 return
-            if cur.alive:
+            if cur.alive():
                 cur.deactivate()
         self.get_character(code_name).activate()      
         # Liu Su
@@ -448,7 +448,7 @@ class Deck:
         l = len(self.characters)
         for i in range(1, l + l):
             c = self.characters[(idx + (i if reversed else -i)) % l]
-            if c.alive:
+            if c.alive():
                 self.switch(c.code_name)
                 return
 
@@ -466,7 +466,7 @@ class Deck:
         return self.get_current_character().element
 
     def get_alive_characters(self):
-        return [c for c in self.characters if c.alive]
+        return [c for c in self.characters if c.alive()]
                 
     def get_current_character(self):
         self.has_active_character()
@@ -482,7 +482,7 @@ class Deck:
                 return i
         
     def get_bg_characters(self):
-        return [c for c in self.characters if c.alive and not c.active]
+        return [c for c in self.characters if c.alive() and not c.active]
     
     def get_enemy_current_character(self):
         return self.enemy_ptr.get_current_character()

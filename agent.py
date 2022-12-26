@@ -8,7 +8,12 @@ class Agent:
         return [0] * 5
     
     def get_keep_dice(self, state):
-        return {}
+        e = 'Pyro'
+        for i in state['my_state']['characters']:
+            if i['active']:
+                e = i['element']
+                break
+        return {i:state['my_state']['current_dice'][i] for i in [e, 'Omni']}
         
     def get_action(self, state):
         try:

@@ -161,7 +161,7 @@ class Melody_Loop(Summon):
     def query(self, keyword):
         value = self.attribs.get(keyword, 0)
         if keyword == 'switch_cost_down':
-            disabled = not (self.round_usage != 0 and self.char_ptr.alive and self.char_ptr.talent)
+            disabled = not (self.round_usage != 0 and self.char_ptr.alive() and self.char_ptr.talent)
         else:
             disabled = False
         if disabled:
