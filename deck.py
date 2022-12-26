@@ -175,12 +175,12 @@ class Deck:
                     if ele == 'current':
                         ele = self.get_current_character().element
                     keep[ele] = a.query(i) + keep.get(ele, 0)
-        self.current_dice = self.d.roll(keep=keep)
+        self.current_dice = self.d.roll(total_num=count_total_dice(self.current_dice), keep=keep)
         
-    def reroll(self, total_num=8):
+    def reroll(self):
         # self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))
         keep = self.agent.get_keep_dice({'my_state': self.state()})
-        self.current_dice = self.d.roll(total_num=total_num, keep=keep)
+        self.current_dice = self.d.roll(total_num=count_total_dice(self.current_dice), keep=keep)
 
     def gen(self, d_type, d_num):
         gen_num = min(16 - count_total_dice(self.current_dice), d_num)

@@ -17,57 +17,6 @@
         "type": ""
     },
     {
-        "img": "Lands_of_Dandelion_Card.png",
-        "name": "Lands of Dandelion",
-        "cost_raw": "4 Anemo Dices and 3 Energy",
-        "cost": {
-            "d_type": [
-                "Anemo"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 3
-        },
-        "des": "Combat Action:  When your active character is Jean, equip this card.\nAfter Jean equips this card, immediately use Dandelion Breeze once.\nWhen your Jean, who has this card equipped, is on the field, Dandelion Field will cause you to deal +1 Anemo DMG.\n(You must have Jean in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
-        "img": "Strategic_Reserve_Card.png",
-        "name": "Strategic Reserve",
-        "cost_raw": "4 Geo Dices",
-        "cost": {
-            "d_type": [
-                "Geo"
-            ],
-            "d_num": [
-                4
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Ningguang, equip this card.\nAfter Ningguang equips this card, immediately use Jade Screen once.\nWhen your Ningguang, who has this card equipped, is on the field, Jade Screen will cause you to deal +1 Geo DMG.\n(You must have Ningguang in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
-        "img": "I_Got_Your_Back_Card.png",
-        "name": "I Got Your Back",
-        "cost_raw": "3 Geo Dices",
-        "cost": {
-            "d_type": [
-                "Geo"
-            ],
-            "d_num": [
-                3
-            ],
-            "p_num": 0
-        },
-        "des": "Combat Action:  When your active character is Noelle, equip this card.\nAfter Noelle equips this card, immediately use Breastplate once.\nWhen your Noelle, who has this card equipped, creates a Full Plate, it will heal all your characters for 1 HP after Noelle uses a Normal Attack. (Once per Round)\n(You must have Noelle in your deck to add this card to your deck.)",
-        "tags": [],
-        "type": ""
-    },
-    {
         "img": "Floral_Sidewinder_Card.png",
         "name": "Floral Sidewinder",
         "cost_raw": "3 Dendro Dices",

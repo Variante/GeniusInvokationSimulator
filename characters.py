@@ -42,7 +42,7 @@ class Skill:
             cmds = code.split()
             if cmds[0] == 'if_else':
                 conds = code.split(':')
-                if eval(conds[0].split()[1]):
+                if eval(conds[0][8:]):
                     code = conds[1]
                 else:
                     code = conds[2]
@@ -59,7 +59,7 @@ class Skill:
                     if enemy_char is not None and enemy_char.health <= 6:
                         dmg_mods += my_char.weapon.query('enemy_health_lower_than_six_dmg_up')
 
-                # query all buffs
+                # query all buffs by skills
                 for i, j in my_char.take_pattern_buff(self.stype).items():
                     if 'dmg_up' in i:
                         dmg_mods += j
@@ -287,7 +287,20 @@ class Character:
 
     def get_buff(self, keyword):
         return [i for i in self._get_buff_list() if i.query(keyword)]
-        
+    
+    def has_buff_by_source(self, source):
+        for i in self.buffs:
+            if i.source == source:
+                return True
+        return False
+
+    def has_buff(self, keyword):
+        # this function will ignore disable signal
+        for i in self._get_buff_list():
+            if keyword in i.attribs:
+                return True
+        return False
+
     def query_buff(self, keyword):
         value = 0
         for i in self._get_buff_list():
@@ -433,6 +446,18 @@ class Character:
         if dmg_type in ['Dendro', 'Electro']:
             if self.deck_ptr.enemy_ptr.take_team_buff('catalyzing_field'):
                 self.add_buff(f'{source}-catalyzing_field', 'vulnerable 1')
+
+        # Card "Lands of Dandelion"
+        if dmg_type == 'Anemo' and self.deck_ptr.enemy_ptr.get_character('jean').alive():
+            res = self.deck_ptr.enemy_ptr.query_team_buff('anemo_dmg_up')
+            if res > 0:
+                self.add_buff(f'{source}-anemo_dmg_up', f'vulnerable {res}')
+
+        # Card "Strategic Reserve"
+        if dmg_type == 'Geo' and self.deck_ptr.enemy_ptr.get_character('ningguang').alive():
+            res = self.deck_ptr.enemy_ptr.query_team_buff('geo_dmg_up')
+            if res > 0:
+                self.add_buff(f'{source}-geo_dmg_up', f'vulnerable {res}')
         
         reaction = self.attach_element(dmg_type, source)
 

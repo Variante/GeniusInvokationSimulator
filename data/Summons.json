@@ -21,7 +21,8 @@
         "img": "Dandelion_Field_Summon.webp",
         "name": "Dandelion Field",
         "code_name": "dandelion_field",
-        "code": "life 2 0 1,dmg Anemo 1,heal 1"
+        "code": "life 2 0 1,dmg Anemo 1,heal 1",
+        "code_talent": "life 2 0 1,dmg Anemo 1,heal 1,anemo_dmg_up 1,special_code"
     },
 	{
         "img": "Drunken_Mist_Summon.webp",

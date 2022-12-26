@@ -1118,7 +1118,8 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg Geo 2;buff dmg_larger_than_two_dmg_down 1,life 2 0 1,team,jade_screen",
+                "code": "buff dmg_larger_than_two_dmg_down 1,life 2 0 1,team,jade_screen;dmg Geo 2",
+                "code_talent": "buff dmg_larger_than_two_dmg_down 1,life 2 0 1,team,jade_screen,geo_dmg_up;dmg Geo 2",
                 "des": "Deals 2 Geo DMG, creates 1 Jade Screen. Costs 3 Geo Dices.",
                 "code_name": "jade_screen"
             },
@@ -1164,6 +1165,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Physical 2",
+                "code_talent": "dmg Physical 2;if_else my_deck.query_team_buff('breastplate') and self.round_usage_with_talent==1:heal_all 1:",
                 "des": "Deals 2 Physical DMG. Costs 1 Geo Dice and 2 Unaligned Dices.",
                 "code_name": "favonius_bladework_maid"
             },
@@ -1179,7 +1181,7 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg Geo 1;buff shield 2,team,half_physical_dmg,life 2 0 0",
+                "code": "dmg Geo 1;buff shield 2,team,half_physical_dmg,life 2 0 0,breastplate",
                 "des": "Deals 1 Geo DMG, creates 1 Full Plate. Costs 3 Geo Dices.",
                 "code_name": "breastplate"
             },
@@ -1195,7 +1197,7 @@
                     ],
                     "p_num": 2
                 },
-                "code": "dmg Geo 4;buff normal_attack_dmg_up 2,sweeping_time,infusion_Geo,life 2 1 0",
+                "code": "dmg Geo 4;buff normal_attack_dmg_up 2,sweeping_time,infusion_Geo,life 2 1 0;buff normal_attack_cost_geo_down 1,life 1 0 1,stay,refresh,when self.char_ptr.has_buff('sweeping_time')",
                 "des": "Deals 4 Geo DMG. This character gains Sweeping Time. Costs 4 Geo Dices and 2 Energy.",
                 "code_name": "sweeping_time"
             }
