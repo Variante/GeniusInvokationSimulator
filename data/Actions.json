@@ -570,7 +570,7 @@
             "polearm",
             "weapon"
         ],
-        "code": ";shield liyue",
+        "code": ";shield liyue,life 1 0 0",
         "type": "equipment",
         "code_name": "lithic_spear"
     },

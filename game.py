@@ -214,7 +214,7 @@ class Game:
             elif cmdw[0] == 'artifact':
                 target.add_artifact(action, cmd)
             elif cmdw[0] == 'shield':
-                target.add_shield(action, cmd)
+                target.add_shield(action.code_name, cmd)
             elif cmdw[0] == 'support':
                 my_deck.add_support(action, int(params[0]))
             elif cmdw[0] == 'transfer':

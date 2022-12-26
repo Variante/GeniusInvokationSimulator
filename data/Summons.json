@@ -3,7 +3,7 @@
         "img": "Burning_Flame_Summon.webp",
         "name": "Burning Flame",
         "code_name": "burning_flame",
-        "code": "life 1 0 1,dmg Pyro 1,stack 2"
+        "code": "life 1 0 1,dmg Pyro 1"
     },
 	{
         "img": "Cryo_Hilichurl_Shooter_Summon.webp",

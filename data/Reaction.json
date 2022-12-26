@@ -21,14 +21,14 @@
 	},
 	"Dendro": {
 		"Hydro": "bloom",
-		"Electro": "catalyze",
+		"Electro": "quicken",
 		"Pyro": "burning"
 	},
 	"Electro": {
 		"Hydro": "electro_charged",
 		"Geo": "crystallize",
 		"Anemo": "swirl",
-		"Dendro": "catalyze",
+		"Dendro": "quicken",
 		"Pyro": "overloaded",
 		"Cryo": "superconduct"
 	},

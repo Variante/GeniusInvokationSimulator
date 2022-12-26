@@ -115,8 +115,8 @@
                     ],
                     "p_num": 0
                 },
-                "code": "dmg Cryo 2;shield 1,team",
-                "code_talent": "dmg Cryo 2;shield 2,team",
+                "code": "dmg Cryo 2;shield 1,team,life 1 0 0",
+                "code_talent": "dmg Cryo 2;shield 2,team,life 2 0 0",
                 "des": "Deals 2 Cryo DMG, creates 1 Cat",
                 "code_name": "icy_paws"
             },
@@ -591,7 +591,7 @@
         "name": "Xiangling",
         "energy_limit": 2,
         "element": "Pyro",
-        "weapon": "polearm",
+        "weapon": "Polearm",
         "faction": "Liyue",
         "skills": [
             {
@@ -1018,5 +1018,249 @@
             }
         ],
         "code_name": "sucrose"
+    },
+    {
+        "img": "Jean_Genius_Invokation_Card.png",
+        "name": "Jean",
+        "energy_limit": 3,
+        "element": "Anemo",
+        "faction": "Mondstadt",
+        "weapon": "Sword",
+        "skills": [
+            {
+                "name": "Favonius Bladework",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Anemo",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "des": "Deals 2 Physical DMG. Costs 1 Anemo Dice and 2 Unaligned Dices.",
+                "code_name": "favonius_bladework"
+            },
+            {
+                "name": "Gale Blade",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Anemo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Anemo 3;switch_enemy next",
+                "des": "Deals 3 Anemo DMG, the target is forcibly switched to the next character. Costs 3 Anemo Dices.",
+                "code_name": "gale_blade"
+            },
+            {
+                "name": "Dandelion Breeze",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Anemo"
+                    ],
+                    "d_num": [
+                        4
+                    ],
+                    "p_num": 3
+                },
+                "code": "heal_all 2;summon dandelion_field",
+                "des": "Heals all your characters for 2 HP, summons 1 Dandelion Field. Costs 4 Anemo Dices and 3 Energy.",
+                "code_name": "dandelion_breeze"
+            }
+        ],
+        "code_name": "jean"
+    },
+    {
+        "img": "Ningguang_Genius_Invokation_Card.png",
+        "name": "Ningguang",
+        "energy_limit": 3,
+        "element": "Geo",
+        "faction": "Liyue",
+        "weapon": "Catalyst",
+        "skills": [
+            {
+                "name": "Sparkling Scatter",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Geo",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Geo 1",
+                "des": "Deals 1 Geo DMG. Costs 1 Geo Dice and 2 Unaligned Dices.",
+                "code_name": "sparkling_scatter"
+            },
+            {
+                "name": "Jade Screen",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Geo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Geo 2;buff dmg_larger_than_two_dmg_down 1,life 2 0 1,team,jade_screen",
+                "des": "Deals 2 Geo DMG, creates 1 Jade Screen. Costs 3 Geo Dices.",
+                "code_name": "jade_screen"
+            },
+            {
+                "name": "Starshatter",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Geo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 3
+                },
+                "code": "if_else my_deck.query_team_buff('jade_screen'):dmg Geo 8:dmg Geo 6",
+                "des": "Deals 6 Geo DMG. If Jade Screen is on the field, deals +2 DMG. Costs 3 Geo Dices and 3 Energy.",
+                "code_name": "starshatter"
+            }
+        ],
+        "code_name": "ningguang"
+    },
+    {
+        "img": "Noelle_Genius_Invokation_Card.png",
+        "name": "Noelle",
+        "energy_limit": 2,
+        "element": "Geo",
+        "faction": "Mondstadt",
+        "weapon": "Claymore",
+        "skills": [
+            {
+                "name": "Favonius Bladework - Maid",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Geo",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "des": "Deals 2 Physical DMG. Costs 1 Geo Dice and 2 Unaligned Dices.",
+                "code_name": "favonius_bladework_maid"
+            },
+            {
+                "name": "Breastplate",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Geo"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Geo 1;buff shield 2,team,half_physical_dmg,life 2 0 0",
+                "des": "Deals 1 Geo DMG, creates 1 Full Plate. Costs 3 Geo Dices.",
+                "code_name": "breastplate"
+            },
+            {
+                "name": "Sweeping Time",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Geo"
+                    ],
+                    "d_num": [
+                        4
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Geo 4;buff normal_attack_dmg_up 2,sweeping_time,infusion_Geo,life 2 1 0",
+                "des": "Deals 4 Geo DMG. This character gains Sweeping Time. Costs 4 Geo Dices and 2 Energy.",
+                "code_name": "sweeping_time"
+            }
+        ],
+        "code_name": "noelle"
+    },
+    {
+        "img": "Collei_Genius_Invokation_Card.png",
+        "name": "Collei",
+        "energy_limit": 2,
+        "element": "Dendro",
+        "faction": "Sumeru",
+        "weapon": "Bow",
+        "skills": [
+            {
+                "name": "Supplicant's Bowmanship",
+                "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Dendro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
+                "des": "Deals 2 Physical DMG. Costs 1 Dendro Dice and 2 Unaligned Dices.",
+                "code_name": "supplicant_s_bowmanship"
+            },
+            {
+                "name": "Floral Brush",
+                "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Dendro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Dendro 3",
+                "des": "Deals 3 Dendro DMG. Costs 3 Dendro Dices.",
+                "code_name": "floral_brush"
+            },
+            {
+                "name": "Trump-Card Kitty",
+                "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Dendro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Dendro 2;summon cuilein-anbar",
+                "des": "Deals 2 Dendro DMG, summons 1 Cuilein-Anbar",
+                "code_name": "trump_card_kitty"
+            }
+        ],
+        "code_name": "collei"
     }
 ]

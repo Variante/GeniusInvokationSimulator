@@ -2,110 +2,62 @@
     {
         "img": "Cyno_Genius_Invokation_Card.png",
         "name": "Cyno",
+        "energy_limit": 2,
+        "element": "Electro",
+        "weapon": "Polearm",
+        "faction": "Sumeru",
         "skills": [
             {
                 "name": "Invoker's Spear",
                 "type": "Normal Attack",
+                "cost": {
+                    "d_type": [
+                        "Electro",
+                        "Unaligned"
+                    ],
+                    "d_num": [
+                        1,
+                        2
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Physical 2",
                 "des": "Deals 2 Physical DMG. Costs 1 Electro Dice and 2 Unaligned Dices."
             },
             {
                 "name": "Secret Rite: Chasmic Soulfarer",
                 "type": "Elemental Skill",
+                "cost": {
+                    "d_type": [
+                        "Electro"
+                    ],
+                    "d_num": [
+                        3
+                    ],
+                    "p_num": 0
+                },
+                "code": "dmg Electro 3",
                 "des": "Deals 3 Electro DMG. Costs 3 Electro Dices."
             },
             {
                 "name": "Sacred Rite: Wolf's Swiftness",
                 "type": "Elemental Burst",
+                "cost": {
+                    "d_type": [
+                        "Electro"
+                    ],
+                    "d_num": [
+                        4
+                    ],
+                    "p_num": 2
+                },
+                "code": "dmg Electro 4",
                 "des": "Deals 4 Electro DMG. Pactsworn Pathclearer's Indwelling Level +2. Costs 4 Electro Dices and 2 Energy."
             },
             {
                 "name": "Lawful Enforcer",
                 "type": "Passive Skill",
                 "des": "When the battle begins, this character gains Pactsworn Pathclearer."
-            }
-        ]
-    },
-    {
-        "img": "Jean_Genius_Invokation_Card.png",
-        "name": "Jean",
-        "skills": [
-            {
-                "name": "Favonius Bladework",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Anemo Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Gale Blade",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Anemo DMG, the target is forcibly switched to the next character. Costs 3 Anemo Dices."
-            },
-            {
-                "name": "Dandelion Breeze",
-                "type": "Elemental Burst",
-                "des": "Heals all your characters for 2 HP, summons 1 Dandelion Field. Costs 4 Anemo Dices and 3 Energy."
-            }
-        ]
-    },
-    {
-        "img": "Ningguang_Genius_Invokation_Card.png",
-        "name": "Ningguang",
-        "skills": [
-            {
-                "name": "Sparkling Scatter",
-                "type": "Normal Attack",
-                "des": "Deals 1 Geo DMG. Costs 1 Geo Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Jade Screen",
-                "type": "Elemental Skill",
-                "des": "Deals 2 Geo DMG, creates 1 Jade Screen. Costs 3 Geo Dices."
-            },
-            {
-                "name": "Starshatter",
-                "type": "Elemental Burst",
-                "des": "Deals 6 Geo DMG. If Jade Screen is on the field, deals +2 DMG. Costs 3 Geo Dices and 3 Energy."
-            }
-        ]
-    },
-    {
-        "img": "Noelle_Genius_Invokation_Card.png",
-        "name": "Noelle",
-        "skills": [
-            {
-                "name": "Favonius Bladework - Maid",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Geo Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Breastplate",
-                "type": "Elemental Skill",
-                "des": "Deals 1 Geo DMG, creates 1 Full Plate. Costs 3 Geo Dices."
-            },
-            {
-                "name": "Sweeping Time",
-                "type": "Elemental Burst",
-                "des": "Deals 4 Geo DMG. This character gains Sweeping Time. Costs 4 Geo Dices and 2 Energy."
-            }
-        ]
-    },
-    {
-        "img": "Collei_Genius_Invokation_Card.png",
-        "name": "Collei",
-        "skills": [
-            {
-                "name": "Supplicant's Bowmanship",
-                "type": "Normal Attack",
-                "des": "Deals 2 Physical DMG. Costs 1 Dendro Dice and 2 Unaligned Dices."
-            },
-            {
-                "name": "Floral Brush",
-                "type": "Elemental Skill",
-                "des": "Deals 3 Dendro DMG. Costs 3 Dendro Dices."
-            },
-            {
-                "name": "Trump-Card Kitty",
-                "type": "Elemental Burst",
-                "des": "Deals 2 Dendro DMG, summons 1 Cuilein"
             }
         ]
     },

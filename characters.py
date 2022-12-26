@@ -99,7 +99,7 @@ class Skill:
                 for c in my_deck.get_alive_characters():
                     c.heal(int(cmds[1]))
             elif cmds[0] == 'shield':
-                my_char.add_shield(self, code)
+                my_char.add_shield(self, f'skill {my_char.name}-{self.code_name}', code)
             elif cmds[0] == 'buff':
                 my_char.add_buff(f'skill {my_char.name}-{self.code_name}-{bc}', code + ',unique')
                 bc += 1
@@ -234,7 +234,7 @@ class Character:
         self.artifact = Artifact(action.code_name, data, self)
         self._update_save(action.cost['d_num'][0], 'artifact')
 
-    def add_shield(self, action, data):
+    def add_shield(self, source, data):
         # for card "lithic_spear"
         faction = 'liyue'
         data = data.replace(faction, str(self.deck_ptr.count_character_by_faction(faction)))
@@ -246,12 +246,15 @@ class Character:
 
         for i, b in enumerate(bl):
             # refresh the shield
-            if b.source == action.code_name:
-                # TODO: might be add
-                bl[i] = Buff(action.code_name, data, self)
+            if b.source == source: # buff from the same source should refresh the buff, i guess
+                if source == 'crystallize':
+                    # from reaction cystallize, stack up to 2
+                    bl[i].change_keyword('shield', min(bl[i].query('shield') + 1, 2))
+                else:
+                    bl[i] = Buff(source, data, self)
                 break
         else:
-            bl.append(Buff(action.code_name, data, self))
+            bl.append(Buff(source, data, self))
 
 
     """
@@ -427,6 +430,14 @@ class Character:
         if dmg_type in ['Physical', 'Pyro']:
             if self.take_buff('frozen'):
                 self.add_buff(f'{source}-unfrozen', 'vulnerable 2')
+
+        if dmg_type in ['Pyro', 'Electro']:
+            if self.deck_ptr.enemy_ptr.take_team_buff('dendro_core'):
+                self.add_buff(f'{source}-dendro_core', 'vulnerable 2')
+
+        if dmg_type in ['Dendro', 'Electro']:
+            if self.deck_ptr.enemy_ptr.take_team_buff('catalyzing_field'):
+                self.add_buff(f'{source}-catalyzing_field', 'vulnerable 1')
         
         reaction = self.attach_element(dmg_type, source)
 
@@ -452,23 +463,32 @@ class Character:
 
             res = buff.query('shield') # yellow buffs
             if res > 0:
+                buff.on_activated() # for Lotus Flower Crisp
                 if dmg_num >= res:
                     # remove this shield
                     dmg_num -= res
-                    buff.on_activated()
+                    buff.life = 0
                 else:
                     buff.change_keyword('shield', res - dmg_num)
         
             if dmg_num <= 0:
                 break       
 
-            # Xingqiu's skill: TODO: should use dmg_num, or the original dmg_num before any sheild?
+            # Xingqiu's skill: should use current dmg_num, from the same video above
             if dmg_num >= 3:
                 res = buff.query('dmg_larger_than_three_dmg_down')
                 if res > 0:
                     dmg_num -= 1
                     buff.on_activated()
 
+            # Ningguang's skill: should use current dmg_num
+            if dmg_num >= 2:
+                res = buff.query('dmg_larger_than_two_dmg_down')
+                if res > 0:
+                    dmg_num -= 1
+                    buff.on_activated()
+
+    
         # TODO: buff from mona, double the real dmg (after shields) or raw dmg?:
         double = False
         enemy_deck = self.deck_ptr.enemy_ptr
@@ -521,6 +541,9 @@ class Character:
     def frozen(self, source):
         self.add_buff(source + '-frozen', 'frozen')
 
+    def crystallize(self, source):
+        self.add_buff(source + '-crystallize', 'vulnerable 1')
+
     def attach_element_no_dmg(self, element):
         if element in ['Physical', 'Piercing']:
             return False
@@ -544,6 +567,11 @@ class Character:
             return False
         if element in self.attached_element:
             return False
+
+        # When a card has both Cryo and Dendro statuses at the same time, 
+        # if Electro/Hydro/Pyro are applied, the Cryo reaction will be triggered, 
+        # and the Dendro application will remain unaffected.
+        self.attached_element.sort()
         for t, i in enumerate(self.attached_element):
             reaction = element_can_react(i, element)
             if reaction:
@@ -578,8 +606,27 @@ class Character:
                     self.superconduct_or_electro_charged(source, element)
                 elif reaction == 'frozen':
                     self.frozen(source)
+                elif reaction == 'crystallize':
+                    self.crystallize(source)
+                    if enemy_char is not None:
+                        enemy_char.add_shield('crystallize', 'shield 1,team,life 2 0 0')
+                elif reaction == 'bloom':
+                    self.add_buff(f'{source}-{reaction}', 'vulnerable 1')
+                    if enemy_char is not None:
+                        enemy_char.add_buff(f'{source}-{reaction}', 'dendro_core,team,unique,life 1 0 1')
+                elif reaction == 'quicken':
+                    self.add_buff(f'{source}-{reaction}', 'vulnerable 1')
+                    if enemy_char is not None:
+                        enemy_char.add_buff(f'{source}-{reaction}', 'catalyzing_field,team,unique,life 3 0 1')
+                elif reaction == 'burning':
+                    self.add_buff(f'{source}-{reaction}', 'vulnerable 1')
+                    for i in self.deck_ptr.enemy_ptr.summons:
+                        if i.code_name == 'burning_flame' and i.life < 2:
+                            i.life += 1
+                            break
+                    else:
+                        self.deck_ptr.enemy_ptr.add_summon(f'{source}-{reaction}', 'burning_flame')
                 else:
-                    # TODO: add reaction later
                     raise NotImplementedError(f'no reaction implemented {i} vs {element} - ')
                 try:
                     self.attached_element = self.attached_element[:t] + self.attached_element[t + 1:]
@@ -642,7 +689,17 @@ class Character:
                f"Buffs: {''.join([buff.__repr__() for buff in self.buffs])}\n" + \
                f"T: {self.talent} {('W: ' + self.weapon.name) if self.weapon else ''} {('A: ' + self.artifact.name) if self.artifact else ''}\n" + \
                f"E: {self.element:<5} | {' '.join(self.attached_element)}"
-        
+
+
+class Cyno(Character):
+    def __init__(self, name, pool):
+        super().__init__(name, pool)
+
+        pass       
+
+character_cls = {
+    'Cyno': Cyno
+}
 
                 
 def init_characters(names):
@@ -666,7 +723,10 @@ def init_characters(names):
     
     # print('Available characters: ', chrs)
     
-    return [Character(name, pool) for name in names]
+    return [character_cls[name](name, pool) if name in character_cls else Character(name, pool) for name in names]
+
+
+
     
         
 if __name__ == '__main__':

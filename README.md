@@ -31,16 +31,16 @@ python game.py
 ## TODO
 1. UI solution
 1. Better buff system (team buff + personal buff)
-1. Elemental reactions: hydro, dendro, geo
 2. More characters and more talent card => current talent sysment may need to be redesigned
 3. Deck check, not all cards can be included in a deck
 4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
 12/25/22:
-1. Add new characters until Yoimiya
-2. Add Hydro reaction
+1. Add new characters
+2. All reactions are done
 3. Fix summon bug - not activated at the end of a round
+
 
 12/24/22:
 1. Add Kamisato Ayaka
