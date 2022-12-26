@@ -380,14 +380,7 @@ class Character:
     def on_defeated(self):
         self.proc_buff_event('on_defeated')
         self.deck_ptr.defeated_this_round += 1
-        self.weapon = None
-        self.artifact = None
-        self.equip = None
-        
-        self.attached_element = []
-        self.buffs = []
-        self.active = False
-        self.activate_cost = 100
+        self.reset()
         self.alive = False
 
     def on_round_finished(self):
