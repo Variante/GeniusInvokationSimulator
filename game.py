@@ -385,10 +385,17 @@ class Game:
         
 if __name__ == '__main__':
     g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
-    for i in range(1000):
+    res = [0] * 3
+    from tqdm import tqdm
+    for i in tqdm(range(1000)):
         g.seed(i)
         ret = g.game_loop(show=False, save_state=False)
         # g.dump_to_file('game_finished')
-        g.print_winner(ret)
+        # g.print_winner(ret)
         g.reset()
+        res[ret] += 1
+    print('Total num:')
+    print(f'Player 1 wins: {res[0]}')
+    print(f'Player 2 wins: {res[1]}')
+    print(f'Draw: {res[-1]}')
     

@@ -175,7 +175,7 @@ class Deck:
                     if ele == 'current':
                         ele = self.get_current_character().element
                     keep[ele] = a.query(i) + keep.get(ele, 0)
-        self.current_dice = self.d.roll(total_num=count_total_dice(self.current_dice), keep=keep)
+        self.current_dice = self.d.roll(total_num=8, keep=keep)
         
     def reroll(self):
         # self.current_dice = self.d.roll(keep = np.array([0, 0, 0, 0, 0, 0, 0, 8]))

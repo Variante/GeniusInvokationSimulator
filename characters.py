@@ -448,13 +448,15 @@ class Character:
                 self.add_buff(f'{source}-catalyzing_field', 'vulnerable 1')
 
         # Card "Lands of Dandelion"
-        if dmg_type == 'Anemo' and self.deck_ptr.enemy_ptr.get_character('jean').alive():
+        c = self.deck_ptr.enemy_ptr.get_character('jean')
+        if dmg_type == 'Anemo' and c is not None and c.alive():
             res = self.deck_ptr.enemy_ptr.query_team_buff('anemo_dmg_up')
             if res > 0:
                 self.add_buff(f'{source}-anemo_dmg_up', f'vulnerable {res}')
 
         # Card "Strategic Reserve"
-        if dmg_type == 'Geo' and self.deck_ptr.enemy_ptr.get_character('ningguang').alive():
+        c = self.deck_ptr.enemy_ptr.get_character('ningguang')
+        if dmg_type == 'Geo' and c is not None and c.alive():
             res = self.deck_ptr.enemy_ptr.query_team_buff('geo_dmg_up')
             if res > 0:
                 self.add_buff(f'{source}-geo_dmg_up', f'vulnerable {res}')
@@ -610,9 +612,15 @@ class Character:
                         # TODO: not sure about this, should be good according to this video:
                         # https://www.bilibili.com/video/BV13P4y1X74c/
 
-                 # for card "Prophecy of Submersion"
+                # for card "Prophecy of Submersion"
                 if  enemy_char is not None and 'Hydro' in [i, element]:
                     val = enemy_char.take_buff(f'hydro_reaction_dmg_up')
+                    if val > 0:
+                        self.add_buff(f'{source}-{reaction}-dmg_up', f'vulnerable {val}')
+
+                # for card "Floral Sidewinder"
+                if  'Dendro' in [i, element] and source.startswith('e-' + enemy_char.code_name):
+                    val = self.deck_ptr.enemy_ptr.take_team_buff(f'dendro_reaction_dmg_up')
                     if val > 0:
                         self.add_buff(f'{source}-{reaction}-dmg_up', f'vulnerable {val}')
 

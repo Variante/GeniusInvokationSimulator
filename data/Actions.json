@@ -400,6 +400,27 @@
         "code_name": "i_got_your_back"
     },
     {
+        "img": "Floral_Sidewinder_Card.png",
+        "name": "Floral Sidewinder",
+        "cost_raw": "3 Dendro Dices",
+        "cost": {
+            "d_type": [
+                "Dendro"
+            ],
+            "d_num": [
+                3
+            ],
+            "p_num": 0
+        },
+        "code": "talent collei;skill collei floral_brush",
+        "des": "Combat Action:  When your active character is Collei, equip this card.\nAfter Collei equips this card, immediately use Floral Brush once.\nAfter your Collei, who has this card equipped, uses Floral Brush, during this Round, when your characters' Skills trigger Dendro-Related Reactions: Deal 1 Dendro DMG. (Once per Round)\n(You must have Collei in your deck to add this card to your deck.)",
+        "tags": [
+            "talent"
+        ],
+        "type": "equipment",
+        "code_name": "floral_sidewinder"
+    },
+    {
         "img": "Magic_Guide_Card.png",
         "name": "Magic Guide",
         "cost_raw": "2 Matching Elemental Dices",

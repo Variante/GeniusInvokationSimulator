@@ -1243,6 +1243,7 @@
                     "p_num": 0
                 },
                 "code": "dmg Dendro 3",
+                "code_talent": "buff dendro_reaction_dmg_up 1,team",
                 "des": "Deals 3 Dendro DMG. Costs 3 Dendro Dices.",
                 "code_name": "floral_brush"
             },

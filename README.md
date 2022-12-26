@@ -8,17 +8,17 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 中文用户请参考[这个文档](https://docs.qq.com/doc/DSWRKbVRHRlhnaUJt)
 
 ---
-## This project is still under construction. 
+## This project is still under construction. But we are close to finish... I guess
 
 ```
 Progress
-[Characters] 16 / 27
-[Actions] 106 / 119
+[Characters] 20 / 27
+[Actions] 110 / 119
 ```
 
 ## Dependence
 ```
-pip install numpy
+pip install numpy tqdm
 ```
 
 ## Demo
