@@ -7,13 +7,12 @@ Game data is borrowed from [this URL](https://www.ign.com/wikis/genshin-impact/G
 
 中文用户请参考[这个文档](https://docs.qq.com/doc/DSWRKbVRHRlhnaUJt)
 
----
-## This project is still under construction. But we are very close... I guess
-
 ```
 Progress
 [Characters] 20 / 27
 [Actions] 112 / 119
+
+Most of the project has been completed and now we only have 7 characters not implemented (with their talent cards). I would like to take a break and leave it for test.
 ```
 
 ## Dependence
@@ -30,10 +29,8 @@ python game.py
 
 ## TODO
 1. UI solution
-1. Better buff system (team buff + personal buff)
-2. More characters and more talent card => current talent sysment may need to be redesigned
-3. Deck check, not all cards can be included in a deck
-4. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
+2. Deck check, not all cards can be included in a deck
+3. Debug - I really need some help to test this code. Please report any bugs you found via issue, and include as many as logs if possible. Thank you so much for your contribution! 
 
 ## Update log
 12/25/22:
