@@ -119,15 +119,15 @@ class Action:
             return modify_cost(self.cost, mods)
         # weapon/artifact/location cost down by supports
         elif 'weapon' in self.tags:
-            mods = deck.query_support_buff('weapon_save')
+            mods = deck.query_team_buff('weapon_save')
             if mods >= self.cost["d_num"][0]:
                 return build_cost(0)
         elif 'artifact' in self.tags:
-            mods = deck.query_support_buff('artifact_save')
+            mods = deck.query_team_buff('artifact_save')
             if mods >= self.cost["d_num"][0]:
                 return build_cost(0)
         elif 'location' in self.tags:
-            mods = deck.query_support_buff('location_save')
+            mods = deck.query_team_buff('location_save')
             if mods:
                 return build_cost(self.cost["d_num"][0] - mods)
         return self.cost
