@@ -2,17 +2,19 @@ from deck import Deck
 from agent import LearnedAgent
 from policynetwork import QNetwork
 from transformers import BertTokenizer, BertModel
+import numpy as np
+import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
 def make_policy_network(args):
     return QNetwork(
-        n_token: args.state_tokens + 1, # state tokens + action token
-        d_model: args.state_embeding, # this is 768 in N * 768 state, as well as action
-        n_layer: args.num_layers, # number of layers
-        n_head: args.num_heads, # number of heads
-        d_hid: args.dim_hidden_layers, # dimension of the feedforward network model in nn.TransformerEncoder
-        dropout: args.q_dropout
+        n_token=args.state_tokens + 1, # state tokens + action token
+        d_model=args.state_embeding, # this is 768 in N * 768 state, as well as action
+        n_layer=args.num_layers, # number of layers
+        n_head=args.num_heads, # number of heads
+        d_hid=args.dim_hidden_layers, # dimension of the feedforward network model in nn.TransformerEncoder
+        dropout=args.q_dropout
     )
 
 def soft_update_params(net, target_net, tau):
@@ -23,17 +25,19 @@ def soft_update_params(net, target_net, tau):
 
 
 class DQNAgent:
-    def __init__(self, args, rb, device):
+    def __init__(self, args, rb, writer, device):
         self.args = args
         self.rb = rb
         self.device = device
+        self.writer = writer
         self.gamma = args.discount_factor
         self.tau = args.encoder_tau
+        self.epsilon = args.epsilon
+        
         self.step_num = 0
 
         # decks for game play
-        self.deck1 = Deck(args.agent_deck_name, LearnedAgent(self.inference))
-        self.deck2 = Deck(args.agent_deck_name, LearnedAgent(self.inference))
+        self.decks = [Deck(args.agent_deck_name, LearnedAgent(self.inference)) for _ in range(2)]
 
         # bert for text embedding
         self.tokenizer = BertTokenizer.from_pretrained(args.pretrain_model_name)
@@ -50,10 +54,12 @@ class DQNAgent:
             self.online_net.parameters(), lr=args.lr, betas=(args.lr_beta, 0.999)
         )
 
-        self.training = False
+        self.training = True
+        self.loss = 0
+        
 
     def train(self, training: bool):
-        self.training == training
+        self.training = training
         if training:
             self.online_net.train()
         else:
@@ -68,7 +74,7 @@ class DQNAgent:
         # Predict hidden states features for each layer
         with torch.no_grad():
             # See the models docstrings for the detail of the inputs
-            outputs = model(input_ids, attention_mask=attention_mask , token_type_ids=token_type_ids)
+            outputs = self.pretrain_model(input_ids, attention_mask=attention_mask , token_type_ids=token_type_ids)
             # PyTorch-Transformers models always output tuples.
             # See the models docstrings for the detail of all the outputs
             # In our case, the first element is the hidden state of the last layer of the Bert model
@@ -85,10 +91,12 @@ class DQNAgent:
             state_action[-1, i] = action_space_embedding[i]
         """
         # Method 2
+        if action_space_embedding.shape[0] > 500:
+            print(action_space_embedding.shape)
+            exit(0)
         state_stack = state_embedding.unsqueeze(1).repeat(1, action_space_embedding.shape[0], 1) # N * m * 768
-        action_stack = action_space_embedding.unsqueeze(0) #  1 * m * 768
-        state_action = torch.concat([state_embedding, action_stack], dim=0) # N+1 * m * 768
-
+        action_stack = action_space_embedding.reshape(1, -1, self.args.state_embeding) #  1 * m * 768
+        state_action = torch.concat([state_stack, action_stack], dim=0) # N+1 * m * 768
         if use_target:
             net = self.target_net
         else:
@@ -97,12 +105,12 @@ class DQNAgent:
         # inference
         with torch.no_grad():
             # it requires [seq_len (N + 1), batch_size(action space size m), 768]
-            q_values = net(state_action) # should be
-        action_idx = torch.argmax(q_values.reshape(-1))[0].item()
+            q_values = net(state_action) 
+        action_idx = torch.argmax(q_values).item()
         
         return {
             'action_idx': action_idx, # int
-            'action': action_space_embedding[action].cpu() # action embedding
+            'action': action_space_embedding[action_idx].cpu(), # action embedding
             'q_values': q_values
         }
 
@@ -124,9 +132,14 @@ class DQNAgent:
         # it requires [seq_len (N + 1), batch_size(action space size m), 768]
         curr_q_value = self.online_net(curr_state_action) # B, 1
         assert next_state_embedding.shape[0] == len(next_action_space_embedding)
-        next_q_value_list = [self.model_forward(next_state_embedding[i], next_action_space_embedding[i], use_target=True)['q_values'] for i in range(len(next_action_space_embedding))]
-        # [shape (1, 1)] * B
-        next_q_value = torch.concat(next_q_value_list, dim=0)
+        
+        def _parse_q_val(i):
+            res = self.model_forward(next_state_embedding[i], next_action_space_embedding[i].to(self.device), use_target=True)
+            return res['q_values'][res['action_idx']]
+        
+        next_q_value_list = [_parse_q_val(i) for i in range(len(next_action_space_embedding))]
+        # [shape (1)] * B
+        next_q_value = torch.stack(next_q_value_list, dim=0).reshape(-1, 1)
         # bellman eq. target B, 1
         target = reward + self.gamma * next_q_value * (1 - done)
         
@@ -135,16 +148,23 @@ class DQNAgent:
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
+        # refresh the last loss
+        self.loss = loss.item()
 
         # move target network
         soft_update_params(self.online_net.transformer_encoder, self.target_net.transformer_encoder, self.tau)
         soft_update_params(self.online_net.decoder, self.target_net.decoder, self.tau)
 
         self.step_num += 1
+        
+        # write log
+        self.writer.add_scalar('train/loss', loss.item(), self.step_num)
+        self.writer.add_scalar('train/current_q_value', torch.mean(curr_q_value).item(), self.step_num)
+        self.writer.add_scalar('train/next_q_value', torch.mean(next_q_value).item(), self.step_num)
 
     def _add_to_buffer(self, current_dict, next_dict):
         # skip the beginning of a trajectory
-        if next_dict['state'] is None: 
+        if current_dict['state'] is None: 
             return
         # for next state, and its action space
         next_state = next_dict['state']
@@ -164,6 +184,7 @@ class DQNAgent:
             next_state,
             done
         )
+        self.writer.add_scalar('train/rb_size', len(self.rb), self.step_num)
 
     def inference(self, info):
         state_str = info['next_state_str']
@@ -172,21 +193,31 @@ class DQNAgent:
         state_embedding = self.get_text_embedding(state_str) # N * 768
         # current action space
         action_space_embedding = self.get_text_embedding(action_space_str) # m * 768
-        # get results for current step
-        results = self.model_forward(state_embedding, action_space_embedding)
-        results['state'] = state_embedding.cpu(), # cpu tensor
-        results['action_space'] = action_space_embedding.cpu(), # cpu tensor
-
+        # get results for current step (with epsilon greedy)
+        if self.training and np.random.rand() < self.epsilon:
+            action_idx = np.random.randint(0, action_space_embedding.shape[0])
+            results = {
+                'action_idx': action_idx, # int
+                'action': action_space_embedding[action_idx].cpu() # action embedding
+            }
+        else:
+            results = self.model_forward(state_embedding, action_space_embedding)
+            
         # train the network if necessary
         if self.training:
+            results['state'] = state_embedding.cpu() # cpu tensor
+            results['action_space'] = action_space_embedding.cpu() # cpu tensor
             # current state is the next state of the previous state, i know it is confusing, i know
             self._add_to_buffer(info, results)
             self._update_networks()
+        else:
+            results['state'] = None
+            results['action_space'] = None
         return results
 
     # reset agent
     def episode_finished(self, episode_res):
-        for i, deck in [self.deck1 self.deck2]:
+        for i, deck in enumerate(self.decks):
             r = 1 if i == episode_res else -1
             # clear episode buffer
             info = deck.agent.episode_finished()
@@ -194,13 +225,13 @@ class DQNAgent:
                 # set reward
                 info['reward'] = r
                 dummy_next = {
-                    'state': torch.zeros_like(info['state']) # N * 768
+                    'state': torch.zeros_like(info['state']), # N * 768
                     'action_space': torch.zeros_like(info['action']).unsqueeze(0) # 1 * 768
                 }
                 self._add_to_buffer(info, dummy_next)
 
     def get_deck(self):
-        return self.deck1, self.deck2
+        return self.decks
 
     def save(self, model_dir):
         import os
@@ -220,5 +251,3 @@ class DQNAgent:
             torch.load(os.path.join(model_dir, f'target_{step:d}.pt'))
         )
         self.step_num = step
-
-

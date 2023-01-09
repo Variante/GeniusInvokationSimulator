@@ -30,7 +30,7 @@ class ReplayBuffer:
         self, 
         obs: torch.Tensor, 
         act: torch.Tensor, 
-        acts_space: torch.Tensor, 
+        act_space: torch.Tensor, 
         rew: float, 
         next_obs: torch.Tensor, 
         done: bool,
@@ -38,7 +38,7 @@ class ReplayBuffer:
         self.obs_buf[self.ptr] = obs
         self.next_obs_buf[self.ptr] = next_obs
         self.acts_buf[self.ptr] = act
-        self.acts_space_buf[self.ptr] = self.acts_space
+        self.acts_space_buf[self.ptr] = act_space
         self.rews_buf[self.ptr] = torch.FloatTensor([rew])
         self.done_buf[self.ptr] = torch.FloatTensor([1] if done else [0])
         self.ptr = (self.ptr + 1) % self.max_size
@@ -54,7 +54,7 @@ class ReplayBuffer:
             "state": self.obs_buf[idxs],
             "next_state": self.next_obs_buf[idxs],
             "action": self.acts_buf[idxs],
-            "action_space": [self.acts_space_buf[i] for i in idxs]
+            "action_space": [self.acts_space_buf[i] for i in idxs],
             "reward": self.rews_buf[idxs],
             "done": self.done_buf[idxs]
         }

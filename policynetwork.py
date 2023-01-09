@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.nn import TransformerEncoder, TransformerEncoderLayer
+import math
 
 class PositionalEncoding(nn.Module):
     # from https://pytorch.org/tutorials/beginner/transformer_tutorial.html
@@ -15,7 +16,7 @@ class PositionalEncoding(nn.Module):
         pe[:, 0, 1::2] = torch.cos(position * div_term)
         self.register_buffer('pe', pe)
 
-    def forward(self, x: Tensor) -> Tensor:
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Args:
             x: Tensor, shape [seq_len, batch_size, embedding_dim]
@@ -34,7 +35,7 @@ class QNetwork(nn.Module):
         dropout: float = 0.1
     ):
         """Initialization."""
-        super(Network, self).__init__()
+        super().__init__()
 
         self.model_type = 'Transformer'
         self.n_layer = n_layer
@@ -49,11 +50,11 @@ class QNetwork(nn.Module):
         
     def init_weights(self) -> None:
         initrange = 0.1
-        self.encoder.weight.data.uniform_(-initrange, initrange)
-        self.decoder.bias.data.zero_()
+        # self.encoder.weight.data.uniform_(-initrange, initrange)
+        # self.decoder.bias.data.zero_()
         self.decoder.weight.data.uniform_(-initrange, initrange)
 
-    def forward(self, src: Tensor) -> Tensor:
+    def forward(self, src: torch.Tensor) -> torch.Tensor:
         """
         Args:
             src: Tensor, shape [seq_len, batch_size, embedding_dim]
@@ -68,7 +69,7 @@ class QNetwork(nn.Module):
         # [batch_size, embedding_dim] => [batch_size, 1]
         return output
 
-    def copy_weights_from(self, src: QNetwork):
+    def copy_weights_from(self, src):
         self.transformer_encoder.load_state_dict(src.transformer_encoder.state_dict())
         self.decoder.load_state_dict(src.decoder.state_dict())
             

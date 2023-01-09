@@ -1,13 +1,12 @@
 from utils import *
 from deck import Deck
-from agent import Agent
 import random
 import os
 
 class Game:
     def __init__(self, decks):
         assert len(decks) == 2
-        self.decks = decks
+        self.decks = [d for d in decks]
         for i in range(2):
             assert self.decks[i].enemy_ptr is None and self.decks[i].game_ptr is None
             self.decks[i].enemy_ptr = self.decks[1 - i]
@@ -37,6 +36,12 @@ class Game:
     def set_new_deck(self, idx, deck):
         assert idx in [0, 1]
         self.decks[idx] = deck
+        for i in range(2):
+            # assert self.decks[i].enemy_ptr is None and self.decks[i].game_ptr is None
+            self.decks[i].enemy_ptr = self.decks[1 - i]
+            self.decks[i].game_ptr = self
+            self.decks[i].deck_id = i
+        self.agents = [i.agent for i in self.decks]
         self.reset()
 
     def reset(self):
@@ -397,11 +402,12 @@ class Game:
         
         
 if __name__ == '__main__':
-    g = Game([Deck('p1', Agent()), Deck('p2', Agent())])
+    from agent import *
+    g = Game([Deck('starter', RandomAgent()), Deck('starter', RandomAgent())])
     res = [0] * 3
     from tqdm import tqdm
     for i in tqdm(range(1000)):
-        g.seed(i)
+        # g.seed(i)
         ret = g.game_loop(show=False, save_state=False)
         # g.dump_to_file('game_finished')
         # g.print_winner(ret)

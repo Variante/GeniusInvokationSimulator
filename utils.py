@@ -1,6 +1,7 @@
 import json
 import numpy as np
 import re
+import os
 
 def load_js(name, prefix='data/'):
     fs = prefix + name + '.json'
@@ -293,10 +294,11 @@ def make_dir(dir_path):
     return dir_path
 
 def from_state_to_str(state):
-    return ['']
+    return ['this is a dummy sentence'] * 20
 
 def from_action_to_str(action_space):
-    return ['']
+    # TODO!
+    return action_space
 
  
 if __name__ == '__main__':
