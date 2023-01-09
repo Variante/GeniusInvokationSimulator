@@ -1,4 +1,5 @@
 import numpy as np
+from utils import from_state_to_str, from_action_to_str
 
 class Agent:
     def __init__(self):
@@ -35,19 +36,19 @@ class Agent:
         except ValueError:
             return ''
         
+
 class RandomAgent(Agent):
     def __init__(self):
         super().__init__()
         
     def get_action(self, state):
-        try:
-            return np.random.choice(state['action_space'])    
-        except IndexError:
-            return ''
-        except ValueError:
-            return ''
+        action_space = state.get('action_space', [''])
+        if len(action_space) == 0:
+            # should not happen, usually..
+            action_space = ['']
+        return np.random.choice(action_space)
         
-        
+
 class LearnedAgent(Agent):
     def __init__(self, inference):
         super().__init__()
@@ -55,29 +56,34 @@ class LearnedAgent(Agent):
         self.last_state_embedding = None # shape N x 768
         self.last_action_embedding = None # shape 768
 
-    @staticmethod
-    def _from_state_to_str(state):
-        return state
+    def episode_finished(self):
+        info = {
+            'state': self.last_state_embedding, # current/last state embedding
+            'action': self.last_action_embedding, # current/last action embedding
+            'reward': 0,
+            'done': True,
+        }
+        self.last_state_embedding = None
+        self.last_action_embedding = None
+        return info
 
-    @staticmethod
-    def _from_action_to_str(action_space):
-        return action_space
-        
     def get_action(self, state):
-        action_space = state['action_space']
+        action_space = state.get('action_space', [''])
         if len(action_space) == 0:
             # should not happen, usually..
-            return ''
-        state_str = _from_state_to_str(state) # this is a list of strings
-        action_space_str = _from_action_to_str(action_space) # same here
+            action_space = ['']
+        state_str = from_state_to_str(state) # this is a list of strings
+        action_space_str = from_action_to_str(action_space) # same here
         # it should return the selected action idx and current state embedding
         info = {
-            'state': self.last_state_embedding,
-            'action': self.last_action_embedding,
+            'state': self.last_state_embedding, # current/last state embedding
+            'action': self.last_action_embedding, # current/last action embedding
             'reward': 0,
             'done': False,
+            'next_state_str': state_str,
+            'next_action_space_str': action_space_str
         }
-        embeddings = self.inference(state_str, action_space_str, info)
+        embeddings = self.inference(info)
         action_idx = embeddings['action_idx']
         self.last_state_embedding = embeddings['state']
         self.last_action_embedding = embeddings['action']

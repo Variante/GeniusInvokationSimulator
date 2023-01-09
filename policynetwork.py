@@ -47,7 +47,6 @@ class QNetwork(nn.Module):
         self.decoder = nn.Linear(d_model, 1)
         self.init_weights()
         
-
     def init_weights(self) -> None:
         initrange = 0.1
         self.encoder.weight.data.uniform_(-initrange, initrange)

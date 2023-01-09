@@ -7,17 +7,8 @@ import time
 from tqdm import tqdm
 from game import *
 from agent import RandomAgent
-
-from policy import DQNPolicy as my_agent
-
+from agent_dqn import DQNAgent as MyAgent
 from replaybuffer import ReplayBuffer
-
-def make_dir(dir_path):
-    try:
-        os.mkdir(dir_path)
-    except OSError:
-        pass
-    return dir_path
 
 def set_seed_everywhere(seed):
     torch.manual_seed(seed)
@@ -25,6 +16,32 @@ def set_seed_everywhere(seed):
         torch.cuda.manual_seed_all(seed)
     np.random.seed(seed)
     random.seed(seed)
+
+
+def evaluate(env, agent, enemy_deck, args):
+    agent.train(False)
+    # change to eval policy
+    env.set_new_deck(1, enemy_deck)
+    hists = [0] * 3
+    for episode in range(args.num_eval_episodes):
+        save_state = episode == 0 and args.save_first_eval_episode
+        ret = env.game_loop(show=False, save_state=(os.path.join(args.episode_dir, f'Step-{agent.step_num:09d}') if save_state else False))
+        agent.episode_finished(ret)
+        env.reset()
+        hists[ret] += 1
+
+    print(f'Agent wins: {hists[0]}/{args.num_eval_episodes}, Draw: {hists[-1]}')
+
+    if args.save_buffer:
+        pass
+        # TODO write save buffer
+
+    if args.save_model:
+        agent.save(args.model_dir)
+
+    # change back to training config
+    env.set_new_deck(1, agent.get_deck()[1])
+    agent.train(True)
 
 
 def parse_args():
@@ -38,11 +55,11 @@ def parse_args():
     parser.add_argument('--replay_buffer_capacity', default=100000, type=int)
     # train
     parser.add_argument('--init_steps', default=1000, type=int)
-    parser.add_argument('--num_train_steps', default=1000000, type=int)
+    parser.add_argument('--num_train_episode', default=1000000, type=int)
     parser.add_argument('--batch_size', default=32, type=int)
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
-    parser.add_argument('--eval_freq', default=10000, type=int)
+    parser.add_argument('--eval_freq', default=1000, type=int)
     parser.add_argument('--num_eval_episodes', default=1000, type=int)
     # value network
     parser.add_argument('--lr', default=1e-4, type=float)
@@ -56,7 +73,7 @@ def parse_args():
     parser.add_argument('--seed', default=1, type=int)
     parser.add_argument('--work_dir', default='.', type=str)
     parser.add_argument('--save_tb', default=False)
-    parser.add_argument('--save_each_first_episode', default=False)
+    parser.add_argument('--save_first_eval_episode', default=False)
     parser.add_argument('--save_buffer', default=False)
     parser.add_argument('--save_model', default=False)
 
@@ -78,9 +95,9 @@ def main():
     # mkdir
     args.work_dir = os.path.join(args.work_dir, task_title)
     make_dir(args.work_dir)
-    episode_dir = make_dir(os.path.join(args.work_dir, 'episodes'))
-    model_dir = make_dir(os.path.join(args.work_dir, 'model'))
-    buffer_dir = make_dir(os.path.join(args.work_dir, 'buffer'))
+    args.episode_dir = make_dir(os.path.join(args.work_dir, 'episodes'))
+    args.model_dir = make_dir(os.path.join(args.work_dir, 'model'))
+    args.buffer_dir = make_dir(os.path.join(args.work_dir, 'buffer'))
     # dump config
     with open(os.path.join(args.work_dir, 'args.json'), 'w') as f:
         json.dump(vars(args), f, sort_keys=True, indent=4)
@@ -97,12 +114,27 @@ def main():
 
     # agent
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    agent = DQNPolicy(args, rb, device)
+    agent = MyAgent(args, rb, device)
 
     # Play with itself, eval with a random policy
-    train_env = Game(*agent.get_deck())
-    test_env = Game(agent.get_deck()[0], Deck(args.agent_deck_name, RandomAgent()))
+    env = Game(*agent.get_deck())
+    enemy_deck = Deck(args.agent_deck_name, RandomAgent())
 
+    evaluated = False
+    for episode in range(args.num_train_episode):
+        evaluated = False
+        ret = env.game_loop(show=False, save_state=False)
+        agent.episode_finished(ret)
+        env.reset()
 
+        if episode % args.log_interval == 0:
+            pass
+            # TODO: write training log
 
+        if episode % args.eval_freq == 0:
+            evaluate(env, agent, enemy_deck, args)
+            evaluated = True
+
+    if not evaluated:
+        evaluate(env, agent, enemy_deck, args)
 

@@ -8,7 +8,7 @@ import torch.optim as optim
 def make_policy_network(args):
     return QNetwork(
         n_token: args.state_tokens + 1, # state tokens + action token
-        d_model: args.state_embeding, # this is 768 in N x 768 state, as well as action
+        d_model: args.state_embeding, # this is 768 in N * 768 state, as well as action
         n_layer: args.num_layers, # number of layers
         n_head: args.num_heads, # number of heads
         d_hid: args.dim_hidden_layers, # dimension of the feedforward network model in nn.TransformerEncoder
@@ -22,18 +22,18 @@ def soft_update_params(net, target_net, tau):
         )
 
 
-class DQNPolicy:
+class DQNAgent:
     def __init__(self, args, rb, device):
         self.args = args
         self.rb = rb
         self.device = device
         self.gamma = args.discount_factor
         self.tau = args.encoder_tau
-        
+        self.step_num = 0
 
         # decks for game play
-        self.deck1 = Deck(args.agent_deck_name, LearnedPolicy(self.inference))
-        self.deck2 = Deck(args.agent_deck_name, LearnedPolicy(self.inference))
+        self.deck1 = Deck(args.agent_deck_name, LearnedAgent(self.inference))
+        self.deck2 = Deck(args.agent_deck_name, LearnedAgent(self.inference))
 
         # bert for text embedding
         self.tokenizer = BertTokenizer.from_pretrained(args.pretrain_model_name)
@@ -72,8 +72,8 @@ class DQNPolicy:
             # PyTorch-Transformers models always output tuples.
             # See the models docstrings for the detail of all the outputs
             # In our case, the first element is the hidden state of the last layer of the Bert model
-            encoded_layers = outputs[0] # batch (which is len(state_str)=N) x ? x 768
-            return torch.mean(encoded_layers, dim=1) # batch (N) x 768
+            encoded_layers = outputs[0] # batch (which is len(state_str)=N) * ? * 768
+            return torch.mean(encoded_layers, dim=1) # batch (N) * 768
 
     def model_forward(self, state_embedding, action_space_embedding, use_target=False):
         # prepare for the online network [seq_len (N + 1), batch_size(action space size m), 768]
@@ -107,6 +107,9 @@ class DQNPolicy:
         }
 
     def _update_networks(self):
+        if len(self.rb) < self.args.init_steps:
+            return
+
         samples = self.rb.sample_batch()
         state_embedding = samples['state'].to(self.device) # B, N, 768
         next_state_embedding = samples['next_state'].to(self.device) # B, N, 768
@@ -137,54 +140,75 @@ class DQNPolicy:
         soft_update_params(self.online_net.transformer_encoder, self.target_net.transformer_encoder, self.tau)
         soft_update_params(self.online_net.decoder, self.target_net.decoder, self.tau)
 
+        self.step_num += 1
 
-    def inference(self, state_str, action_space_str, info):
+    def _add_to_buffer(self, current_dict, next_dict):
+        # skip the beginning of a trajectory
+        if next_dict['state'] is None: 
+            return
+        # for next state, and its action space
+        next_state = next_dict['state']
+        action_space = next_dict['action_space']
+
+        # for current state (it comes from last step)
+        current_state = current_dict['state']
+        action = current_dict['action']
+        reward = current_dict['reward']
+        done = current_dict['done']
+
+        self.rb.add(
+            current_state,
+            action,
+            action_space,
+            reward,
+            next_state,
+            done
+        )
+
+    def inference(self, info):
+        state_str = info['next_state_str']
+        action_space_str = info['next_action_space_str']
         # current state embedding
-        state_embedding = self.get_text_embedding(state_str) # N x 768
+        state_embedding = self.get_text_embedding(state_str) # N * 768
         # current action space
-        action_space_embedding = self.get_text_embedding(action_space_str) # m x 768
+        action_space_embedding = self.get_text_embedding(action_space_str) # m * 768
         # get results for current step
         results = self.model_forward(state_embedding, action_space_embedding)
         results['state'] = state_embedding.cpu(), # cpu tensor
         results['action_space'] = action_space_embedding.cpu(), # cpu tensor
 
-        # gather sample
-        if info['state'] is not None:
-            # for next state, and its action space
-            next_state = results['state']
-            action_space = results['action_space']
-
-            # for current state (it comes from last step)
-            current_state = info['state']
-            action = info['action']
-            reward = info['reward']
-            done = info['done']
-
-            self.rb.add(
-                current_state,
-                action,
-                action_space,
-                reward,
-                next_state,
-                done
-            )
-
         # train the network if necessary
         if self.training:
+            # current state is the next state of the previous state, i know it is confusing, i know
+            self._add_to_buffer(info, results)
             self._update_networks()
         return results
-        
+
+    # reset agent
+    def episode_finished(self, episode_res):
+        for i, deck in [self.deck1 self.deck2]:
+            r = 1 if i == episode_res else -1
+            # clear episode buffer
+            info = deck.agent.episode_finished()
+            if self.training:
+                # set reward
+                info['reward'] = r
+                dummy_next = {
+                    'state': torch.zeros_like(info['state']) # N * 768
+                    'action_space': torch.zeros_like(info['action']).unsqueeze(0) # 1 * 768
+                }
+                self._add_to_buffer(info, dummy_next)
 
     def get_deck(self):
         return self.deck1, self.deck2
 
-    def save(self, model_dir, step):
+    def save(self, model_dir):
         import os
         torch.save(
-            self.online_net.state_dict(), os.path.join(model_dir, f'online_{step:d}.pt')
+            self.online_net.state_dict(), os.path.join(model_dir, f'online_{self.step_num:d}.pt')
         )
         torch.save(
-            self.target_net.state_dict(), os.path.join(model_dir, f'target_{step:d}.pt')
+            self.target_net.state_dict(), os.path.join(model_dir, f'target_{self.step_num:d}.pt')
         )
 
     def load(self, model_dir, step):
@@ -195,5 +219,6 @@ class DQNPolicy:
         self.target_net.load_state_dict(
             torch.load(os.path.join(model_dir, f'target_{step:d}.pt'))
         )
+        self.step_num = step
 
 

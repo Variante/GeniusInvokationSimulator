@@ -284,6 +284,20 @@ def buff_engine(buff, my_deck, enemy_deck):
     if activated:
         buff.on_activated()
 
+
+def make_dir(dir_path):
+    try:
+        os.mkdir(dir_path)
+    except OSError:
+        pass
+    return dir_path
+
+def from_state_to_str(state):
+    return ['']
+
+def from_action_to_str(action_space):
+    return ['']
+
  
 if __name__ == '__main__':
     get_project_progress()

@@ -2,13 +2,14 @@ from utils import *
 from deck import Deck
 from agent import Agent
 import random
-from os import mkdir
+import os
 
 class Game:
     def __init__(self, decks):
         assert len(decks) == 2
         self.decks = decks
         for i in range(2):
+            assert self.decks[i].enemy_ptr is None and self.decks[i].game_ptr is None
             self.decks[i].enemy_ptr = self.decks[1 - i]
             self.decks[i].game_ptr = self
             self.decks[i].deck_id = i
@@ -33,6 +34,11 @@ class Game:
     """
     Save, load, states and prints
     """
+    def set_new_deck(self, idx, deck):
+        assert idx in [0, 1]
+        self.decks[idx] = deck
+        self.reset()
+
     def reset(self):
         self.round_num = 0
         self.step_num = 0
@@ -45,13 +51,9 @@ class Game:
         for i in self.decks:
             i.reset()
 
-    def dump_to_file(self, msg):
-        p = f'states/S{self._seed:06d}'
-        try:
-            mkdir(p)
-        except:
-            pass
-        dump_js(f'{p}/R{self.round_num:02d}_{self.step_num:02d}_{msg}', self.save(), prefix='')
+    def dump_to_file(self, dir_path, msg):
+        make_dir(dir_path)
+        dump_js(os.path.join(dir_path, f'R{self.round_num:02d}_{self.step_num:02d}_{msg}'), self.save(), prefix='')
 
     def save(self):
         game_state = {
@@ -313,12 +315,12 @@ class Game:
             if show:
                 self.print_desk(f'Player {self.current_agent + 1} init cards')
             if save_state:
-                self.dump_to_file('draw_card')
+                self.dump_to_file(save_state, 'draw_card')
                 
             i.swap_card()
             self.step_num += 1
             if save_state:
-                self.dump_to_file('swap_card')
+                self.dump_to_file(save_state, 'swap_card')
 
             # select the first character
             self.has_active_character()
@@ -326,7 +328,7 @@ class Game:
             if show:
                 self.print_full_desk(f'Player {self.current_agent + 1} select character')
             if save_state:
-                self.dump_to_file('select_character')
+                self.dump_to_file(save_state, 'select_character')
 
         self.current_agent = np.random.randint(2)
 
@@ -345,7 +347,7 @@ class Game:
                 if show:
                     self.print_full_desk(f'Player {self.current_agent + 1} before action')
                 if save_state:
-                    self.dump_to_file('before')
+                    self.dump_to_file(save_state, 'before')
                 """
 
                 agent = self.agents[self.current_agent]
@@ -361,7 +363,7 @@ class Game:
                 if show:
                     self.print_full_desk(f'Player {self.current_agent + 1}: ' + action)
                 if save_state:
-                    self.dump_to_file('done')
+                    self.dump_to_file(save_state, 'done')
 
                 # check round finished
                 if self.is_round_finished():
@@ -388,9 +390,10 @@ class Game:
             if show:
                 self.print_desk('round finished')
             if save_state:
-                self.dump_to_file('round_finished')
+                self.dump_to_file(save_state, 'round_finished')
         return ret
         
+    
         
         
 if __name__ == '__main__':
