@@ -5,3 +5,5 @@ parse.py
 web.html
 .vscode/*
 *.zip
+.ipynb_checkpoints/*
+*.ipynb
