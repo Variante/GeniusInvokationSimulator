@@ -106,7 +106,7 @@ def main():
     set_seed_everywhere(args.seed)
 
     gitsha = git.Repo(search_parent_directories=True).head.object.hexsha[:6]
-    task_title = f'DQN-MLP2-c{gitsha}-b{args.batch_size}-s{args.seed}-{datetime.now():%m-%d}'
+    task_title = f'DQN-c{gitsha}-b{args.batch_size}-s{args.seed}-{datetime.now():%m-%d}'
 
     # mkdir
     args.work_dir = os.path.join(args.work_dir, task_title)
