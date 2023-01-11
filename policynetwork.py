@@ -46,6 +46,13 @@ class QNetwork(nn.Module):
         # self.decoder = nn.Linear(d_model, n_token)
         # avg all tokens and project to one Q value
         self.decoder = nn.Linear(d_model, 1)
+
+        self.act = nn.Sequential(
+                    nn.BatchNorm1d(n_token, affine=False),
+                    nn.ReLU(),
+                )
+
+        self.decoder2 = nn.Linear(n_token, 1)
         self.init_weights()
         
     def init_weights(self) -> None:
@@ -53,6 +60,7 @@ class QNetwork(nn.Module):
         # self.encoder.weight.data.uniform_(-initrange, initrange)
         # self.decoder.bias.data.zero_()
         self.decoder.weight.data.uniform_(-initrange, initrange)
+        self.decoder2.weight.data.uniform_(-initrange, initrange)
 
     def forward(self, src: torch.Tensor) -> torch.Tensor:
         """
@@ -63,10 +71,12 @@ class QNetwork(nn.Module):
         """
         src = self.pos_encoder(src)
         output = self.transformer_encoder(src) # ignore mask
-        output = torch.mean(output, dim=0)
-        #output shape [seq_len, batch_size, embedding_dim] => [batch_size, embedding_dim]
-        output = self.decoder(output)
-        # [batch_size, embedding_dim] => [batch_size, 1]
+        # output = torch.mean(output, dim=0)
+        # output shape [seq_len, batch_size, embedding_dim] => [batch_size, embedding_dim]
+        output = self.decoder(output).sequeeze().permute(1, 0)
+        output = self.act(output)
+        output = self.decoder2(output)
+        # [seq_len, batch_size, embedding_dim] => [seq_len, batch_size, 1] => [batch_size, seq_len]
         return output
 
     def copy_weights_from(self, src):
