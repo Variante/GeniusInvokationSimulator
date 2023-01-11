@@ -33,16 +33,16 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
             ret = env.game_loop(show=False, save_state=(os.path.join(args.episode_dir, f'Step-{agent.step_num:09d}') if save_state else False))
             env.reset()
             hists[ret] += 1
-            
+
             # Description will be displayed on the left
             t.set_description(f'E | Ep: {global_episode} S: {agent.step_num} | W/D/L/Total: {hists[0]}/{hists[-1]}/{hists[1]}/{episode + 1}')
-            
+
     # update log
     writer.add_scalar('eval/win_rate', hists[0] / args.num_eval_episodes, agent.step_num)
     writer.add_scalar('eval/win', hists[0], agent.step_num)
     writer.add_scalar('eval/loss', hists[1], agent.step_num)
     writer.add_scalar('eval/draw', hists[-1], agent.step_num)
-    
+
     writer.add_scalar('eval_episode/win_rate', hists[0] / args.num_eval_episodes, global_episode)
     writer.add_scalar('eval_episode/win', hists[0], global_episode)
     writer.add_scalar('eval_episode/loss', hists[1], global_episode)
@@ -66,7 +66,7 @@ def parse_args():
     # env
     parser.add_argument('--agent_deck_name', default='starter', type=str)
     parser.add_argument('--pretrain_model_name', default='bert-base-uncased', type=str)
-    parser.add_argument('--state_tokens', default=20, type=int)
+    parser.add_argument('--state_tokens', default=54, type=int)
     parser.add_argument('--state_embeding', default=768, type=int)
     # replay buffer
     parser.add_argument('--replay_buffer_capacity', default=100000, type=int)
@@ -89,7 +89,7 @@ def parse_args():
     parser.add_argument('--q_dropout', default=0.1, type=float)
     # misc
     parser.add_argument('--seed', default=-1, type=int)
-    parser.add_argument('--work_dir', default='.', type=str)
+    parser.add_argument('--work_dir', default='./runs', type=str)
     parser.add_argument('--save_first_eval_episode', default=False)
     parser.add_argument('--save_buffer', default=False)
     parser.add_argument('--save_model', default=False)
@@ -115,7 +115,7 @@ def main():
     args.model_dir = make_dir(os.path.join(args.work_dir, 'model'))
     args.buffer_dir = make_dir(os.path.join(args.work_dir, 'buffer'))
     args.tb_dir = make_dir(os.path.join(args.work_dir, 'tb'))
-    
+
     # dump config
     with open(os.path.join(args.work_dir, 'args.json'), 'w') as f:
         json.dump(vars(args), f, sort_keys=True, indent=4)
@@ -134,7 +134,7 @@ def main():
     # agent
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     agent = MyAgent(args, rb, writer, device)
-    
+
     # Play with itself, eval with a random policy
     env = Game(agent.get_deck())
     enemy_deck = Deck(args.agent_deck_name, RandomAgent())
@@ -149,7 +149,7 @@ def main():
             # log
             writer.add_scalar('train/episode', episode, agent.step_num)
             t.set_description(f'T | Ep: {episode} S: {agent.step_num} B: {len(rb)} | Loss: {agent.loss:.3f}')
-            
+
             if episode % args.eval_freq == 0:
                 evaluate(env, agent, enemy_deck, writer, args, episode)
                 evaluated = True

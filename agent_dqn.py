@@ -35,7 +35,7 @@ class DQNAgent:
         self.gamma = args.discount_factor
         self.tau = args.encoder_tau
         self.epsilon = args.epsilon
-        
+
         self.step_num = 0
 
         # decks for game play
@@ -103,9 +103,9 @@ class DQNAgent:
         # inference
         with torch.no_grad():
             # it requires [seq_len (N + 1), batch_size(action space size m), 768]
-            q_values = net(state_action) 
+            q_values = net(state_action)
         action_idx = torch.argmax(q_values).item()
-        
+
         return {
             'action_idx': action_idx, # int
             'action': action_space_embedding[action_idx].cpu(), # action embedding
@@ -130,17 +130,17 @@ class DQNAgent:
         # it requires [seq_len (N + 1), batch_size(action space size m), 768]
         curr_q_value = self.online_net(curr_state_action) # B, 1
         assert next_state_embedding.shape[0] == len(next_action_space_embedding)
-        
+
         def _parse_q_val(i):
             res = self.model_forward(next_state_embedding[i], next_action_space_embedding[i].to(self.device), use_target=True)
             return res['q_values'][res['action_idx']]
-        
+
         next_q_value_list = [_parse_q_val(i) for i in range(len(next_action_space_embedding))]
         # [shape (1)] * B
         next_q_value = torch.stack(next_q_value_list, dim=0).reshape(-1, 1)
         # bellman eq. target B, 1
         target = reward + self.gamma * next_q_value * (1 - done)
-        
+
         # L1 loss
         loss = F.smooth_l1_loss(curr_q_value, target)
         self.optimizer.zero_grad()
@@ -154,7 +154,7 @@ class DQNAgent:
         soft_update_params(self.online_net.decoder, self.target_net.decoder, self.tau)
 
         self.step_num += 1
-        
+
         # write log
         self.writer.add_scalar('train/loss', loss.item(), self.step_num)
         self.writer.add_scalar('train/current_q_value', torch.mean(curr_q_value).item(), self.step_num)
@@ -162,7 +162,7 @@ class DQNAgent:
 
     def _add_to_buffer(self, current_dict, next_dict):
         # skip the beginning of a trajectory
-        if current_dict['state'] is None: 
+        if current_dict['state'] is None:
             return
         # for next state, and its action space
         next_state = next_dict['state']
@@ -186,7 +186,7 @@ class DQNAgent:
 
     def inference(self, info):
         state_str = info['text_state']
-        action_space_str info['text_action_space']
+        action_space_str = info['text_action_space']
         # current state embedding
         state_embedding = self.get_text_embedding(state_str) # N * 768
         # current action space
@@ -200,7 +200,7 @@ class DQNAgent:
             }
         else:
             results = self.model_forward(state_embedding, action_space_embedding)
-            
+
         # train the network if necessary
         if self.training:
             results['state'] = state_embedding.cpu() # cpu tensor

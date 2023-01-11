@@ -1,6 +1,7 @@
 *.pyc
 img/*
 states/*
+runs/*
 parse.py
 web.html
 .vscode/*

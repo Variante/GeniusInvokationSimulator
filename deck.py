@@ -144,12 +144,12 @@ class Deck:
         # print(f'[R{self.game_ptr.round_num:02d}-S{self.game_ptr.step_num:02d}] Player {self.deck_id + 1} needs to switch character')
         res = self.game_ptr.state()
         res['action_space'] = [f'activate {i.code_name}' for i in self.characters if i.alive()]
-        """
-        print(res['action_space'])
-        print('-' * 10)
-        """
+        
         if len(res['action_space']) == 0:
             return False
+        
+        if self.game_ptr.pg:
+            res['text_action_space'] = self.game_ptr.pg.from_action_to_str(res['action_space'])
         # ask user to activate a new character
         action = self.agent.get_action(res)
         self.game_ptr.action_history.append(f'Player {self.deck_id + 1}: {action}')
