@@ -510,7 +510,7 @@ class Game:
         self.decks[1 - self.current_agent].has_active_character()
         
             
-    def game_loop(self, show=False, save_state=False):
+    def game_loop(self, show=False, save_state=False, on_action_finished=None):
         # init the game
         for i in self.decks:
             # draw 5 init cards
@@ -579,6 +579,9 @@ class Game:
                     self.next_agent()
 
                 self.step_num += 1
+                
+                if on_action_finished:
+                    on_action_finished()
 
             ret = self.check_win()
             if ret >= 0:

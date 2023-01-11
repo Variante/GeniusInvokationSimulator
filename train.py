@@ -40,12 +40,12 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
     # update log
     writer.add_scalar('eval/win_rate', hists[0] / args.num_eval_episodes, agent.step_num)
     writer.add_scalar('eval/win', hists[0], agent.step_num)
-    writer.add_scalar('eval/loss', hists[1], agent.step_num)
+    writer.add_scalar('eval/lose', hists[1], agent.step_num)
     writer.add_scalar('eval/draw', hists[-1], agent.step_num)
 
     writer.add_scalar('eval_episode/win_rate', hists[0] / args.num_eval_episodes, global_episode)
     writer.add_scalar('eval_episode/win', hists[0], global_episode)
-    writer.add_scalar('eval_episode/loss', hists[1], global_episode)
+    writer.add_scalar('eval_episode/lose', hists[1], global_episode)
     writer.add_scalar('eval_episode/draw', hists[-1], global_episode)
 
     if args.save_buffer:
@@ -74,7 +74,7 @@ def parse_args():
     # train
     parser.add_argument('--init_steps', default=2000, type=int)
     parser.add_argument('--num_train_episode', default=10000, type=int)
-    parser.add_argument('--batch_size', default=1024, type=int)
+    parser.add_argument('--batch_size', default=512, type=int)
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
     parser.add_argument('--eval_freq', default=1000, type=int)
@@ -83,9 +83,9 @@ def parse_args():
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--lr_beta', default=0.9, type=float)
     parser.add_argument('--encoder_tau', default=0.05, type=float)
-    parser.add_argument('--num_layers', default=4, type=int)
-    parser.add_argument('--num_heads', default=12, type=int)
-    parser.add_argument('--dim_hidden_layers', default=256, type=int)
+    parser.add_argument('--num_layers', default=1, type=int)
+    parser.add_argument('--num_heads', default=4, type=int)
+    parser.add_argument('--dim_hidden_layers', default=128, type=int)
     parser.add_argument('--q_dropout', default=0.1, type=float)
     # misc
     parser.add_argument('--seed', default=-1, type=int)
@@ -93,8 +93,6 @@ def parse_args():
     parser.add_argument('--save_first_eval_episode', default=False)
     parser.add_argument('--save_buffer', default=False)
     parser.add_argument('--save_model', default=False)
-
-    parser.add_argument('--log_interval', default=100, type=int)
     args = parser.parse_args()
     return args
 
@@ -141,15 +139,18 @@ def main():
 
     evaluated = False
     with trange(args.num_train_episode) as t:
+        def update_progress():
+            t.set_description(f'T | Ep: {episode} S: {agent.step_num} B: {len(rb)} | Loss: {agent.loss:.3f}')
+            
         for episode in t:
             try:
                 evaluated = False
-                ret = env.game_loop(show=False, save_state=False)
+                ret = env.game_loop(show=False, save_state=False, on_action_finished=update_progress)
                 agent.episode_finished(ret)
                 env.reset()
                 # log
                 writer.add_scalar('train/episode', episode, agent.step_num)
-                t.set_description(f'T | Ep: {episode} S: {agent.step_num} B: {len(rb)} | Loss: {agent.loss:.3f}')
+                update_progress()
 
                 if episode % args.eval_freq == 0:
                     evaluate(env, agent, enemy_deck, writer, args, episode)
