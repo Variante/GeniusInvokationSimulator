@@ -9,6 +9,7 @@ from game import *
 from agent import RandomAgent
 from agent_dqn import DQNAgent as MyAgent
 from replaybuffer import ReplayBuffer
+import git
 
 from tensorboardX import SummaryWriter
 
@@ -77,7 +78,7 @@ def parse_args():
     parser.add_argument('--batch_size', default=512, type=int)
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
-    parser.add_argument('--eval_freq', default=1000, type=int)
+    parser.add_argument('--eval_freq', default=10, type=int)
     parser.add_argument('--num_eval_episodes', default=10, type=int)
     # value network
     parser.add_argument('--lr', default=1e-4, type=float)
@@ -104,7 +105,8 @@ def main():
 
     set_seed_everywhere(args.seed)
 
-    task_title = f'VanillaDQN-b{args.batch_size}-s{args.seed}-{datetime.now():%m-%d}'
+    gitsha = git.Repo(search_parent_directories=True).head.object.hexsha[:6]
+    task_title = f'DQN-MLP2-c{gitsha}-b{args.batch_size}-s{args.seed}-{datetime.now():%m-%d}'
 
     # mkdir
     args.work_dir = os.path.join(args.work_dir, task_title)
