@@ -1388,7 +1388,7 @@
             ],
             "p_num": 0
         },
-        "des": "After playing a Food Event Card: Create 1 random Elemental Die. (Once per Round)",
+        "des": "After playing a Food event Card: Create 1 random Elemental Die. (Once per Round)",
         "tags": [
             "companion"
         ],
@@ -1579,7 +1579,7 @@
             ],
             "p_num": 0
         },
-        "des": "When played: Draw 1 Food Event Card from your deck.\nWhen you play a Food Event Card: Draw 1 Food Event Card from your deck. (Once per Round)",
+        "des": "When played: Draw 1 Food event Card from your deck.\nWhen you play a Food event Card: Draw 1 Food event Card from your deck. (Once per Round)",
         "tags": [
             "item"
         ],
@@ -2195,7 +2195,7 @@
         "tags": [
             "food"
         ],
-        "type": "Event",
+        "type": "event",
         "code_name": "jueyun_guoba"
     },
     {
@@ -2216,7 +2216,7 @@
         "tags": [
             "food"
         ],
-        "type": "Event",
+        "type": "event",
         "code_name": "adeptus_temptation"
     },
     {
@@ -2237,7 +2237,7 @@
         "tags": [
             "food"
         ],
-        "type": "Event",
+        "type": "event",
         "code_name": "lotus_flower_crisp"
     },
     {
@@ -2258,7 +2258,7 @@
         "tags": [
             "food"
         ],
-        "type": "Event",
+        "type": "event",
         "code_name": "northern_smoked_chicken"
     },
     {
@@ -2280,7 +2280,7 @@
         "tags": [
             "food"
         ],
-        "type": "Event"
+        "type": "event"
     },
     {
         "img": "Mondstadt_Hash_Brown.png",
@@ -2300,7 +2300,7 @@
         "tags": [
             "food"
         ],
-        "type": "Event",
+        "type": "event",
         "code_name": "mondstadt_hash_brown"
     },
     {
@@ -2321,7 +2321,7 @@
         "tags": [
             "food"
         ],
-        "type": "Event",
+        "type": "event",
         "code_name": "mushroom_pizza"
     },
     {
@@ -2342,7 +2342,7 @@
         "tags": [
             "food"
         ],
-        "type": "Event",
+        "type": "event",
         "code_name": "minty_meat_rolls"
     }
 ]

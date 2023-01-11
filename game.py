@@ -7,19 +7,16 @@ import os
 # This class will convert state/action string to human readable string
 class PromptGenerator:
     def __init__(self, decks):
-        action_list = [*(d.to_pull_actions) for d in decks]
-        self.action_pool = {i['code_name']: i for i in action_list}
+        action_list = decks[0].to_pull_actions + decks[1].to_pull_actions
+        self.action_pool = {i.code_name: i for i in action_list}
 
-        character_list = [*(d.characters) for d in decks]
-        self.character_pool = {i['code_name']: i for i in character_list}
+        character_list = decks[0].characters + decks[1].characters
+        self.character_pool = {i.code_name: i for i in character_list}
         # character: talent card
-        self.talent_pool = {i['code'].split(';')[0].split()[-1]: i for i in action_list if 'talent' in i['tags']}
-        # weapon_card: weapon card
-        self.wa_pool = {i['code_name']: i for i in action_list if 'weapon' in i['tags'] or 'artifact' in i['tags']}
-
+        self.talent_pool = {i.code.split(';')[0].split()[-1]: i for i in action_list if 'talent' in i.tags}
         self.cache = {}
 
-    def _cache(key, value_in, value_fn=clean_des):
+    def _cache(self, key, value_in, value_fn=clean_des):
         if key in self.cache:
             return self.cache[key]
         else:
@@ -30,7 +27,7 @@ class PromptGenerator:
     def from_state_to_str(self, deck):
         d = deck
 
-        def t_buff(b):
+        def t_buff(b, head='Buff'):
             b_name = b['source']
             b_life = b['life']
 
@@ -38,63 +35,63 @@ class PromptGenerator:
             if invalid:
                 return None
 
-            lines = [f'buff {b_name} will end in {n2w(b['life'])} {'step' if b['life'] == 1 else 'steps'}.']
+            lines = [f"{head} {b_name} will end in {n2w(b['life'])} {'step' if b['life'] == 1 else 'steps'}."]
             for k, v in b['attribs'].items():
                 # simplify the description here!
                 if isinstance(v, tuple):
                     v = v[-1]
-                lines.append(f'buff {b_name} has property {k} and its value is {v}.')
+                lines.append(f'{head} {b_name} has property {k} and its value is {v}.')
             return ' '.join(lines)
             
         def t_character(c, team_buffs):
             c_name = c['code_name']
 
             def get_c_static(c):
-                static_str = [f"character {c_name} is a {c['element']} character."]
-                static_str.append(f"it comes from {c['faction']} and uses weapon {c['weapon_type']}.")
-                static_str.append(f"its max health is {n2w(c['health_limit'])} and its max energy is {n2w(c['health_limit'])}.")
+                static_str = [f"Character {c_name} is an element {c['element']} character."]
+                static_str.append(f"It comes from {c['faction'].capitalize()} and it uses weapon {c['weapon_type'].capitalize()}.")
+                static_str.append(f"Its max health is {n2w(c['health_limit'])} and its max energy is {n2w(c['energy_limit'])}.")
                 return ' '.join(static_str)
 
             lines = [self._cache(c_name, c, get_c_static)]
-            lines.append(f"character {c_name} has {n2w(c['health'])} health and {n2w(c['energy'])} energy.")
+            lines.append(f"Character {c_name} has {n2w(c['health'])} health and {n2w(c['energy'])} energy.")
             
             if c['weapon']:
-                w = self.wa_pool[c['weapon']]
-                lines.append(f"character {c_name} equips weapon {w['code_name']}. " + self._cache(w['code_name'], w['des']))
+                w = c['weapon']
+                lines.append(f"Character {c_name} equips weapon {c['weapon_type']} {w['name']}. " + self._cache(w['name'], w['des']))
             else:
-                lines.append(f"character {c_name} equips no weapon.")
+                lines.append(f"Character {c_name} equips no weapon.")
 
             if c['artifact']:
-                w = self.wa_pool[c['artifact']]
-                lines.append(f"character {c_name} equips artifact {w['code_name']}. " + self._cache(w['code_name'], w['des']))
+                w = c['artifact']
+                lines.append(f"Character {c_name} equips artifact {w['name']}. " + self._cache(w['name'], w['des']))
             else:
-                lines.append(f"character {c_name} equips no artifact.")
+                lines.append(f"Character {c_name} equips no artifact.")
 
             if len(c['attached_element']):
                 e = ' and '.join(['element ' + i for i in c['attached_element']])
-                lines.append(f"character {c_name} has {e} attached.")
+                lines.append(f"Character {c_name} has {e} attached.")
             else:
-                lines.append(f"character {c_name} has element no attached.")
+                lines.append(f"Character {c_name} has element no attached.")
 
             if c['talent']:
                 t = self.talent_pool[c_name]
-                lines.append(f"character {c_name} equips talent {t['code_name']}. " + self._cache(t['code_name'], t['des']))
+                lines.append(f"Character {c_name} equips talent {t['code_name']}. " + self._cache(t['code_name'], t['des']))
             else:
-                lines.append(f"character {c_name} equips no talent.")
+                lines.append(f"Character {c_name} equips no talent.")
 
             if c['active']:
-                lines.append(f"character {c_name} is active.")
+                lines.append(f"Character {c_name} is active.")
                 buff_list = c['buffs'] + team_buffs
             else:
-                lines.append(f"character {c_name} is not active.")
+                lines.append(f"Character {c_name} is not active.")
                 buff_list = c['buffs']
             
-            buffs = [for i in [t_buff(b) for b in buff_list] if i is not None]
+            buffs = [i for i in [t_buff(b) for b in buff_list] if i is not None]
             if len(buffs):
                 buff_str = ' '.join(buffs)
-                lines.append(f"character {c_name} has {len(buffs)} buffs. " + buff_str)
+                lines.append(f"Character {c_name} has {len(buffs)} buffs. " + buff_str)
             else:
-                lines.append(f"character {c_name} has no buff.")
+                lines.append(f"Character {c_name} has no buff.")
             return lines
 
         def t_dice(d):
@@ -104,16 +101,17 @@ class PromptGenerator:
             else:
                 return "There is no die."
             if 'current_dice' in d:
-                res.extend([f"There {'is' if dn == 1 else 'are'} {n2w(j)} element {i} {'die' if dn == 1 else 'dices'}." for i, j in d['current_dice'].items() if j > 0])
+                res.extend([f"There {'is' if j == 1 else 'are'} {n2w(j)} element {i} {'die' if j == 1 else 'dices'}." for i, j in d['current_dice'].items() if j > 0])
             return ' '.join(res)
 
         # first line: dices
         lines = [t_dice(d)]
         # other lines: characters
-        lines.extend([t_character(c, d) for c in d['characters']])
+        for c in d['characters']:
+            lines.extend(t_character(c, d['buffs']))
         
         # summons
-        buffs = [for i in [t_buff(b) for b in d['summons']] if i is not None]
+        buffs = [i for i in [t_buff(b, 'Summon') for b in d['summons']] if i is not None]
         if len(buffs):
             buff_str = ' '.join(buffs)
             lines.append(f"This deck has {len(buffs)} summons. " + buff_str)
@@ -121,7 +119,7 @@ class PromptGenerator:
             lines.append(f"This deck has no summon.")
 
         # supports
-        buffs = [for i in [t_buff(b) for b in d['supports']] if i is not None]
+        buffs = [i for i in [t_buff(b, 'Support') for b in d['supports']] if i is not None]
         if len(buffs):
             buff_str = ' '.join(buffs)
             lines.append(f"This deck has {len(buffs)} supports. " + buff_str)
@@ -133,37 +131,39 @@ class PromptGenerator:
 
         def t_build_event(cmds):
             action = self.action_pool[cmds[0]]
-            card_name = cmds[0].replace('_', ' ')
-            des = self._cache(card_name, action['des'])
+            card_name = cmds[0]
+            des = self._cache(card_name, action.des)
             target = ' and '.join(cmds[1:])
-            return f"use {action['type']} card {card_name} for {target}. " + res
+            if action.atype == 'support':
+                f"Use {action.atype} card {card_name} at idx {target}. " + des
+            return f"Use {action.atype} card {card_name} for {target}. " + des
 
         def t_drop_event(cmd):
             action = self.action_pool[cmd]
-            card_name = action['code_name'].replace('_', ' ')
-            des = self._cache(card_name, action['des'])
-            return f"drop {action['type']} card {card_name}. " + des
+            card_name = action.code_name
+            des = self._cache(card_name, action.des)
+            return f"Drop {action.atype} card {card_name}. " + des
 
         def t_gen(dtype, number):
             if number == 0:
                 return None
-            return f'gain {n2w(number)} element {dtype} {"die" if number == 1 else "dices"}.'
+            return f'Gain {n2w(number)} element {dtype} {"die" if number == 1 else "dices"}.'
 
         def t_cost(dtype, number):
             if number == 0:
                 return None
-            return f'cost {n2w(number)} element {dtype} {"die" if number == 1 else "dices"}.'
+            return f'Cost {n2w(number)} element {dtype} {"die" if number == 1 else "dices"}.'
 
         def t_build_skill(char_name, skill_name):
             char = self.character_pool[char_name]
-            char_name = char_name.replace('_', ' ')
+            char_name = char.name.replace('_', ' ')
             skill = None
-            for i in char['skills']:
-                if i['code_name'] == skill_name:
+            for i in char.skills:
+                if i.code_name == skill_name:
                     skill = i
                     break
             assert skill is not None
-            return f'character {char_name} uses skill {skill_name}. ' + self._cache(skill_name, skill['des'])
+            return f'Character {char_name} uses skill {skill.code_name}. ' + self._cache(skill.code_name, skill.des, )
 
         def convert_single_action(cmd):
             if len(cmd) < 0:
@@ -180,7 +180,9 @@ class PromptGenerator:
             elif cmdw[0] == 'gen':
                 return t_gen(cmdw[1], int(cmdw[2]))
             elif cmdw[0] in ['switch', 'activate']:
-                return f'switch to character {cmdw[1]}.'
+                return f'Switch to character {cmdw[1]}.'
+            elif cmdw[0] == 'finish':
+                return f'Finish the round.'
             else:
                 raise NotImplementedError(f'[convert action to str]{cmd}')
 
@@ -190,7 +192,7 @@ class PromptGenerator:
             if len(actions) > 0:
                 return ' '.join(actions)
             else:
-                return 'nothing.'
+                return 'Nothing.'
 
         return [convert_action(i) for i in action_space]
 
@@ -216,7 +218,7 @@ class Game:
         self.switch_agent = False
         self.action_history = []
 
-        self.pg = PromptGenerator() if use_pg else None
+        self.pg = PromptGenerator(self.decks) if use_pg else None
 
     def seed(self, s):
         self._seed = s

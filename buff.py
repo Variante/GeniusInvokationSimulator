@@ -82,11 +82,13 @@ class Buff:
 
 
 class Weapon(Buff):
-    def __init__(self, source, code, char_ptr, weapon_type):
+    def __init__(self, card, code, char_ptr, weapon_type):
         # Put life in the front so that it can be overrided, and remove head "weapon"
+        source = card.code_name
         super().__init__(source, 'life 1 0 1,' + code[7:], char_ptr)
         self.wtype = weapon_type
         self.name = source
+        self.des = card.des
 
     # In weapon: use life as a counter, which means how many times we used the weapon
     # When the round finished, reset the life of the weapon
@@ -95,10 +97,12 @@ class Weapon(Buff):
 
 
 class Artifact(Buff):
-    def __init__(self, source, code, char_ptr):
+    def __init__(self, card, code, char_ptr):
+        source = card.code_name
         # Put life in the front so that it can be overrided, and remove head "artifact"
         super().__init__(source, 'life 1 0 1,' + code[9:], char_ptr)
         self.name = source
+        self.des = card.des
 
     # In weapon: use life as a counter, which means how many times we used the weapon
     # When the round finished, reset the life of the weapon

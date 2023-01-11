@@ -226,11 +226,11 @@ class Character:
                 break
 
     def add_weapon(self, action, data):
-        self.weapon = Weapon(action.code_name, data, self, self.weapon_type)
+        self.weapon = Weapon(action, data, self, self.weapon_type)
         self._update_save(action.cost['d_num'][0], 'weapon')
 
     def add_artifact(self, action, data):
-        self.artifact = Artifact(action.code_name, data, self)
+        self.artifact = Artifact(action, data, self)
         self._update_save(action.cost['d_num'][0], 'artifact')
 
     def add_shield(self, source, data):

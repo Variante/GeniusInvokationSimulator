@@ -302,21 +302,27 @@ num2words = {1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', \
             50: 'Fifty', 60: 'Sixty', 70: 'Seventy', 80: 'Eighty', \
             90: 'Ninety', 0: 'Zero'}
 
+num2words_l = {i: j.lower() for i, j in num2words.items()}
+
 def n2w(n):
+    return n
     try:
-        return num2words[n]
+        return num2words_l[n]
     except KeyError:
-        return num2words[n-n%10] + num2words[n%10].lower()
+        return num2words_l[n-n%10] + num2words_l[n%10].lower()
 
 def clean_des(s):
     s = s.replace('\n', ' ')
     s = re.sub(f"\(.+\)", "", s)
-    s = s.lower().strip()
+    s = s.strip()
     s = ' '.join(s.split())
     if s[-1] != '.':
         s += '.'
     return s
-    
+
+def clean_skill(s):
+    s = clean_des(s)
+    return '.'.join(s.split('.')[:-2]) # remove cost description, which is usually the last sentence
 
 if __name__ == '__main__':
     get_project_progress()

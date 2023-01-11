@@ -1,5 +1,4 @@
 import numpy as np
-from utils import from_state_to_str, from_action_to_str
 
 class Agent:
     def __init__(self):
