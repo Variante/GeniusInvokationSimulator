@@ -26,7 +26,7 @@ class PositionalEncoding(nn.Module):
 
 class QNetwork(nn.Module):
     def __init__(
-        self, 
+        self,
         n_token: int, # state tokens + action token
         d_model: int = 768, # this is 768 in N x 768 state, as well as action
         n_layer: int = 4, # number of layers
@@ -54,7 +54,7 @@ class QNetwork(nn.Module):
 
         self.decoder2 = nn.Linear(n_token, 1)
         self.init_weights()
-        
+
     def init_weights(self) -> None:
         initrange = 0.1
         # self.encoder.weight.data.uniform_(-initrange, initrange)
@@ -69,11 +69,11 @@ class QNetwork(nn.Module):
         Returns:
             output Tensor of shape [batch_size, 1]
         """
-        src = self.pos_encoder(src)
-        output = self.transformer_encoder(src) # ignore mask
+        # src = self.pos_encoder(src)
+        # output = self.transformer_encoder(src) # ignore mask
         # output = torch.mean(output, dim=0)
         # output shape [seq_len, batch_size, embedding_dim] => [batch_size, embedding_dim]
-        output = self.decoder(output).sequeeze().permute(1, 0)
+        output = self.decoder(src).sequeeze().permute(1, 0)
         output = self.act(output)
         output = self.decoder2(output)
         # [seq_len, batch_size, embedding_dim] => [seq_len, batch_size, 1] => [batch_size, seq_len]
@@ -82,5 +82,5 @@ class QNetwork(nn.Module):
     def copy_weights_from(self, src):
         self.transformer_encoder.load_state_dict(src.transformer_encoder.state_dict())
         self.decoder.load_state_dict(src.decoder.state_dict())
-            
+
 

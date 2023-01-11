@@ -66,9 +66,9 @@ def parse_args():
     parser = argparse.ArgumentParser()
     # env
     parser.add_argument('--agent_deck_name', default='starter', type=str)
-    parser.add_argument('--pretrain_model_name', default='bert-base-uncased', type=str)
+    parser.add_argument('--pretrain_model_name', default='bert-tiny', type=str)
     parser.add_argument('--state_tokens', default=54, type=int)
-    parser.add_argument('--state_embeding', default=768, type=int)
+    parser.add_argument('--state_embeding', default=128, type=int)
     # replay buffer
     parser.add_argument('--replay_buffer_capacity', default=100000, type=int)
     parser.add_argument('--epsilon', default=0.1, type=float)
@@ -78,7 +78,7 @@ def parse_args():
     parser.add_argument('--batch_size', default=512, type=int)
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
-    parser.add_argument('--eval_freq', default=10, type=int)
+    parser.add_argument('--eval_freq', default=50, type=int)
     parser.add_argument('--num_eval_episodes', default=10, type=int)
     # value network
     parser.add_argument('--lr', default=1e-4, type=float)
@@ -143,7 +143,7 @@ def main():
     with trange(args.num_train_episode) as t:
         def update_progress():
             t.set_description(f'T | Ep: {episode} S: {agent.step_num} B: {len(rb)} | Loss: {agent.loss:.3f}')
-            
+
         for episode in t:
             try:
                 evaluated = False
