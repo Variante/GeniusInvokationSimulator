@@ -78,7 +78,7 @@ def parse_args():
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
     parser.add_argument('--eval_freq', default=1000, type=int)
-    parser.add_argument('--num_eval_episodes', default=100, type=int)
+    parser.add_argument('--num_eval_episodes', default=10, type=int)
     # value network
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--lr_beta', default=0.9, type=float)
@@ -120,7 +120,7 @@ def main():
     with open(os.path.join(args.work_dir, 'args.json'), 'w') as f:
         json.dump(vars(args), f, sort_keys=True, indent=4)
 
-    writer = SummaryWriter(logdir=args.tb_dir)
+    writer = SummaryWriter(logdir=args.tb_dir, flush_secs=10)
     writer.add_text('train.py', f'Config save to {args.work_dir}', 0)
 
     # replay buffer
@@ -142,20 +142,25 @@ def main():
     evaluated = False
     with trange(args.num_train_episode) as t:
         for episode in t:
-            evaluated = False
-            ret = env.game_loop(show=False, save_state=False)
-            agent.episode_finished(ret)
-            env.reset()
-            # log
-            writer.add_scalar('train/episode', episode, agent.step_num)
-            t.set_description(f'T | Ep: {episode} S: {agent.step_num} B: {len(rb)} | Loss: {agent.loss:.3f}')
+            try:
+                evaluated = False
+                ret = env.game_loop(show=False, save_state=False)
+                agent.episode_finished(ret)
+                env.reset()
+                # log
+                writer.add_scalar('train/episode', episode, agent.step_num)
+                t.set_description(f'T | Ep: {episode} S: {agent.step_num} B: {len(rb)} | Loss: {agent.loss:.3f}')
 
-            if episode % args.eval_freq == 0:
-                evaluate(env, agent, enemy_deck, writer, args, episode)
-                evaluated = True
+                if episode % args.eval_freq == 0:
+                    evaluate(env, agent, enemy_deck, writer, args, episode)
+                    evaluated = True
+            except KeyboardInterrupt:
+                print('User stops the training, perform the last evaluation.')
+                break
 
     if not evaluated:
         evaluate(env, agent, enemy_deck, writer, args, episode)
+    writer.close()
 
 if __name__ == '__main__':
     main()
