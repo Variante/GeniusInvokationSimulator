@@ -250,8 +250,6 @@ class Deck:
         for i in self.available_actions:
             if i.code_name == code_name:
                 return i
-        else:
-            return None
 
     def drop_card(self, action):
         if action is None:

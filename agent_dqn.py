@@ -6,6 +6,8 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
+import re
+
 
 def make_policy_network(args):
     return QNetwork(
@@ -56,7 +58,6 @@ class DQNAgent:
 
         self.training = True
         self.loss = 0
-        
 
     def train(self, training: bool):
         self.training = training
@@ -91,9 +92,6 @@ class DQNAgent:
             state_action[-1, i] = action_space_embedding[i]
         """
         # Method 2
-        if action_space_embedding.shape[0] > 500:
-            print(action_space_embedding.shape)
-            exit(0)
         state_stack = state_embedding.unsqueeze(1).repeat(1, action_space_embedding.shape[0], 1) # N * m * 768
         action_stack = action_space_embedding.reshape(1, -1, self.args.state_embeding) #  1 * m * 768
         state_action = torch.concat([state_stack, action_stack], dim=0) # N+1 * m * 768
@@ -187,8 +185,8 @@ class DQNAgent:
         self.writer.add_scalar('train/rb_size', len(self.rb), self.step_num)
 
     def inference(self, info):
-        state_str = info['next_state_str']
-        action_space_str = info['next_action_space_str']
+        state_str = info['text_state']
+        action_space_str info['text_action_space']
         # current state embedding
         state_embedding = self.get_text_embedding(state_str) # N * 768
         # current action space
@@ -218,7 +216,10 @@ class DQNAgent:
     # reset agent
     def episode_finished(self, episode_res):
         for i, deck in enumerate(self.decks):
-            r = 1 if i == episode_res else -1
+            if episode_res == -1:
+                r = -1
+            else:
+                r = 3 if i == episode_res else -2
             # clear episode buffer
             info = deck.agent.episode_finished()
             if self.training:

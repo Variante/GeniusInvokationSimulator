@@ -293,13 +293,30 @@ def make_dir(dir_path):
         pass
     return dir_path
 
-def from_state_to_str(state):
-    return ['this is a dummy sentence'] * 20
 
-def from_action_to_str(action_space):
-    # TODO!
-    return action_space
+num2words = {1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', \
+             6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine', 10: 'Ten', \
+            11: 'Eleven', 12: 'Twelve', 13: 'Thirteen', 14: 'Fourteen', \
+            15: 'Fifteen', 16: 'Sixteen', 17: 'Seventeen', 18: 'Eighteen', \
+            19: 'Nineteen', 20: 'Twenty', 30: 'Thirty', 40: 'Forty', \
+            50: 'Fifty', 60: 'Sixty', 70: 'Seventy', 80: 'Eighty', \
+            90: 'Ninety', 0: 'Zero'}
 
- 
+def n2w(n):
+    try:
+        return num2words[n]
+    except KeyError:
+        return num2words[n-n%10] + num2words[n%10].lower()
+
+def clean_des(s):
+    s = s.replace('\n', ' ')
+    s = re.sub(f"\(.+\)", "", s)
+    s = s.lower().strip()
+    s = ' '.join(s.split())
+    if s[-1] != '.':
+        s += '.'
+    return s
+    
+
 if __name__ == '__main__':
     get_project_progress()

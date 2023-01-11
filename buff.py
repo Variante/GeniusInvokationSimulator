@@ -72,7 +72,7 @@ class Buff:
         return self.life <= 0 and 'stay' not in self.attribs
         
     def state(self):
-        return {i:j for i, j in vars(self).items() if i not in ['condition', 'char_ptr']}
+        return {i:j for i, j in vars(self).items() if i not in ['condition', 'char_ptr', 'code']}
 
     def __repr__(self):
         if self.life == 0:

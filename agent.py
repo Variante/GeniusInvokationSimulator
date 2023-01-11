@@ -72,16 +72,14 @@ class LearnedAgent(Agent):
         if len(action_space) == 0:
             # should not happen, usually..
             action_space = ['']
-        state_str = from_state_to_str(state) # this is a list of strings
-        action_space_str = from_action_to_str(action_space) # same here
         # it should return the selected action idx and current state embedding
         info = {
             'state': self.last_state_embedding, # current/last state embedding
             'action': self.last_action_embedding, # current/last action embedding
             'reward': 0,
             'done': False,
-            'next_state_str': state_str,
-            'next_action_space_str': action_space_str
+            'text_state': state['text_state'],
+            'text_action_space': state['text_action_space']
         }
         embeddings = self.inference(info)
         action_idx = embeddings['action_idx']

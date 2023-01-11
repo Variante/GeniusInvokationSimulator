@@ -72,9 +72,9 @@ def parse_args():
     parser.add_argument('--replay_buffer_capacity', default=100000, type=int)
     parser.add_argument('--epsilon', default=0.1, type=float)
     # train
-    parser.add_argument('--init_steps', default=1000, type=int)
+    parser.add_argument('--init_steps', default=2000, type=int)
     parser.add_argument('--num_train_episode', default=10000, type=int)
-    parser.add_argument('--batch_size', default=512, type=int)
+    parser.add_argument('--batch_size', default=1024, type=int)
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
     parser.add_argument('--eval_freq', default=1000, type=int)
@@ -150,7 +150,7 @@ def main():
             writer.add_scalar('train/episode', episode, agent.step_num)
             t.set_description(f'T | Ep: {episode} S: {agent.step_num} B: {len(rb)} | Loss: {agent.loss:.3f}')
             
-            if episode % args.eval_freq == 0 and episode > 0:
+            if episode % args.eval_freq == 0:
                 evaluate(env, agent, enemy_deck, writer, args, episode)
                 evaluated = True
 
