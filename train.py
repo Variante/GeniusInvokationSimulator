@@ -66,7 +66,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     # env
     parser.add_argument('--agent_deck_name', default='starter', type=str)
-    parser.add_argument('--pretrain_model_name', default='bert-tiny', type=str)
+    parser.add_argument('--pretrain_model_name', default='prajjwal1/bert-tiny', type=str)
     parser.add_argument('--state_tokens', default=54, type=int)
     parser.add_argument('--state_embeding', default=128, type=int)
     # replay buffer

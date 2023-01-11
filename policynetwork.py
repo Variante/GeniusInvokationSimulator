@@ -48,7 +48,7 @@ class QNetwork(nn.Module):
         self.decoder = nn.Linear(d_model, 1)
 
         self.act = nn.Sequential(
-                    nn.BatchNorm1d(n_token, affine=False),
+                    nn.LayerNorm(n_token),
                     nn.ReLU(),
                 )
 
@@ -73,7 +73,9 @@ class QNetwork(nn.Module):
         # output = self.transformer_encoder(src) # ignore mask
         # output = torch.mean(output, dim=0)
         # output shape [seq_len, batch_size, embedding_dim] => [batch_size, embedding_dim]
-        output = self.decoder(src).sequeeze().permute(1, 0)
+
+        output = self.decoder(src)
+        output = output.squeeze(2).permute(1, 0)
         output = self.act(output)
         output = self.decoder2(output)
         # [seq_len, batch_size, embedding_dim] => [seq_len, batch_size, 1] => [batch_size, seq_len]
