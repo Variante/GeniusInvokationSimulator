@@ -27,27 +27,33 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
     agent.train(False)
     # change to eval policy
     env.set_new_deck(1, enemy_deck)
+    resname = ['win', 'lose', 'draw']
     hists = [0] * 3
+    round_nums = [[] for _ in range(3)]
     with trange(args.num_eval_episodes) as t:
         for episode in t:
             save_state = episode == 0 and args.save_first_eval_episode
             ret = env.game_loop(show=False, save_state=(os.path.join(args.episode_dir, f'Step-{agent.step_num:09d}') if save_state else False))
-            env.reset()
+            round_nums[ret].append(env.round_num)
             hists[ret] += 1
+            env.reset()
 
             # Description will be displayed on the left
             t.set_description(f'E | Ep: {global_episode} S: {agent.step_num} | W/D/L/Total: {hists[0]}/{hists[-1]}/{hists[1]}/{episode + 1}')
 
     # update log
     writer.add_scalar('eval/win_rate', hists[0] / args.num_eval_episodes, agent.step_num)
-    writer.add_scalar('eval/win', hists[0], agent.step_num)
-    writer.add_scalar('eval/lose', hists[1], agent.step_num)
-    writer.add_scalar('eval/draw', hists[-1], agent.step_num)
+    for i in range(3):
+        writer.add_scalar(f'eval/{resname[i]}', hists[i], agent.step_num)
+        if len(round_nums[i]):
+            writer.add_scalar(f'eval/{resname[i]}_mean_round_num', np.mean(round_nums[i]), agent.step_num)
 
     writer.add_scalar('eval_episode/win_rate', hists[0] / args.num_eval_episodes, global_episode)
-    writer.add_scalar('eval_episode/win', hists[0], global_episode)
-    writer.add_scalar('eval_episode/lose', hists[1], global_episode)
-    writer.add_scalar('eval_episode/draw', hists[-1], global_episode)
+    for i in range(3):
+        writer.add_scalar(f'eval_episode/{resname[i]}', hists[i], global_episode)
+        if len(round_nums[i]):
+            writer.add_scalar(f'eval_episode/{resname[i]}_mean_round_num', np.mean(round_nums[i]), global_episode)
+
 
     if args.save_buffer:
         writer.add_text('train.py', 'save rb to', agent.step_num)
@@ -55,7 +61,7 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
 
     if args.save_model:
         agent.save(args.model_dir)
-        writer.add_text('train.py', 'save model to ' + os.path.join(model_dir, f'online_{self.step_num:d}.pt'), agent.step_num)
+        writer.add_text('train.py', 'save model to ' + os.path.join(args.model_dir, f'online_{agent.step_num:d}.pt'), agent.step_num)
 
     # change back to training config
     env.set_new_deck(1, agent.get_deck()[1])
@@ -79,7 +85,7 @@ def parse_args():
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
     parser.add_argument('--eval_freq', default=50, type=int)
-    parser.add_argument('--num_eval_episodes', default=10, type=int)
+    parser.add_argument('--num_eval_episodes', default=100, type=int)
     # value network
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--lr_beta', default=0.9, type=float)
