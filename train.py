@@ -45,13 +45,13 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
     writer.add_scalar('eval/win_rate', hists[0] / args.num_eval_episodes, agent.step_num)
     for i in range(3):
         writer.add_scalar(f'eval/{resname[i]}', hists[i], agent.step_num)
-        if len(round_nums[i]):
+        if len(round_nums[i]) and i != 2:
             writer.add_scalar(f'eval/{resname[i]}_mean_round_num', np.mean(round_nums[i]), agent.step_num)
 
     writer.add_scalar('eval_episode/win_rate', hists[0] / args.num_eval_episodes, global_episode)
     for i in range(3):
         writer.add_scalar(f'eval_episode/{resname[i]}', hists[i], global_episode)
-        if len(round_nums[i]):
+        if len(round_nums[i]) and i != 2:
             writer.add_scalar(f'eval_episode/{resname[i]}_mean_round_num', np.mean(round_nums[i]), global_episode)
 
 
