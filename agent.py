@@ -15,6 +15,11 @@ class Agent:
                 e = i['element']
                 break
         return {i:state['my_state']['current_dice'][i] for i in [e, 'Omni']}
+    
+    def random_select(self, space):
+        unique_action = list(set({i.split(';')[0] for i in space}))
+        act = np.random.choice(unique_action)
+        return np.random.choice([i for i, j in enumerate(space) if j.startswith(act)])
         
     def get_action(self, state):
         try:
@@ -36,24 +41,17 @@ class Agent:
         except ValueError:
             return ''
         
-
 class RandomAgent(Agent):
     def __init__(self):
         super().__init__()
         self.name = 'Random'
-        
-    def random_select(self, space):
-        unique_action = list(set({i.split(';')[0] for i in space}))
-        act = np.random.choice(unique_action)
-        return np.random.choice([i for i, j in enumerate(space) if j.startswith(act)])
-        
     
     def get_action(self, state):
         action_space = state.get('action_space', [''])
         if len(action_space) == 0:
             # should not happen, usually..
             action_space = ['']
-        return self.random_select(action_space)
+        return action_space[self.random_select(action_space)]
         
 
 class LearnedAgent(Agent):
