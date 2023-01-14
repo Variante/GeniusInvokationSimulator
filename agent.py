@@ -42,12 +42,18 @@ class RandomAgent(Agent):
         super().__init__()
         self.name = 'Random'
         
+    def random_select(self, space):
+        unique_action = list(set({i.split(';')[0] for i in space}))
+        act = np.random.choice(unique_action)
+        return np.random.choice([i for i, j in enumerate(space) if j.startswith(act)])
+        
+    
     def get_action(self, state):
         action_space = state.get('action_space', [''])
         if len(action_space) == 0:
             # should not happen, usually..
             action_space = ['']
-        return np.random.choice(action_space)
+        return self.random_select(action_space)
         
 
 class LearnedAgent(Agent):
@@ -82,7 +88,8 @@ class LearnedAgent(Agent):
             'reward': 0,
             'done': False,
             'text_state': state['text_state'],
-            'text_action_space': state['text_action_space']
+            'text_action_space': state['text_action_space'],
+            'random_sel': self.random_select(action_space)
         }
         embeddings = self.inference(info)
         action_idx = embeddings['action_idx']

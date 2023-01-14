@@ -37,6 +37,7 @@ class DQNAgent:
         self.epsilon = args.epsilon
 
         self.step_num = 0
+        self.eval_num = 0
 
         # decks for game play
         self.decks = [Deck(args.agent_deck_name, LearnedAgent(self.inference)) for _ in range(2)]
@@ -193,7 +194,7 @@ class DQNAgent:
         action_space_embedding = self.get_text_embedding(action_space_str) # m * 768
         # get results for current step (with epsilon greedy)
         if self.training and np.random.rand() < self.epsilon:
-            action_idx = np.random.randint(0, action_space_embedding.shape[0])
+            action_idx = info['random_sel']
             results = {
                 'action_idx': action_idx, # int
                 'action': action_space_embedding[action_idx].cpu() # action embedding

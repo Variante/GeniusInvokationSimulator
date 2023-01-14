@@ -32,7 +32,7 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
     round_nums = [[] for _ in range(3)]
     with trange(args.num_eval_episodes) as t:
         for episode in t:
-            save_dir = os.path.join(args.episode_dir, f'{global_episode * args.num_eval_episodes + episode:06d}') if args.save_eval else False
+            save_dir = os.path.join(args.episode_dir, f'{agent.eval_num * args.num_eval_episodes + episode:06d}') if args.save_eval and episode == 0 else False
             ret = env.game_loop(show=False, save_state=save_dir)
             if save_dir:
                 env.dump_to_file(save_dir, 'game_finished')
@@ -56,7 +56,6 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
         if len(round_nums[i]) and i != 2:
             writer.add_scalar(f'eval_episode/{resname[i]}_mean_round_num', np.mean(round_nums[i]), global_episode)
 
-
     if args.save_buffer:
         writer.add_text('train.py', 'save rb to', agent.step_num)
         # TODO write save buffer
@@ -67,6 +66,7 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
 
     # change back to training config
     env.set_new_deck(1, agent.get_deck()[1])
+    agent.eval_num += 1
     agent.train(True)
 
 
@@ -86,8 +86,8 @@ def parse_args():
     parser.add_argument('--batch_size', default=512, type=int)
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
-    parser.add_argument('--eval_freq', default=10, type=int)
-    parser.add_argument('--num_eval_episodes', default=100, type=int)
+    parser.add_argument('--eval_freq', default=20, type=int)
+    parser.add_argument('--num_eval_episodes', default=20, type=int)
     # value network
     parser.add_argument('--lr', default=1e-4, type=float)
     parser.add_argument('--lr_beta', default=0.9, type=float)
