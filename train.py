@@ -32,8 +32,10 @@ def evaluate(env, agent, enemy_deck, writer, args, global_episode):
     round_nums = [[] for _ in range(3)]
     with trange(args.num_eval_episodes) as t:
         for episode in t:
-            save_state = episode == 0 and args.save_first_eval_episode
-            ret = env.game_loop(show=False, save_state=(os.path.join(args.episode_dir, f'Step-{agent.step_num:09d}') if save_state else False))
+            save_dir = os.path.join(args.episode_dir, f'{global_episode * args.num_eval_episodes + episode:06d}') if args.save_eval else False
+            ret = env.game_loop(show=False, save_state=save_dir)
+            if save_dir:
+                env.dump_to_file(save_dir, 'game_finished')
             round_nums[ret].append(env.round_num)
             hists[ret] += 1
             env.reset()
@@ -84,7 +86,7 @@ def parse_args():
     parser.add_argument('--batch_size', default=512, type=int)
     parser.add_argument('--discount_factor', default= 0.99, type=float)
     # eval
-    parser.add_argument('--eval_freq', default=50, type=int)
+    parser.add_argument('--eval_freq', default=10, type=int)
     parser.add_argument('--num_eval_episodes', default=100, type=int)
     # value network
     parser.add_argument('--lr', default=1e-4, type=float)
@@ -97,9 +99,9 @@ def parse_args():
     # misc
     parser.add_argument('--seed', default=-1, type=int)
     parser.add_argument('--work_dir', default='./runs', type=str)
-    parser.add_argument('--save_first_eval_episode', default=False)
-    parser.add_argument('--save_buffer', default=False)
-    parser.add_argument('--save_model', default=False)
+    parser.add_argument('--save_eval', default=False, action='store_true')
+    parser.add_argument('--save_buffer', default=False, action='store_true')
+    parser.add_argument('--save_model', default=False, action='store_true')
     args = parser.parse_args()
     return args
 

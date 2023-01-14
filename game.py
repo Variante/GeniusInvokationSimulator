@@ -607,12 +607,12 @@ class Game:
         
 if __name__ == '__main__':
     from agent import *
-    g = Game([Deck('starter', RandomAgent()), Deck('starter', RandomAgent())])
+    g = Game([Deck('starter', RandomAgent()), Deck('starter', RandomAgent())], use_pg=False)
     res = [0] * 3
     from tqdm import tqdm
-    for i in tqdm(range(1000)):
+    for i in tqdm(range(10)):
         # g.seed(i)
-        ret = g.game_loop(show=False, save_state=False)
+        ret = g.game_loop(show=False, save_state=f'states/seq{i:06d}')
         # g.dump_to_file('game_finished')
         # g.print_winner(ret)
         g.reset()

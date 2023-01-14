@@ -59,6 +59,7 @@ class Deck:
 
     def state_for_enemy(self):
         return {
+            'name': self.agent.name,
             'current_dice_num': count_total_dice(self.current_dice),
             'characters': [i.state() for i in self.characters],
             'summons': [i.state() for i in self.summons],

@@ -2,6 +2,7 @@ import numpy as np
 
 class Agent:
     def __init__(self):
+        self.name = 'Default'
         self.test_count = 0
     
     def get_keep_card(self, state):
@@ -39,6 +40,7 @@ class Agent:
 class RandomAgent(Agent):
     def __init__(self):
         super().__init__()
+        self.name = 'Random'
         
     def get_action(self, state):
         action_space = state.get('action_space', [''])
@@ -54,6 +56,8 @@ class LearnedAgent(Agent):
         self.inference = inference
         self.last_state_embedding = None # shape N x 768
         self.last_action_embedding = None # shape 768
+        
+        self.name = 'DQN'
 
     def episode_finished(self):
         info = {
